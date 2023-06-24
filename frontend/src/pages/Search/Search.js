@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 
-function Home() {
+function Search() {
     const data = Array.from({ length: 100 }, (_, index) => ({
         id: index + 1,
         name: `Item ${index + 1} with a longer name that takes up more space `,
@@ -55,14 +55,95 @@ function Home() {
         );
     }
 
- 
+    const [filters, setFilters] = useState({
+        genre: '',
+        year: '',
+        country: '',
+    });
+
+    const handleFilterChange = (e) => {
+        const { name, value } = e.target;
+        setFilters((prevFilters) => ({
+            ...prevFilters,
+            [name]: value,
+        }));
+    };
+
+    const handleFilterSubmit = () => {
+        // Xử lý logic lọc phim với các filters
+        // ...
+    };
+    const genres = Array.from(new Set(data.map((movie) => movie.id)));
+    const years = Array.from(new Set(data.map((movie) => movie.year)));
+    const countries = Array.from(new Set(data.map((movie) => movie.country)));
+    const status = Array.from(new Set(data.map((movie) => movie.status)));
 
     return (
         <div className="max-w-full">
             <div className="mx-auto max-w-[1520px]">
-             
+                <div className="flex items-center my-4">
+                    <select
+                        name="genre"
+                        value={filters.genre}
+                        onChange={handleFilterChange}
+                        className="mr-2 rounded-md border border-gray-300 px-4 py-2"
+                    >
+                        <option value="">Chọn thể loại</option>
+                        {genres.map((genre) => (
+                            <option key={genre} value={genre}>
+                                {genre}
+                            </option>
+                        ))}
+                    </select>
+
+                    <select
+                        name="year"
+                        value={filters.year}
+                        onChange={handleFilterChange}
+                        className="mr-2 rounded-md border border-gray-300 px-4 py-2"
+                    >
+                        <option value="">Chọn năm</option>
+                        {years.map((year) => (
+                            <option key={year} value={year}>
+                                {year}
+                            </option>
+                        ))}
+                    </select>
+
+                    <select
+                        name="country"
+                        value={filters.country}
+                        onChange={handleFilterChange}
+                        className="mr-2 rounded-md border border-gray-300 px-4 py-2"
+                    >
+                        <option value="">Chọn quốc gia</option>
+                        {countries.map((country) => (
+                            <option key={country} value={country}>
+                                {country}
+                            </option>
+                        ))}
+                    </select>
+
+                    <select
+                        name="status"
+                        value={filters.status}
+                        onChange={handleFilterChange}
+                        className="mr-2 rounded-md border border-gray-300 px-4 py-2"
+                    >
+                        <option value="">Chọn trạng thái</option>
+                        {status.map((status,i) => (
+                            <option key={i} value={status}>
+                                {status}
+                            </option>
+                        ))}
+                    </select>
+
+                    <button onClick={handleFilterSubmit} className="rounded-md bg-blue-500 px-4 py-2 text-white">
+                        Lọc phim
+                    </button>
+                </div>
                 <table className="min-w-full divide-y divide-gray-200 rounded-full">
-                    <thead className=" bg-gray-50 rounded-full">
+                    <thead className=" bg-slate-200">
                         <tr>
                             <th className="w-1/3 px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
                                 TÊN
@@ -88,7 +169,7 @@ function Home() {
                         {data.map((item) => (
                             <tr key={item.id}>
                                 <td className="flex items-center whitespace-nowrap px-6 py-4">
-                                    <NavLink to="/detail">
+                                    <NavLink to="">
                                         <div className="flex items-center">
                                             <img
                                                 src="https://ophim8.cc/_next/image?url=http%3A%2F%2Fimg.ophim1.com%2Fuploads%2Fmovies%2Fchim-lua-tho-nhi-ky-thumb.jpg&w=192&q=75"
@@ -141,4 +222,4 @@ function Home() {
     );
 }
 
-export default Home;
+export default Search;
