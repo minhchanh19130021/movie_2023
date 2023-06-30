@@ -57,7 +57,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                .csrf().disable()
                .authorizeRequests()
                // Allow all to access this url
-               .anyRequest().authenticated(); // All request except 'api/auth/login' must be authenticated
+               .anyRequest().permitAll();
+//               .antMatchers("/api/movies/**").permitAll()
+//               .anyRequest().authenticated(); // All request except 'api/auth/login' must be authenticated
        // Add other classs to check jwt
        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
    }
