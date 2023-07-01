@@ -1,0 +1,1 @@
+export {default as MovieCardHistory} from './MovieCardHistory'

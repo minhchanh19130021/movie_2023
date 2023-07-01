@@ -1,0 +1,1 @@
+export {default  as MovieFavorite} from './MovieFavorite'

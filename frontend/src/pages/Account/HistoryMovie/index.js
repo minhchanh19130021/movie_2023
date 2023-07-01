@@ -1,0 +1,1 @@
+export {default as HistoryMovie} from './HistoryMovie'
