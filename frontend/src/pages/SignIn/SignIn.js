@@ -2,11 +2,12 @@ import React from "react";
 import { useForm } from 'react-hook-form';
 import classNames from 'classnames/bind';
 import styles from './Login.module.scss';
-import Button from '~/layouts/components/Button/Button';
+import { Button } from "~/components/Button";
+
 
 const cx = classNames.bind(styles);
 
-function Login(){
+function SignIn(){
     
     const {
         register,
@@ -136,4 +137,4 @@ function Login(){
     )
 }
 
-export default Login;
+export default SignIn;

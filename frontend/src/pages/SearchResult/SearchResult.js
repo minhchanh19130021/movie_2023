@@ -1,12 +1,13 @@
+import { SearchHintItem } from '~/pages/Search/SearchHintItem';
+import SearchResultItem from './SearchResultItem';
 import { useState } from 'react';
-import RecentlyTrend from './RecentlyTrend/RecentlyTrend';
-import SearchHintItem from './SearchHintItem/SearchHintItem';
 
-function Search() {
+function SearchResult() {
     const [searchValue, setSearchValue] = useState('');
+
     return (
         <div className="max-w-full">
-            <div className="padding-responsive mx-auto max-w-[1200px] ">
+            <div className="padding-responsive padding-responsive mx-auto max-w-[1200px] ">
                 <div className="relative mb-14 mt-4 flex justify-between rounded-lg bg-[#151515] px-4 py-3">
                     <div className="flex w-full items-center">
                         <svg
@@ -35,8 +36,8 @@ function Search() {
                     <button
                         className={
                             searchValue.length > 0
-                                ? `h-12 transition-colors text-white w-[120px] rounded-lg bg-orange-600 text-sm font-medium hover:bg-orange-500`
-                                : `h-12 transition-colors text-[#767676] w-[120px] rounded-lg bg-[#2c2c2e] text-sm font-medium`
+                                ? `h-12 w-[120px] rounded-lg bg-orange-600 text-sm font-medium text-white transition-colors hover:bg-orange-500`
+                                : `h-12 w-[120px] rounded-lg bg-[#2c2c2e] text-sm font-medium text-[#767676] transition-colors`
                         }
                     >
                         Tìm kiếm
@@ -54,13 +55,26 @@ function Search() {
                         </div>
                     ) : null}
                 </div>
-
-                <div className="">
-                    <RecentlyTrend />
+                <div className="grid grid-cols-5 gap-4">
+                    <SearchResultItem />
+                    <SearchResultItem />
+                    <SearchResultItem />
+                    <SearchResultItem />
+                    <SearchResultItem />
+                    <SearchResultItem />
+                    <SearchResultItem />
+                    <SearchResultItem />
+                    <SearchResultItem />
+                    <SearchResultItem />
+                    <SearchResultItem />
+                    <SearchResultItem />
                 </div>
+                <button className="mx-auto flex rounded-lg bg-orange-600 px-6 py-2 font-medium capitalize transition-colors hover:bg-orange-500">
+                    Xem Thêm
+                </button>
             </div>
         </div>
     );
 }
 
-export default Search;
+export default SearchResult;

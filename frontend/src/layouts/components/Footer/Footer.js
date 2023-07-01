@@ -2,10 +2,10 @@ import React from 'react';
 
 const Footer = () => {
     return (
-        <footer className="bg-gray-900 py-6 text-white">
+        <footer className="max-w-[1200px] mx-auto py-6 text-white">
             <div className="container mx-auto flex items-center justify-between">
                 <div className="flex items-center">
-                    <img className="mr-4 h-10" src="https://ophim8.cc/logo-ophim-6.png" alt="Logo" />
+                    <img className="mr-4 object-cover" src="https://fptplay.vn/images/logo-2.png" alt="Logo" />
                 </div>
                 <div className="flex items-center">
                     <div className="mr-6">

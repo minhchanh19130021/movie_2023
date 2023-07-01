@@ -1,140 +1,34 @@
-import { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { useEffect } from 'react';
+import { getPosts } from '~/services/postServices';
+import BannerSlider from './BannerSlider/BannerSlider';
+import CategorySlider from './CategorySlider.js/CategorySlider';
+import HotBanner from './HotBanner/HotBanner';
+import ReleaseSlider from './ReleaseSlider/ReleaseSlider';
 
 function Home() {
-    const data = Array.from({ length: 100 }, (_, index) => ({
-        id: index + 1,
-        name: `Item ${index + 1} with a longer name that takes up more space `,
-        year: 2021 + index,
-        status: index % 2 === 0 ? 'Active' : 'Inactive',
-        format: index % 3 === 0 ? 'PDF' : 'DOCX',
-        country: index % 4 === 0 ? 'Việt Nam' : 'Mỹ',
-        updateDate: `2023-06-${index + 1}`,
-    }));
 
-    const itemsPerPage = 10; // Số mục hiển thị trên mỗi trang
-    const totalPages = Math.ceil(data.length / itemsPerPage); // Tổng số trang
-    const [currentPage, setCurrentPage] = useState(1); // Trang hiện tại
-
-    // Tính chỉ mục của mục đầu tiên và mục cuối cùng trên trang hiện tại
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-
-    const currentData = data.slice(startIndex, endIndex);
-
-    const goToPage = (page) => {
-        setCurrentPage(page);
-    };
-
-    // danh sách nút chuyển trang
-    const pageButtons = [];
-    const maxButtons = 5;
-    let startPage = currentPage - Math.floor(maxButtons / 2);
-    let endPage = startPage + maxButtons - 1;
-
-    // không có ít hơn 5 nút nhấn
-    if (startPage < 1) {
-        startPage = 1;
-        endPage = Math.min(totalPages, startPage + maxButtons - 1);
-    } else if (endPage > totalPages) {
-        endPage = totalPages;
-        startPage = Math.max(1, endPage - maxButtons + 1);
-    }
-
-    for (let i = startPage; i <= endPage; i++) {
-        pageButtons.push(
-            <button
-                key={i}
-                onClick={() => goToPage(i)}
-                className={`mr-2  bg-gray-200 px-3 py-1 text-sm font-medium text-gray-500 ${
-                    i === currentPage ? 'text-bold border-2 border-blue-400 bg-blue-300 text-blue-500' : ''
-                }`}
-            >
-                {i}
-            </button>,
-        );
-    }
-
- 
+    useEffect(() => {
+        const fetchPost = async () => {
+            const result = await getPosts();
+            console.log(result);
+        };
+        fetchPost();
+    }, []);
 
     return (
-        <div className="max-w-full">
-            <div className="mx-auto max-w-[1520px]">
-             
-                <table className="min-w-full divide-y divide-gray-200 rounded-full">
-                    <thead className=" bg-gray-50 rounded-full">
-                        <tr>
-                            <th className="w-1/3 px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-                                TÊN
-                            </th>
-                            <th className="w-1/6 px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-                                NĂM
-                            </th>
-                            <th className="w-1/6 px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-                                TÌNH TRẠNG
-                            </th>
-                            <th className="w-1/6 px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-                                ĐỊNH DẠNG
-                            </th>
-                            <th className="w-1/6 px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-                                QUỐC GIA
-                            </th>
-                            <th className="w-1/6 px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-                                NGÀY CẬP NHẬT
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody className="divide-y divide-gray-200 bg-white">
-                        {data.map((item) => (
-                            <tr key={item.id}>
-                                <td className="flex items-center whitespace-nowrap px-6 py-4">
-                                    <NavLink to="/detail">
-                                        <div className="flex items-center">
-                                            <img
-                                                src="https://ophim8.cc/_next/image?url=http%3A%2F%2Fimg.ophim1.com%2Fuploads%2Fmovies%2Fchim-lua-tho-nhi-ky-thumb.jpg&w=192&q=75"
-                                                alt=""
-                                                className="h-[63px] w-[48px] rounded-md object-cover"
-                                            />
-                                            <div className="ml-2 flex flex-col justify-between">
-                                                <div className="flex justify-between">
-                                                    <p className="font-bold text-blue-400">{item.name}</p>
-                                                    <p className="font-bold text-red-500">[Vietsub độc quyền]</p>
-                                                </div>
-                                                <p className="block text-slate-300">Nhà sản xuất: Tuzak</p>
-                                            </div>
-                                        </div>
-                                    </NavLink>
-                                </td>
-                                <td className="whitespace-nowrap px-6 py-4">{item.year}</td>
-                                <td className="whitespace-nowrap px-6 py-4">{item.status}</td>
-                                <td className="whitespace-nowrap px-6 py-4">{item.format}</td>
-                                <td className="whitespace-nowrap px-6 py-4">{item.country}</td>
-                                <td className="whitespace-nowrap px-6 py-4">{item.updateDate}</td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-                <div className="mt-4 flex items-center justify-between">
-                    <div className="text-sm text-gray-500">
-                        Hiển thị {startIndex + 1} - {Math.min(endIndex, data.length)} trên tổng số {data.length} mục
-                    </div>
-                    <div className="flex">
-                        <button
-                            onClick={() => goToPage(currentPage - 1)}
-                            disabled={currentPage === 1}
-                            className="mr-2 rounded-md bg-gray-200 px-3 py-1 text-sm font-medium text-gray-500 disabled:cursor-not-allowed"
-                        >
-                            Trang trước
-                        </button>
-                        {pageButtons}
-                        <button
-                            onClick={() => goToPage(currentPage + 1)}
-                            disabled={currentPage === totalPages}
-                            className="rounded-md bg-gray-200 px-3 py-1 text-sm font-medium text-gray-500 disabled:cursor-not-allowed"
-                        >
-                            Trang tiếp theo
-                        </button>
-                    </div>
+        <div className="max-w-full  ">
+            <div className="mx-auto max-w-[1200px]">
+                <div className="">
+                    <BannerSlider />
+                </div>
+                <div className="mb-5 mt-10">
+                    <CategorySlider />
+                </div>
+                <div className="">
+                    <ReleaseSlider />
+                </div>
+                <div className="">
+                    <HotBanner />
                 </div>
             </div>
         </div>
