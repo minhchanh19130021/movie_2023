@@ -16,17 +16,17 @@ public class Movie {
     @Column(name = "slug")
     private String slug;
 
-    @Column(name = "avatar")
-    private String avatar;
+    @Column(name = "poster")
+    private String poster;
 
     @Column(name = "name")
     private String name;
 
-    @Column(name = "origin_name")
-    private String originName;
+    @Column(name = "title")
+    private String title;
 
-    @Column(name = "year")
-    private Integer year;
+    @Column(name = "release_date")
+    private Date releaseDate;
 
     @Column(name = "country")
     private String country;
@@ -34,11 +34,15 @@ public class Movie {
     @Column(name = "type")
     private MovieType type;
 
-    @Column(name = "update_at")
-    private Date updatedAt;
-
     @Column(name = "status")
     private MovieStatus status;
+    @Column(name = "inserted_date")
+    private Date insertedDate;
+
+    @Column(name = "updated_date")
+    private Date updatedDate;
+
+
 
     public Integer getId() {
         return id;
@@ -56,12 +60,12 @@ public class Movie {
         this.slug = slug;
     }
 
-    public String getAvatar() {
-        return avatar;
+    public String getPoster() {
+        return poster;
     }
 
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
+    public void setPoster(String poster) {
+        this.poster = poster;
     }
 
     public String getName() {
@@ -72,20 +76,20 @@ public class Movie {
         this.name = name;
     }
 
-    public String getOriginName() {
-        return originName;
+    public String getTitle() {
+        return title;
     }
 
-    public void setOriginName(String originName) {
-        this.originName = originName;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public Integer getYear() {
-        return year;
+    public Date getReleaseDate() {
+        return releaseDate;
     }
 
-    public void setYear(Integer year) {
-        this.year = year;
+    public void setReleaseDate(Date releaseDate) {
+        this.releaseDate = releaseDate;
     }
 
     public String getCountry() {
@@ -104,12 +108,20 @@ public class Movie {
         this.type = type;
     }
 
-    public Date getUpdatedAt() {
-        return updatedAt;
+
+    public Date getInsertedDate() {
+        return insertedDate;
     }
 
-    public void setUpdatedAt(Date updatedAt) {
-        this.updatedAt = updatedAt;
+    public void setInsertedDate(Date insertedDate) {
+        this.insertedDate = insertedDate;
+    }
+    public Date getUpdatedDate() {
+        return updatedDate;
+    }
+
+    public void setUpdatedDate(Date updatedDate) {
+        this.updatedDate = updatedDate;
     }
 
     public MovieStatus getStatus() {
