@@ -5,13 +5,13 @@ function Comment() {
     const renderElements = () => {
         const elements = [];
 
-        for (let i = 1; i < 100; i++) {
+        for (let i = 1; i < 5; i++) {
             elements.push(
                 <CommentItem
                     key={i}
                     userName={`Người dùng ${i}`}
                     time={`${i} ngày`}
-                    commentText={`Lee Yeon là hồ ly mang nhiệm vụ như một người giám sát, có quyền trừng trị những kẻ hại cuộc sống của loài người. Trong khi đó, người em cùng cha khác mẹ của anh là Lee Rang, mang hai dòng máu nửa người nửa yêu, thì chuyên đi gây họa. Cuộc sống vốn dĩ sẽ bình yên, nếu Lee Yeon không phải lòng Nam Ji Ah - người thực hiện những chương trình tìm hiểu về thế lực siêu nhiên. Bạn, trai, tôi, là, hồ, ly, The, Tale, of, a, Gumiho, Tale, of, the, Nine-Tailed, Bạn trai tôi là hồ ly, phim Bạn trai tôi là hồ ly, xem phim Bạn trai tôi là hồ ly tập 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16, Bạn trai tôi là hồ ly vietsub, tình cảm, Tale of the Nine-Tailed, Bạn trai tôi là hồ ly online, xem Tale of the Nine-Tailed, Bạn trai tôi là hồ ly FPT Play, phim Tale of the Nine-Tailed, Tale of the Nine-Tailed phụ đề, xem phim Tale of the Nine-Tailed tập 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16, Tale of the Nine-Tailed fptplay, FPT, The Tale of a Gumiho, xem The Tale of a Gumiho, phim The Tale of a Gumiho, The Tale of a Gumiho phụ đề, xem phim The Tale of a Gumiho tập 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16, The Tale of a Gumiho fptplay, tail, tails`}
+                    commentText={`Lee Yeon là hồ ly mang nhiệm vụ như một người giám sát`}
                 />,
             );
         }

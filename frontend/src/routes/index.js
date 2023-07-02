@@ -8,10 +8,12 @@ import SearchResult from '~/pages/SearchResult/SearchResult';
 import { SignIn } from '~/pages/SignIn';
 import { SignUp } from '~/pages/SignUp';
 import { View } from '~/pages/View';
+import { NotFound } from '~/pages/NofFound';
+import { ServerError } from '~/pages/ServerError';
 
 const publicRoutes = [
     { path: config.routes.home, component: Home },
-    { path: config.routes.signIn, component: SignIn },
+    // { path: config.routes.signIn, component: SignIn },
     { path: config.routes.signUp, component: SignUp },
     { path: config.routes.search, component: Search },
     { path: config.routes.searchResult, component: SearchResult },
@@ -23,12 +25,8 @@ const publicRoutes = [
     { path: config.routes.personalInformation, component: PersonalInformation },
     { path: config.routes.favorateMovie, component: FavorateMovie },
 
-
-
-
-
-
+    { path: config.routes.notFound, component: NotFound },
+    { path: config.routes.serverError, component: ServerError },
 ];
 const privateRoutes = [];
 export { privateRoutes, publicRoutes };
-
