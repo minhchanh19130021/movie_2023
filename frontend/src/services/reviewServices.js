@@ -2,9 +2,9 @@ import request from '~/utils/requestUtils';
 
 const controller = 'review';
 
-export const getReviewsByMovieIdAndPaginationNumber = async (movieId, paginationNumber) => {
+export const getReviewsByMovieIdAndPaginationNumber = async (movieId, paginationNumber, sortBy) => {
     try {
-        const load = await request.get(`/${controller}/get?movieId=${movieId}&currentPage=${paginationNumber}`, {
+        const load = await request.get(`/${controller}/get?movieId=${movieId}&currentPage=${paginationNumber}&sortBy=${sortBy}`, {
             headers: {},
         });
         return load;
