@@ -1,8 +1,17 @@
 import { useEffect, useState } from 'react';
 import { SignUpModal } from '../SignUpModal';
+import { useForm } from 'react-hook-form';
 
 function SignInModal({ isOpen, onClose }) {
     const [isModalOpen, setIsModalOpen] = useState(false);
+
+      
+    const {
+        register,
+        formState: { errors },
+        handleSubmit,
+    } = useForm();
+
 
     const openModal = () => {
         setIsModalOpen(true);
@@ -28,6 +37,8 @@ function SignInModal({ isOpen, onClose }) {
 
     if (!isOpen) return null;
 
+    const handleLogin = (data) => console.log(data);
+
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
             <div className="fixed inset-0 bg-black opacity-50"></div>
@@ -52,20 +63,46 @@ function SignInModal({ isOpen, onClose }) {
                     <p className="text-2xl font-medium">Đăng nhập</p>
                 </div>
                 <div className="">
-                    <form className="login-form">
+                    <form className="login-form" onSubmit={handleSubmit(handleLogin)}>
                         <div className="form-group mb-4">
                             <input
                                 placeholder="Tên tài khoản"
                                 type="text"
+                                ng-model="name"
+                                name="name"
                                 className="h-[48px] w-[336px] rounded-lg border border-[#111] bg-[#111] p-4 text-sm outline-none"
+                                {...register('name', {
+                                    required: true,
+                                    pattern: /^[a-zA-Z0-9]+([._]?[a-zA-Z0-9]+)*$/,                                                          
+                                })}
                             />
+                              <div className='error'>
+                                        <error className="text-center text-sm font-medium text-[#dc3545]">
+                                            {errors.name?.type === 'required' && 'Tên tài khoản là bắt buộc'}
+                                            {errors.name?.type === 'pattern' && 'Tên tài khoản chỉ được chứa chữu và số'}
+                                        </error>
+                                    </div>
                         </div>
                         <div className="form-group mb-4">
                             <input
                                 placeholder="Mật khẩu"
                                 type="password"
+                                ng-model="pass"
+                                name="password"
                                 className="h-[48px] w-[336px] rounded-lg border border-[#111] bg-[#111] p-4 text-sm outline-none"
-                            />
+                                {...register('password', {
+                                    required: true,
+                                    minLength: 4 ,
+                                    maxLength: 20,
+                                })}
+                           />
+                           <div className='error'>
+                                <error className="text-center text-sm font-medium text-[#dc3545]">
+                                    {errors.password?.type === 'required' && 'Mật khẩu là bắt buộc'}
+                                    {errors.password?.type === 'minLength' && 'Mật khẩu không nhỏ hơn 3 ký tự'}
+                                    {errors.password?.type === 'maxLength' && 'Mật khẩu không lớn hơn 20 ký tự'}
+                                </error>
+                            </div>
                         </div>
                         <div className="forgot-password">
                             <p>Quên mật khẩu?</p>
@@ -76,8 +113,7 @@ function SignInModal({ isOpen, onClose }) {
                             </p>
                         </div>
                         <button
-                            type="button"
-                            disabled
+                            type="submit"
                             className=" my-4 h-[48px] w-full rounded-lg  bg-orange-600 px-4 py-2 transition-colors disabled:bg-[#2c2c2e]"
                         >
                             Đăng nhập
