@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/movies")
@@ -35,6 +34,27 @@ public class MovieController {
         response.setCurrentPage(moviePage.getNumber() + 1);
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<?> searchMovies(
+            @RequestParam("keyword") String keyword,
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "3") int size,
+            @RequestParam(defaultValue = "releaseDate") String sortBy,
+            @RequestParam(defaultValue = "asc") String sortOrder
+    ) {
+        Page<Movie> moviePage = movieService.searchMoviesByName(keyword,page-1, size, sortBy, sortOrder);
+        MoviePageResponse response = new MoviePageResponse();
+        response.setContent(moviePage.getContent());
+        response.setLast(moviePage.isLast());
+        response.setFirst(moviePage.isFirst());
+        response.setTotalElements(moviePage.getTotalElements());
+        response.setTotalPages(moviePage.getTotalPages());
+        response.setSize(moviePage.getSize());
+        response.setCurrentPage(moviePage.getNumber() + 1);
+        return ResponseEntity.ok(response);
+    }
+
     @GetMapping("/{movie_id}")
     public ResponseEntity<?> getMovieDetail(@PathVariable Integer movie_id){
         return ResponseEntity.ok(movieService.getMovieDetail(movie_id));
