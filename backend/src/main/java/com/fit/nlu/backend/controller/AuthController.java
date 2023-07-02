@@ -71,7 +71,7 @@ public class AuthController {
         user.setUserName(registerRequest.getUsername());
         user.setEmail(registerRequest.getEmail());
         user.setPassword(registerRequest.getPassword());
-        user.setFlagActive(false);
+        user.setFlagActive(0);
         userService.register(user);
         return ResponseEntity.ok().body("User registered successfully!");
     }

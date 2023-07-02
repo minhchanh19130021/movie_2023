@@ -97,7 +97,7 @@ public class UserService implements UserDetailsService {
         User user = userRepository.findByEmail(email);
         if(confirmationCode != null && user.getActiveCode().equals(confirmationCode))
         {
-            user.setFlagActive(true);
+            user.setFlagActive(1);
             userRepository.save(user);
             return ResponseEntity.ok("User verified successfully!");
         }

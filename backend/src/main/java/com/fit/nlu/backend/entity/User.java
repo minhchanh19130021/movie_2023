@@ -36,11 +36,8 @@ public class User {
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedDate;
 
-    @Column(name = "flag_active")
-    private boolean flagActive;
-
-    @Column(name = "flag_block")
-    private boolean flagBlock;
+    @Column(name = "role_id")
+    private Integer roleId;
 
     @Column(name = "active_code")
     private String activeCode;
@@ -109,20 +106,12 @@ public class User {
         this.updatedDate = updatedDate;
     }
 
-    public boolean isFlagActive() {
-        return flagActive;
+    public Integer getRoleId() {
+        return roleId;
     }
 
-    public void setFlagActive(boolean flagActive) {
-        this.flagActive = flagActive;
-    }
-
-    public boolean isFlagBlock() {
-        return flagBlock;
-    }
-
-    public void setFlagBlock(boolean flagBlock) {
-        this.flagBlock = flagBlock;
+    public void setRoleId(Integer roleId) {
+        this.roleId = roleId;
     }
 
     public String getActiveCode() {
