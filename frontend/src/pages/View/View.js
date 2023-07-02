@@ -1,4 +1,5 @@
-import Comment from "./Comment/Comment";
+import Review from './Review/Review';
+import Comment from './Comment/Comment';
 
 function View() {
     const renderElements = () => {
@@ -25,7 +26,7 @@ function View() {
                     <h3 className="mb-8 text-2xl font-medium">Danh sách</h3>
                     <div className="grid grid-cols-10 gap-3">{renderElements()}</div>
                 </div>
-                <div className="grid grid-cols-3 gap-x-5 text-[#d2d2d2] mb-12">
+                <div className="mb-12 grid grid-cols-3 gap-x-5 text-[#d2d2d2]">
                     <div className="col-span-2">
                         <div className="font-medium">
                             <p className="mb-4 text-2xl text-white">Bạn Trai Tôi Là Hồ Ly</p>
@@ -117,7 +118,10 @@ function View() {
                     </div>
                 </div>
                 <div className="">
-                   <Comment/>
+                    <Review></Review>
+                </div>
+                <div className="mt-5">
+                    <Comment />
                 </div>
             </div>
         </div>

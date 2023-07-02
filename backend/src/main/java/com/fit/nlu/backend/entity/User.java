@@ -1,6 +1,10 @@
 package com.fit.nlu.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import java.util.Date;
+
 @Entity(name = "user")
 @Table
 public class User {
@@ -15,13 +19,22 @@ public class User {
     private String email;
 
     @Column(name = "password")
+    @JsonIgnore
     private String password;
 
-    @Column(name = "create_at")
-    private String createdAt;
+    @Column(name = "flag_active")
+    public int flagActive;
 
-    @Column(name = "role_id")
-    private Integer roleId;
+    @Column(name = "flag_block")
+    public int flagBlock;
+
+    @Column(name = "inserted_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date insertedDate;
+
+    @Column(name = "updated_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updatedDate;
 
     public Integer getId() {
         return id;
@@ -55,19 +68,35 @@ public class User {
         this.password = password;
     }
 
-    public String getCreatedAt() {
-        return createdAt;
+    public int getFlagActive() {
+        return flagActive;
     }
 
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
+    public void setFlagActive(int flagActive) {
+        this.flagActive = flagActive;
     }
 
-    public Integer getRoleId() {
-        return roleId;
+    public int getFlagBlock() {
+        return flagBlock;
     }
 
-    public void setRoleId(Integer roleId) {
-        this.roleId = roleId;
+    public void setFlagBlock(int flagBlock) {
+        this.flagBlock = flagBlock;
+    }
+
+    public Date getInsertedDate() {
+        return insertedDate;
+    }
+
+    public void setInsertedDate(Date insertedDate) {
+        this.insertedDate = insertedDate;
+    }
+
+    public Date getUpdatedDate() {
+        return updatedDate;
+    }
+
+    public void setUpdatedDate(Date updatedDate) {
+        this.updatedDate = updatedDate;
     }
 }
