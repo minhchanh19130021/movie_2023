@@ -41,4 +41,13 @@ public class MovieService {
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, sortBy));
         return repository.findAll(pageable);
     }
+    public Page<Movie> searchMoviesByName(String keyword, int page, int size,  String sortBy, String sortOrder) {
+        Sort.Direction sortDirection = sortOrder.equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, sortBy));
+        if(keyword == null || keyword.trim().isEmpty()){
+            return repository.findAll(pageable);
+        }
+        return repository.searchMoviesByName(keyword, pageable);
+    }
+
 }
