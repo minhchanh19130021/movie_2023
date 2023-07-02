@@ -8,8 +8,8 @@ function ServerError() {
             <div className="my-5 text-center">
                 <h1 className="text-8xl	font-semibold text-white">500</h1>
                 <div className="my-5">
-                    <h3 class="text-xl font-medium text-gray-300">Lỗi Server! không thể hoạt động</h3>
-                    <p class="text-md mt-2 pb-4 text-xl text-gray-600">Server Error! can't work</p>
+                    <h3 className="text-xl font-medium text-gray-300">Lỗi Server! không thể hoạt động</h3>
+                    <p className="text-md mt-2 pb-4 text-xl text-gray-600">Server Error! can't work</p>
                 </div>
                 <a
                     href="/"

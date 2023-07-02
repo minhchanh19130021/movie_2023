@@ -2,6 +2,7 @@ package com.fit.nlu.backend.controller;
 
 import com.fit.nlu.backend.entity.Review;
 import com.fit.nlu.backend.entity.User;
+import com.fit.nlu.backend.exception.CustomException;
 import com.fit.nlu.backend.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -21,14 +22,13 @@ public class ReviewController {
     private ReviewService reviewService;
 
     @GetMapping("/get")
-    public ResponseEntity<List<Review>> getReviewsList(int movieId, int currentPage) {
-        Page<Review> reviews = reviewService.getListReview(movieId, currentPage);
-
-        return ResponseEntity.ok().body(reviews.getContent());
+    public ResponseEntity<List<Review>> getReviewsList(int movieId, int currentPage, String sortBy) throws CustomException {
+        List<Review> reviews = reviewService.getListReview(movieId, currentPage, sortBy);
+        return ResponseEntity.ok().body(reviews);
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Review> createNewReview(@Valid @RequestBody Review review) {
+    public ResponseEntity<Review> createNewReview(@RequestBody @Valid Review review) {
         Review newReview =  reviewService.createNewReview(review);
         // tmp add
         User user = new User();
