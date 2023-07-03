@@ -1,12 +1,20 @@
 package com.fit.nlu.backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity(name = "user")
 @Table
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,83 +50,5 @@ public class User {
     @Column(name = "active_code")
     private String activeCode;
 
-    public Integer getId() {
-        return id;
-    }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public int getFlagActive() {
-        return flagActive;
-    }
-
-    public void setFlagActive(int flagActive) {
-        this.flagActive = flagActive;
-    }
-
-    public int getFlagBlock() {
-        return flagBlock;
-    }
-
-    public void setFlagBlock(int flagBlock) {
-        this.flagBlock = flagBlock;
-    }
-
-    public Date getInsertedDate() {
-        return insertedDate;
-    }
-
-    public void setInsertedDate(Date insertedDate) {
-        this.insertedDate = insertedDate;
-    }
-
-    public Date getUpdatedDate() {
-        return updatedDate;
-    }
-
-    public void setUpdatedDate(Date updatedDate) {
-        this.updatedDate = updatedDate;
-    }
-
-    public Integer getRoleId() {
-        return roleId;
-    }
-
-    public void setRoleId(Integer roleId) {
-        this.roleId = roleId;
-    }
-
-    public String getActiveCode() {
-        return activeCode;
-    }
-
-    public void setActiveCode(String activeCode) {
-        this.activeCode = activeCode;
-    }
 }

@@ -1,9 +1,20 @@
 package com.fit.nlu.backend.entity;
 
+import com.fit.nlu.backend.enums.MovieStatus;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity(name = "movie_actor")
 @Table
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class MovieActor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,27 +26,18 @@ public class MovieActor {
     @Column(name = "actor_id")
     private Integer actorId;
 
-    public Integer getId() {
-        return id;
-    }
+    @Column(name = "status")
+    private MovieStatus status;
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+    @Column(name = "inserted_date")
+    private Date insertedDate;
 
-    public Integer getMovieId() {
-        return movieId;
-    }
+    @Column(name = "updated_date")
+    private Date updatedDate;
 
-    public void setMovieId(Integer movieId) {
+    public MovieActor(Integer movieId, Integer actorId, MovieStatus status) {
         this.movieId = movieId;
-    }
-
-    public Integer getActorId() {
-        return actorId;
-    }
-
-    public void setActorId(Integer actorId) {
         this.actorId = actorId;
+        this.status = status;
     }
 }

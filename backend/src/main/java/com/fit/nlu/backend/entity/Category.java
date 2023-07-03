@@ -1,9 +1,19 @@
 package com.fit.nlu.backend.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity(name = "category")
 @Table
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,27 +25,16 @@ public class Category {
     @Column(name = "slug")
     private String slug;
 
-    public Integer getId() {
-        return id;
-    }
+    @Column(name = "inserted_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date insertedDate;
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+    @Column(name = "updated_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updatedDate;
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
+    public Category(String name, String slug) {
         this.name = name;
-    }
-
-    public String getSlug() {
-        return slug;
-    }
-
-    public void setSlug(String slug) {
         this.slug = slug;
     }
 }

@@ -2,12 +2,21 @@ package com.fit.nlu.backend.entity;
 
 import com.fit.nlu.backend.enums.MovieStatus;
 import com.fit.nlu.backend.enums.MovieType;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 
 
 import java.util.Date;
 @Entity(name = "movie")
 @Table
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class Movie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,91 +53,21 @@ public class Movie {
 
 
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getSlug() {
-        return slug;
-    }
-
-    public void setSlug(String slug) {
+    public Movie(String slug, String poster, String name, String title, Date releaseDate, String country,
+                 MovieType type, MovieStatus status) {
         this.slug = slug;
-    }
-
-    public String getPoster() {
-        return poster;
-    }
-
-    public void setPoster(String poster) {
         this.poster = poster;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
         this.name = name;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
         this.title = title;
-    }
-
-    public Date getReleaseDate() {
-        return releaseDate;
-    }
-
-    public void setReleaseDate(Date releaseDate) {
         this.releaseDate = releaseDate;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
         this.country = country;
-    }
-
-    public MovieType getType() {
-        return type;
-    }
-
-    public void setType(MovieType type) {
         this.type = type;
-    }
-
-
-    public Date getInsertedDate() {
-        return insertedDate;
-    }
-
-    public void setInsertedDate(Date insertedDate) {
-        this.insertedDate = insertedDate;
-    }
-    public Date getUpdatedDate() {
-        return updatedDate;
-    }
-
-    public void setUpdatedDate(Date updatedDate) {
-        this.updatedDate = updatedDate;
-    }
-
-    public MovieStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(MovieStatus status) {
         this.status = status;
     }
+
+
+
+
+
+
 }

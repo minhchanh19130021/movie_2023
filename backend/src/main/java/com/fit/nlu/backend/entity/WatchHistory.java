@@ -1,10 +1,19 @@
 package com.fit.nlu.backend.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.util.Date;
 
 @Table
 @Entity(name = "watch_history")
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class WatchHistory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,48 +26,12 @@ public class WatchHistory {
     private Integer userId;
 
     @Column(name = "inserted_date")
+    @Temporal(TemporalType.TIMESTAMP)
     private Date insertedDate;
 
     @Column(name = "updated_date")
+    @Temporal(TemporalType.TIMESTAMP)
     private Date updatedDate;
 
-    public Integer getId() {
-        return id;
-    }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Integer getMovieId() {
-        return movieId;
-    }
-
-    public void setMovieId(Integer movieId) {
-        this.movieId = movieId;
-    }
-
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
-
-    public Date getInsertedDate() {
-        return insertedDate;
-    }
-
-    public void setInsertedDate(Date insertedDate) {
-        this.insertedDate = insertedDate;
-    }
-
-    public Date getUpdatedDate() {
-        return updatedDate;
-    }
-
-    public void setUpdatedDate(Date updatedDate) {
-        this.updatedDate = updatedDate;
-    }
 }

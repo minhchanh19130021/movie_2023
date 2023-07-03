@@ -1,9 +1,19 @@
 package com.fit.nlu.backend.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity(name = "movie_detail")
 @Table
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class MovieDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -12,8 +22,11 @@ public class MovieDetail {
     @Column(name = "movie_id")
     private Integer movieId;
 
-    @Column(name = "view")
-    private Integer view;
+    @Column(name = "summary")
+    private String summary;
+
+    @Column(name = "trailer_url")
+    private String trailerUrl;
 
     @Column(name = "lang")
     private String lang;
@@ -27,92 +40,30 @@ public class MovieDetail {
     @Column(name = "episode_current")
     private Integer episodeCurrent;
 
-    @Column(name = "time")
-    private String time;
+    @Column(name = "duration")
+    private String duration;
 
-    @Column(name = "trailer_url")
-    private String trailerUrl;
+    @Column(name = "view")
+    private Integer view;
 
-    @Column(name = "content")
-    private String content;
+    @Column(name = "inserted_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date insertedDate;
 
-    public Integer getId() {
-        return id;
-    }
+    @Column(name = "updated_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updatedDate;
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Integer getMovieId() {
-        return movieId;
-    }
-
-    public void setMovieId(Integer movieId) {
+    public MovieDetail(Integer movieId, String summary, String trailerUrl, String lang, String quality,
+                       Integer episodeTotal, Integer episodeCurrent, String duration, Integer view) {
         this.movieId = movieId;
-    }
-
-    public Integer getView() {
-        return view;
-    }
-
-    public void setView(Integer view) {
-        this.view = view;
-    }
-
-    public String getLang() {
-        return lang;
-    }
-
-    public void setLang(String lang) {
-        this.lang = lang;
-    }
-
-    public String getQuality() {
-        return quality;
-    }
-
-    public void setQuality(String quality) {
-        this.quality = quality;
-    }
-
-    public Integer getEpisodeTotal() {
-        return episodeTotal;
-    }
-
-    public void setEpisodeTotal(Integer episodeTotal) {
-        this.episodeTotal = episodeTotal;
-    }
-
-    public Integer getEpisodeCurrent() {
-        return episodeCurrent;
-    }
-
-    public void setEpisodeCurrent(Integer episodeCurrent) {
-        this.episodeCurrent = episodeCurrent;
-    }
-
-    public String getTime() {
-        return time;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
-    }
-
-    public String getTrailerUrl() {
-        return trailerUrl;
-    }
-
-    public void setTrailerUrl(String trailerUrl) {
+        this.summary = summary;
         this.trailerUrl = trailerUrl;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
+        this.lang = lang;
+        this.quality = quality;
+        this.episodeTotal = episodeTotal;
+        this.episodeCurrent = episodeCurrent;
+        this.duration = duration;
+        this.view = view;
     }
 }

@@ -1,10 +1,20 @@
 package com.fit.nlu.backend.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
+import java.util.Date;
 
 
 @Table
 @Entity(name = "actor")
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class Actor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -13,19 +23,15 @@ public class Actor {
     @Column(name = "name")
     private String name;
 
-    public Integer getId() {
-        return id;
-    }
+    @Column(name = "inserted_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date insertedDate;
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+    @Column(name = "updated_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updatedDate;
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
+    public Actor(String name) {
         this.name = name;
     }
 }
