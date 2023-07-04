@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
+import java.util.Collection;
 import java.util.Date;
 
 @Entity(name = "review")
@@ -44,7 +45,6 @@ public class Review {
     @Column(name = "updated_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedDate;
-
 
     @OneToOne
     @JoinColumn(name = "user_id")

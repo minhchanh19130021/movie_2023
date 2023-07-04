@@ -51,7 +51,11 @@ public class Movie {
     @Column(name = "updated_date")
     private Date updatedDate;
 
+    @Column(name = "review_number")
+    private int reviewNumber;
 
+    @Column(name = "comment_number")
+    private int commentNumber;
 
     public Movie(String slug, String poster, String name, String title, Date releaseDate, String country,
                  MovieType type, MovieStatus status) {
@@ -64,10 +68,20 @@ public class Movie {
         this.type = type;
         this.status = status;
     }
+    
+    public int getReviewNumber() {
+        return reviewNumber;
+    }
 
+    public void setReviewNumber(int reviewNumber) {
+        this.reviewNumber = reviewNumber;
+    }
 
+    public int getCommentNumber() {
+        return commentNumber;
+    }
 
-
-
-
+    public void setCommentNumber(int commentNumber) {
+        this.commentNumber = commentNumber;
+    }
 }

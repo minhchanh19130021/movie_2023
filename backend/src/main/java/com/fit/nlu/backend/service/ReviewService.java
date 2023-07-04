@@ -1,7 +1,9 @@
 package com.fit.nlu.backend.service;
 
+import com.fit.nlu.backend.entity.Movie;
 import com.fit.nlu.backend.entity.Review;
 import com.fit.nlu.backend.exception.CustomException;
+import com.fit.nlu.backend.repository.MovieRepository;
 import com.fit.nlu.backend.repository.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -9,12 +11,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.*;
 import javax.transaction.Transactional;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class ReviewService {
@@ -25,10 +27,18 @@ public class ReviewService {
     @Autowired
     private ReviewRepository reviewRepository;
 
+    @Autowired
+    private MovieRepository movieRepository;
+
     @Transactional
-    public Review createNewReview(Review review) {
+    public Review createNewReview(Review review) throws CustomException {
+        Movie movie = movieRepository
+                .findById(review.getMovieId())
+                .orElseThrow(() -> new CustomException(HttpStatus.BAD_REQUEST, "cannot find movie Id"));
         review.setInsertedDate(new Date());
         Review newReview = reviewRepository.save(review);
+        movie.setReviewNumber(movie.getReviewNumber() + 1);
+        movieRepository.save(movie);
         return newReview;
     }
 
@@ -43,15 +53,12 @@ public class ReviewService {
         Order orderBy = null;
         if (sortBy.equals("insertedDateDESC")) {
             orderBy = criteriaBuilder.desc(reviewRoot.get("insertedDate"));
-        }
-        else if (sortBy.equals("ratingASC")) {
+        } else if (sortBy.equals("ratingASC")) {
             orderBy = criteriaBuilder.asc(reviewRoot.get("rating"));
-        }
-        else if (sortBy.equals("ratingDESC")) {
+        } else if (sortBy.equals("ratingDESC")) {
             orderBy = criteriaBuilder.desc(reviewRoot.get("rating"));
-        }
-        else {
-            throw new CustomException(HttpStatus.BAD_REQUEST, "cannot sort by with parameter");
+        } else {
+            throw new CustomException(HttpStatus.BAD_REQUEST, "cannot sort by " + sortBy);
         }
 
         criteriaQuery.select(reviewRoot)
