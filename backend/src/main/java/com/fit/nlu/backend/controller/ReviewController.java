@@ -28,7 +28,7 @@ public class ReviewController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Review> createNewReview(@RequestBody @Valid Review review) {
+    public ResponseEntity<Review> createNewReview(@RequestBody @Valid Review review) throws CustomException {
         Review newReview =  reviewService.createNewReview(review);
         // tmp add
         User user = new User();
