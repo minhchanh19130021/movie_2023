@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.mail.MessagingException;
 import javax.validation.Valid;
 import java.io.UnsupportedEncodingException;
+import java.util.Date;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -61,10 +62,10 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterRequest registerRequest) throws CustomException, MessagingException, UnsupportedEncodingException {
         if (userService.existsByUsername(registerRequest.getUsername())) {
-            throw new CustomException(HttpStatus.UNPROCESSABLE_ENTITY, "Tên người dùng đã tồn tại");
+             return ResponseEntity.unprocessableEntity().body("Tên người dùng đã tồn tại");
         }
         if (userService.existsByEmail(registerRequest.getEmail())) {
-            throw new CustomException(HttpStatus.UNPROCESSABLE_ENTITY, "Email đã tồn tại");
+            return ResponseEntity.unprocessableEntity().body("Email đã tồn tại");
         }
 
         User user = new User();
@@ -72,6 +73,8 @@ public class AuthController {
         user.setEmail(registerRequest.getEmail());
         user.setPassword(registerRequest.getPassword());
         user.setFlagActive(0);
+        user.setInsertedDate(new Date());
+        user.setUpdatedDate(new Date());
         userService.register(user);
         return ResponseEntity.ok().body("User registered successfully!");
     }
