@@ -46,6 +46,18 @@ public class MovieDetail {
     @Column(name = "view")
     private Integer view;
 
+    @Column(name = "category")
+    private String category;
+
+    @Column(name = "country")
+    private String country;
+
+    @Column(name = "actor")
+    private String actor;
+
+    @Column(name = "director")
+    private String director;
+
     @Column(name = "inserted_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date insertedDate;

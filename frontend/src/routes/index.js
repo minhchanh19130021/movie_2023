@@ -2,9 +2,11 @@ import config from '~/config';
 import { FavorateMovie } from '~/pages/Account/FavoriteMovie';
 import { HistoryMovie } from '~/pages/Account/HistoryMovie';
 import { PersonalInformation } from '~/pages/Account/PersonalInformation';
+import { MovieCreate } from '~/pages/Admin/Movie/MovieCreate';
+import { MovieDetailCreate } from '~/pages/Admin/Movie/MovieDetailCreate';
 import { Home } from '~/pages/Home';
 import { Search } from '~/pages/Search';
-import SearchResult from '~/pages/SearchResult/SearchResult';
+import { SearchResult } from '~/pages/SearchResult';
 import { SignIn } from '~/pages/SignIn';
 import { SignUp } from '~/pages/SignUp';
 import { View } from '~/pages/View';
@@ -24,6 +26,10 @@ const publicRoutes = [
     { path: config.routes.historyMovie, component: HistoryMovie },
     { path: config.routes.personalInformation, component: PersonalInformation },
     { path: config.routes.favorateMovie, component: FavorateMovie },
+    // admin
+    { path: config.routes.movieCreate, component: MovieCreate},
+    { path: config.routes.movieDetailCreate, component: MovieDetailCreate},
+
 
     { path: config.routes.notFound, component: NotFound },
     { path: config.routes.serverError, component: ServerError },

@@ -2,16 +2,15 @@ package com.fit.nlu.backend.entity;
 
 import com.fit.nlu.backend.enums.MovieStatus;
 import com.fit.nlu.backend.enums.MovieType;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
 
 import java.util.Date;
+
 @Entity(name = "movie")
+@Builder
 @Table
 @AllArgsConstructor
 @NoArgsConstructor
@@ -31,20 +30,18 @@ public class Movie {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "title")
-    private String title;
+    @Column(name = "sub_name")
+    private String subName;
 
     @Column(name = "release_date")
     private Date releaseDate;
 
-    @Column(name = "country")
-    private String country;
-
     @Column(name = "type")
-    private MovieType type;
+    private String type;
 
     @Column(name = "status")
-    private MovieStatus status;
+    private String status;
+
     @Column(name = "inserted_date")
     private Date insertedDate;
 
@@ -52,36 +49,12 @@ public class Movie {
     private Date updatedDate;
 
     @Column(name = "review_number")
-    private int reviewNumber;
+    @Builder.Default
+    private int reviewNumber = 0;
 
     @Column(name = "comment_number")
-    private int commentNumber;
+    @Builder.Default
+    private int commentNumber = 0;
 
-    public Movie(String slug, String poster, String name, String title, Date releaseDate, String country,
-                 MovieType type, MovieStatus status) {
-        this.slug = slug;
-        this.poster = poster;
-        this.name = name;
-        this.title = title;
-        this.releaseDate = releaseDate;
-        this.country = country;
-        this.type = type;
-        this.status = status;
-    }
-    
-    public int getReviewNumber() {
-        return reviewNumber;
-    }
 
-    public void setReviewNumber(int reviewNumber) {
-        this.reviewNumber = reviewNumber;
-    }
-
-    public int getCommentNumber() {
-        return commentNumber;
-    }
-
-    public void setCommentNumber(int commentNumber) {
-        this.commentNumber = commentNumber;
-    }
 }

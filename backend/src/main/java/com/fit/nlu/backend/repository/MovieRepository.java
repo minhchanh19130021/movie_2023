@@ -8,9 +8,16 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface MovieRepository extends JpaRepository<Movie, Integer> {
-    @Query(value = "select * from Movie m where m.name like %:kw% or \r\n"
-            + " m.title like %:kw%  ", nativeQuery = true)
+    @Query(value = "select * from Movie where name like %:kw% or \r\n"
+            + " subName like %:kw%  ", nativeQuery = true)
     Page<Movie> searchMoviesByName(@Param("kw") String keyword, Pageable pageable);
+    @Query(value = "SELECT * FROM movie m LEFT JOIN movie_detail md ON m.id = md.movie_id WHERE " +
+            "md.movie_id IS NULL;\n", nativeQuery = true)
+    List<Movie> getMoviesNonDetail();
+
+
 }
