@@ -1,16 +1,56 @@
 import { useEffect, useState } from 'react';
 import { SignUpModal } from '../SignUpModal';
 import { useForm } from 'react-hook-form';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
 
 function SignInModal({ isOpen, onClose }) {
     const [isModalOpen, setIsModalOpen] = useState(false);
+    // const {
+    //     register,
+    //     formState: { errors },
+    //     handleSubmit,
+    // } = useForm();
 
-      
-    const {
-        register,
-        formState: { errors },
-        handleSubmit,
-    } = useForm();
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const navigate = useNavigate();
+    const notifyWarning= (msg) => {
+        toast.warning(msg, {
+            position: 'top-right',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'light',
+        });
+    };
+
+     const handleSubmit = (e) => {
+            e.preventDefault();
+axios
+            .post('http://localhost:8080/api/auth/login', { username, password })
+            .then((response) => {
+                console.log(response?.data?.data);
+                let date = new Date();
+                date.setTime(date.getTime()+(24*60*60*1000));
+                localStorage.setItem('dbUser', JSON.stringify({
+                    idUser: response?.data?.data?.id,
+                    email: response?.data?.data?.email,
+                    username: response?.data?.data?.username
+                }));
+                document.cookie = "jwt" + " = " + response?.data?.data?.jwt + "; expires = " +date.toGMTString();
+                onClose()
+                navigate('/');
+                
+            })
+            .catch((error) => {
+                alert('Sai thông tin đăng nhập');
+            });
+      }
 
 
     const openModal = () => {
@@ -63,55 +103,59 @@ function SignInModal({ isOpen, onClose }) {
                     <p className="text-2xl font-medium">Đăng nhập</p>
                 </div>
                 <div className="">
-                    <form className="login-form" onSubmit={handleSubmit(handleLogin)}>
+                    <form className="login-form" onSubmit={handleSubmit}>
                         <div className="form-group mb-4">
                             <input
+                                value={username}
+                                onChange={(event)=>setUsername(event.target.value)}
                                 placeholder="Tên tài khoản"
                                 type="text"
-                                ng-model="name"
-                                name="name"
+                                ng-model="username"
+                                name="username"
                                 className="h-[48px] w-[336px] rounded-lg border border-[#111] bg-[#111] p-4 text-sm outline-none"
-                                {...register('name', {
-                                    required: true,
-                                    pattern: /^[a-zA-Z0-9]+([._]?[a-zA-Z0-9]+)*$/,                                                          
-                                })}
+                                // {...register('name', {
+                                //     required: true,
+                                //     pattern: /^[a-zA-Z0-9]+([._]?[a-zA-Z0-9]+)*$/,                                                          
+                                // })}
                             />
-                              <div className='error'>
+                              {/* <div className='error'>
                                         <error className="text-center text-sm font-medium text-[#dc3545]">
                                             {errors.name?.type === 'required' && 'Tên tài khoản là bắt buộc'}
                                             {errors.name?.type === 'pattern' && 'Tên tài khoản chỉ được chứa chữu và số'}
                                         </error>
-                                    </div>
+                                    </div> */}
                         </div>
                         <div className="form-group mb-4">
                             <input
-                                placeholder="Mật khẩu"
-                                type="password"
-                                ng-model="pass"
-                                name="password"
+                                 value={password}
+                                 onChange={(event)=>setPassword(event.target.value)}
+                                 placeholder="Mật khẩu"
+                                 type="password"
+                                 ng-model="password"
+                                 name="password"
                                 className="h-[48px] w-[336px] rounded-lg border border-[#111] bg-[#111] p-4 text-sm outline-none"
-                                {...register('password', {
-                                    required: true,
-                                    minLength: 4 ,
-                                    maxLength: 20,
-                                })}
+                                // {...register('password', {
+                                //     required: true,
+                                //     minLength: 4 ,
+                                //     maxLength: 20,
+                                // })}
                            />
-                           <div className='error'>
+                           {/* <div className='error'>
                                 <error className="text-center text-sm font-medium text-[#dc3545]">
                                     {errors.password?.type === 'required' && 'Mật khẩu là bắt buộc'}
                                     {errors.password?.type === 'minLength' && 'Mật khẩu không nhỏ hơn 3 ký tự'}
                                     {errors.password?.type === 'maxLength' && 'Mật khẩu không lớn hơn 20 ký tự'}
                                 </error>
-                            </div>
+                            </div> */}
                         </div>
                         <div className="forgot-password">
                             <p>Quên mật khẩu?</p>
                         </div>
-                        <div className="alert py-4">
+                        {/* <div className="alert py-4">
                             <p className="text-center text-sm font-medium text-[#dc3545]">
                                 Tên tài khoản hoặc mật khẩu không đúng
                             </p>
-                        </div>
+                        </div> */}
                         <button
                             type="submit"
                             className=" my-4 h-[48px] w-full rounded-lg  bg-orange-600 px-4 py-2 transition-colors disabled:bg-[#2c2c2e]"
