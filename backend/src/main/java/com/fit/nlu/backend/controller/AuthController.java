@@ -60,6 +60,7 @@ public class AuthController {
         return new ResponseEntity<>(responseLogin, HttpStatus.OK);
     }
 
+    @CrossOrigin
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterRequest registerRequest) throws CustomException, MessagingException, UnsupportedEncodingException {
         if (userService.existsByUsername(registerRequest.getUsername())) {
