@@ -34,6 +34,7 @@ public class AuthController {
     @Autowired
     private JwtTokenProvider tokenProvider;
 
+    @CrossOrigin
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
         // Valid username and password.
@@ -59,6 +60,7 @@ public class AuthController {
         return new ResponseEntity<>(responseLogin, HttpStatus.OK);
     }
 
+    @CrossOrigin
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterRequest registerRequest) throws CustomException, MessagingException, UnsupportedEncodingException {
         if (userService.existsByUsername(registerRequest.getUsername())) {

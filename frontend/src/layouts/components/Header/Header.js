@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { SignInModal } from '~/components/SignInModal';
 import { SignUpModal } from '~/components/SignUpModal';
+import { useNavigate } from 'react-router-dom';
 
 function Header() {
     // const renderItems = () => {
@@ -13,6 +14,9 @@ function Header() {
     // };
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isModalOpenUp, setIsModalOpenUp] = useState(false);
+    const user = localStorage.getItem('dbUser') !== 'undefined' ? JSON.parse(localStorage.getItem('dbUser')) : null;
+    const navigate = useNavigate();
+
 
     const openModal = () => {
         setIsModalOpen(true);
@@ -153,6 +157,8 @@ function Header() {
                             d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"
                         />
                     </svg>
+                    {user === null ? (
+                        <>
                     <button
                         className="flex items-center rounded-lg bg-orange-500 hover:bg-orange-600 px-2 py-2 text-center font-medium leading-4 text-white "
                         onClick={openModalUp}
@@ -190,6 +196,25 @@ function Header() {
                     <button  className="text-white hover:text-orange-500" onClick={openModal}>
                         Đăng nhập
                     </button>
+                    </>
+                    ):(
+                        <div>
+                        <NavLink
+                            to={`/user/uid=${user?.password}`}
+                            className="mx-1 font-bold text-[#71869d] hover:text-[#35509a]"
+                        >
+                            Tên tài khoản: {user?.username}
+                        </NavLink>
+                        <button className="mx-1 font-bold text-[#71869d] hover:text-[#35509a]"
+                        onClick={()=>{
+                            localStorage.removeItem("dbUser")
+                            document.cookie = ' jwt =; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+                            navigate('/')
+                        }}
+                        >
+                            Đăng xuất</button>
+                    </div>
+                    )}
                     <SignInModal isOpen={isModalOpen} onClose={closeModal} />
                     <SignUpModal isOpen={isModalOpenUp} onClose={closeModalUp} />
                 </div>
