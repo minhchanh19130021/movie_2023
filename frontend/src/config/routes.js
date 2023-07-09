@@ -1,7 +1,7 @@
 const routes = {
     home: '/',
     search: '/tim-kiem',
-    searchResult: '/tim-kiem/:tu-khoa/:trang',
+    searchResult: '/tim-kiem/:tuKhoa/:trang',
     videoView: '/xem-video',
     personalInformation: 'tai-khoan/thong-tin-ca-nhan',
     historyMovie: 'tai-khoan/lich-su-da-xem',

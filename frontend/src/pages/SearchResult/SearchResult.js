@@ -1,77 +1,132 @@
+import { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { SearchHintItem } from '~/pages/Search/SearchHintItem';
+import * as searchService from '~/services/searchService';
 import SearchResultItem from './SearchResultItem';
-import { useState } from 'react';
+import Search from '../Search/Search';
 
 function SearchResult() {
     const [searchValue, setSearchValue] = useState('');
+    const [searchResult, setSearchResult] = useState([]);
+    const navigate = useNavigate();
+
+    const { tuKhoa, trang } = useParams();
+    const keywordFromUrl = tuKhoa.split('=')[1];
+    const pageValue = trang.split('=')[1];
+
+    const [totalProduct, setTotalProduct] = useState(1);
+    const pageSize = 1;
+    const [numberPage, setNumberPage] = useState([]);
+
+    useEffect(() => {
+        const fetchApi = async () => {
+            const res = await searchService.getMovieByKeyword(
+                keywordFromUrl,
+                pageValue,
+                pageSize,
+                'release_date',
+                'asc',
+            );
+            setSearchResult(res?.content);
+            setTotalProduct(res?.totalElements);
+            const totalPages = Math.ceil(res?.totalElements / pageSize);
+            setNumberPage(Array.from({ length: totalPages }, (_, index) => index + 1));
+        };
+        fetchApi();
+    }, [keywordFromUrl, pageValue, pageSize]);
+
+    const prevPage = () => {
+        const currentPage = parseInt(pageValue) - 1;
+        navigate(`/tim-kiem/tu-khoa=${keywordFromUrl}/trang=${currentPage}`);
+    };
+
+    const nextPage = () => {
+        const currentPage = parseInt(pageValue) + 1;
+        navigate(`/tim-kiem/tu-khoa=${keywordFromUrl}/trang=${currentPage}`);
+    };
 
     return (
         <div className="max-w-full">
             <div className="padding-responsive padding-responsive mx-auto max-w-[1200px] ">
-                <div className="relative mb-14 mt-4 flex justify-between rounded-lg bg-[#151515] px-4 py-3">
-                    <div className="flex w-full items-center">
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth={1.5}
-                            stroke="currentColor"
-                            className="h-6 w-6"
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
-                            />
-                        </svg>
-
-                        <input
-                            placeholder="Nhập tên phim, kênh, sự kiện..."
-                            className="w block w-full border-none bg-transparent px-4 py-3 text-sm leading-4 text-white outline-none"
-                            onChange={(e) => {
-                                setSearchValue(e.target.value);
-                            }}
-                        />
-                    </div>
-                    <button
-                        className={
-                            searchValue.length > 0
-                                ? `h-12 w-[120px] rounded-lg bg-orange-600 text-sm font-medium text-white transition-colors hover:bg-orange-500`
-                                : `h-12 w-[120px] rounded-lg bg-[#2c2c2e] text-sm font-medium text-[#767676] transition-colors`
-                        }
-                    >
-                        Tìm kiếm
-                    </button>
-                    {searchValue.length > 0 ? (
-                        <div className="absolute left-0 top-20 w-full rounded-lg bg-[#202020] ">
-                            <SearchHintItem />
-                            <SearchHintItem />
-
-                            <SearchHintItem />
-                            <SearchHintItem />
-                            <SearchHintItem />
-                            <SearchHintItem />
-                            <SearchHintItem />
+                <Search/>
+                {searchResult?.length > 0 ? (
+                    <>
+                        <div className="grid grid-cols-5 gap-4">
+                            {searchResult?.map((e) => {
+                                return <SearchResultItem key={e?.id} to="" img="" name={e?.name} />;
+                            })}
                         </div>
-                    ) : null}
-                </div>
-                <div className="grid grid-cols-5 gap-4">
-                    <SearchResultItem />
-                    <SearchResultItem />
-                    <SearchResultItem />
-                    <SearchResultItem />
-                    <SearchResultItem />
-                    <SearchResultItem />
-                    <SearchResultItem />
-                    <SearchResultItem />
-                    <SearchResultItem />
-                    <SearchResultItem />
-                    <SearchResultItem />
-                    <SearchResultItem />
-                </div>
-                <button className="mx-auto flex rounded-lg bg-orange-600 px-6 py-2 font-medium capitalize transition-colors hover:bg-orange-500">
-                    Xem Thêm
-                </button>
+                        <div className="flex items-center justify-center">
+                            {searchResult?.length > 0 && parseInt(pageValue) > 1 && (
+                                <button
+                                    onClick={prevPage}
+                                    className="mx-1 flex  h-8 w-8 items-center justify-center rounded-sm bg-[#eeeeee] text-sm text-[#bbb9b9] transition-colors disabled:cursor-not-allowed"
+                                >
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        strokeWidth={1.5}
+                                        stroke="currentColor"
+                                        className="h-6 w-6"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            d="M15.75 19.5L8.25 12l7.5-7.5"
+                                        />
+                                    </svg>
+                                </button>
+                            )}
+                            {numberPage.map((pageNumber) => {
+                                const isCurrentPage = parseInt(pageValue) === pageNumber;
+                                return (
+                                    <button
+                                        key={pageNumber}
+                                        id={pageNumber}
+                                        className={`mx-1 h-8 w-8 rounded-sm ${
+                                            isCurrentPage
+                                                ? 'bg-orange-600 text-[#fff]'
+                                                : 'transition-all hover:bg-[#dbdbdb] hover:text-black'
+                                        }`}
+                                        onClick={() => {
+                                            navigate(`/tim-kiem/tu-khoa=${keywordFromUrl}/trang=${pageNumber}`);
+                                        }}
+                                    >
+                                        {pageNumber}
+                                    </button>
+                                );
+                            })}
+                            {searchResult?.length > 0 && parseInt(pageValue) < numberPage.length && (
+                                <button
+                                    onClick={nextPage}
+                                    className="mx-1 flex  h-8 w-8 items-center justify-center rounded-sm bg-[#eeeeee] text-sm text-[#bbb9b9] transition-colors disabled:cursor-not-allowed "
+                                >
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        strokeWidth={1.5}
+                                        stroke="currentColor"
+                                        className="h-6 w-6"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            d="M8.25 4.5l7.5 7.5-7.5 7.5"
+                                        />
+                                    </svg>
+                                </button>
+                            )}
+                        </div>
+                    </>
+                ) : (
+                    <div>
+                        <h3>
+                            Không tìm thấy kết quả cho từ khóa <strong className='text-orange-500'>{keywordFromUrl}</strong>
+                        </h3>
+                    </div>
+                )}
             </div>
         </div>
     );

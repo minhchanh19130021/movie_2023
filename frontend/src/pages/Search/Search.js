@@ -1,13 +1,33 @@
-import { useState } from 'react';
-import RecentlyTrend from './RecentlyTrend/RecentlyTrend';
+import { useEffect, useState } from 'react';
+import { NavLink } from 'react-router-dom';
+import useDebounce from '~/hooks/useDebounce';
+import * as searchService from '~/services/searchService';
 import SearchHintItem from './SearchHintItem/SearchHintItem';
 
 function Search() {
     const [searchValue, setSearchValue] = useState('');
+    const [searchResult, setSearchResult] = useState([]);
+    const debouncedSearchTerm = useDebounce(searchValue, 1000);
+
+    useEffect(() => {
+        const fetchApi = async () => {
+            const res = await searchService.getMovieByKeyword(searchValue.trim(), 1, 5, 'release_date', 'asc');
+            setSearchResult(res?.content);
+        };
+        if(searchValue.length>0){
+            fetchApi();
+        }
+    }, [debouncedSearchTerm]);
+
     return (
         <div className="max-w-full">
             <div className="padding-responsive mx-auto max-w-[1200px] ">
-                <div className="relative mb-14 mt-4 flex justify-between rounded-lg bg-[#151515] px-4 py-3">
+                <form
+                    className="relative mb-14 mt-4 flex justify-between rounded-lg bg-[#151515] px-4 py-3"
+                    onSubmit={() => {
+                        setSearchResult([]);
+                    }}
+                >
                     <div className="flex w-full items-center">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -32,32 +52,41 @@ function Search() {
                             }}
                         />
                     </div>
-                    <button
-                        className={
-                            searchValue.length > 0
-                                ? `h-12 transition-colors text-white w-[120px] rounded-lg bg-orange-600 text-sm font-medium hover:bg-orange-500`
-                                : `h-12 transition-colors text-[#767676] w-[120px] rounded-lg bg-[#2c2c2e] text-sm font-medium`
-                        }
-                    >
-                        Tìm kiếm
-                    </button>
-                    {searchValue.length > 0 ? (
-                        <div className="absolute left-0 top-20 w-full rounded-lg bg-[#202020] ">
-                            <SearchHintItem />
-                            <SearchHintItem />
+                    <NavLink to={`/tim-kiem/tu-khoa=${searchValue}/trang=1`}>
+                        <button
+                            type="submit"
+                            onClick={() => {
+                                setSearchResult([]);
+                                setSearchValue('');
+                            }}
+                            className={
+                                searchValue?.length > 0
+                                    ? `h-12 w-[120px] rounded-lg bg-orange-600 text-sm font-medium text-white transition-colors hover:bg-orange-500`
+                                    : `h-12 w-[120px] rounded-lg bg-[#2c2c2e] text-sm font-medium text-[#767676] transition-colors`
+                            }
+                        >
+                            Tìm kiếm
+                        </button>
+                    </NavLink>
+                    <div className="absolute left-0 top-20 w-full rounded-lg bg-[#202020] ">
+                        {searchResult?.map((e) => {
+                            return (
+                                <SearchHintItem
+                                    key={e?.id}
+                                    to={`/tim-kiem/tu-khoa=${e?.name}/trang=1`}
+                                    name={e?.name}
+                                    onClick={() => {
+                                        setSearchResult([]);
+                                    }}
+                                />
+                            );
+                        })}
+                    </div>
+                </form>
 
-                            <SearchHintItem />
-                            <SearchHintItem />
-                            <SearchHintItem />
-                            <SearchHintItem />
-                            <SearchHintItem />
-                        </div>
-                    ) : null}
-                </div>
-
-                <div className="">
+                {/* <div className="">
                     <RecentlyTrend />
-                </div>
+                </div> */}
             </div>
         </div>
     );
