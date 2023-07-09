@@ -12,9 +12,8 @@ import java.util.List;
 
 @Repository
 public interface MovieRepository extends JpaRepository<Movie, Integer> {
-    @Query(value = "select * from Movie where name like %:kw% or \r\n"
-            + " subName like %:kw%  ", nativeQuery = true)
-    Page<Movie> searchMoviesByName(@Param("kw") String keyword, Pageable pageable);
+    @Query(value = "select * from movie where movie.name like %:name%", nativeQuery = true)
+    Page<Movie> searchMoviesByName(@Param("name") String keyword, Pageable pageable);
     @Query(value = "SELECT * FROM movie m LEFT JOIN movie_detail md ON m.id = md.movie_id WHERE " +
             "md.movie_id IS NULL;\n", nativeQuery = true)
     List<Movie> getMoviesNonDetail();

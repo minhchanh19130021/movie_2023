@@ -6,12 +6,12 @@ import { MovieCreate } from '~/pages/Admin/Movie/MovieCreate';
 import { MovieDetailCreate } from '~/pages/Admin/Movie/MovieDetailCreate';
 import { Home } from '~/pages/Home';
 import { Search } from '~/pages/Search';
-import { SearchResult } from '~/pages/SearchResult';
 import { SignIn } from '~/pages/SignIn';
 import { SignUp } from '~/pages/SignUp';
 import { View } from '~/pages/View';
 import { NotFound } from '~/pages/NofFound';
 import { ServerError } from '~/pages/ServerError';
+import { SearchResult } from '~/pages/SearchResult';
 
 const publicRoutes = [
     { path: config.routes.home, component: Home },
