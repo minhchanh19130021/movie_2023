@@ -56,6 +56,6 @@ public class CustomUserDetails implements UserDetails{
 
     @Override
     public boolean isEnabled() {
-        return user.getFlagActive() == 1;
+        return true;
     }
 }
