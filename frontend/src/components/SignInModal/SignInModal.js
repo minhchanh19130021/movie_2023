@@ -1,22 +1,22 @@
+import { ErrorMessage, Field, Form, Formik } from 'formik';
 import { useEffect, useState } from 'react';
-import { SignUpModal } from '../SignUpModal';
-import { useForm } from 'react-hook-form';
-import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
+import * as Yup from 'yup';
+import * as userService from '~/services/userService';
+import { SignUpModal } from '../SignUpModal';
+import { loginSuccess, logoutSuccess } from '~/redux/authSlice';
 
 function SignInModal({ isOpen, onClose }) {
+    const dispatch = useDispatch();
     const [isModalOpen, setIsModalOpen] = useState(false);
-    // const {
-    //     register,
-    //     formState: { errors },
-    //     handleSubmit,
-    // } = useForm();
+    const user = useSelector((state) => state?.authentication?.login?.currentUser);
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
-    const notifyWarning= (msg) => {
+    const notifyWarning = (msg) => {
         toast.warning(msg, {
             position: 'top-right',
             autoClose: 5000,
@@ -28,30 +28,6 @@ function SignInModal({ isOpen, onClose }) {
             theme: 'light',
         });
     };
-
-     const handleSubmit = (e) => {
-            e.preventDefault();
-axios
-            .post('http://localhost:8080/api/auth/login', { username, password })
-            .then((response) => {
-                console.log(response?.data?.data);
-                let date = new Date();
-                date.setTime(date.getTime()+(24*60*60*1000));
-                localStorage.setItem('dbUser', JSON.stringify({
-                    idUser: response?.data?.data?.id,
-                    email: response?.data?.data?.email,
-                    username: response?.data?.data?.username
-                }));
-                document.cookie = "jwt" + " = " + response?.data?.data?.jwt + "; expires = " +date.toGMTString();
-                onClose()
-                navigate('/');
-                
-            })
-            .catch((error) => {
-                alert('Sai thông tin đăng nhập');
-            });
-      }
-
 
     const openModal = () => {
         setIsModalOpen(true);
@@ -77,7 +53,15 @@ axios
 
     if (!isOpen) return null;
 
-    const handleLogin = (data) => console.log(data);
+    const validationSchema = Yup.object({
+        username: Yup.string()
+        .min(2, "Tối thiểu 2 kí tự")
+        .matches(/^[a-zA-Z0-9]+([._]?[a-zA-Z0-9]+)*$/, 'Tên người dùng chỉ được chứa chữ cái và chữ số')
+        .required("Tên tài khoản không được để trống"),
+       password: Yup.string()
+        .min(4, "Mật khẩu tối thiểu 4 kí tự")
+        .required("Mật khẩu không được để trống")
+    });
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
@@ -102,67 +86,59 @@ axios
                 <div className="mb-10">
                     <p className="text-2xl font-medium">Đăng nhập</p>
                 </div>
-                <div className="">
-                    <form className="login-form" onSubmit={handleSubmit}>
+                <Formik
+                    initialValues={{ username: '', password: '' }}
+                    validationSchema={validationSchema}
+                    onSubmit={(values) => {
+                        const res = userService
+                            .login(values.username, values.password)
+                            .then((response) => {
+                                console.log(response);
+                                dispatch(
+                                    loginSuccess({
+                                        id: response?.id,
+                                        username: response?.name,
+                                        email: response?.email,
+                                        accessToken: response?.jwt,
+                                        role: response?.role,
+                                    }),
+                                );
+                                onClose()
+                            })
+                            .catch((err) => console.log(err));
+                    }}
+                >
+                    <Form className="login-form">
                         <div className="form-group mb-4">
-                            <input
-                                value={username}
-                                onChange={(event)=>setUsername(event.target.value)}
+                            <Field
+                                name="username"
                                 placeholder="Tên tài khoản"
                                 type="text"
-                                ng-model="username"
-                                name="username"
                                 className="h-[48px] w-[336px] rounded-lg border border-[#111] bg-[#111] p-4 text-sm outline-none"
-                                // {...register('name', {
-                                //     required: true,
-                                //     pattern: /^[a-zA-Z0-9]+([._]?[a-zA-Z0-9]+)*$/,                                                          
-                                // })}
                             />
-                              {/* <div className='error'>
-                                        <error className="text-center text-sm font-medium text-[#dc3545]">
-                                            {errors.name?.type === 'required' && 'Tên tài khoản là bắt buộc'}
-                                            {errors.name?.type === 'pattern' && 'Tên tài khoản chỉ được chứa chữu và số'}
-                                        </error>
-                                    </div> */}
+                            <ErrorMessage name="username" component="div" className="text-red-500" />
                         </div>
                         <div className="form-group mb-4">
-                            <input
-                                 value={password}
-                                 onChange={(event)=>setPassword(event.target.value)}
-                                 placeholder="Mật khẩu"
-                                 type="password"
-                                 ng-model="password"
-                                 name="password"
+                            <Field
+                                name="password"
+                                placeholder="Mật khẩu"
+                                type="password"
                                 className="h-[48px] w-[336px] rounded-lg border border-[#111] bg-[#111] p-4 text-sm outline-none"
-                                // {...register('password', {
-                                //     required: true,
-                                //     minLength: 4 ,
-                                //     maxLength: 20,
-                                // })}
-                           />
-                           {/* <div className='error'>
-                                <error className="text-center text-sm font-medium text-[#dc3545]">
-                                    {errors.password?.type === 'required' && 'Mật khẩu là bắt buộc'}
-                                    {errors.password?.type === 'minLength' && 'Mật khẩu không nhỏ hơn 3 ký tự'}
-                                    {errors.password?.type === 'maxLength' && 'Mật khẩu không lớn hơn 20 ký tự'}
-                                </error>
-                            </div> */}
+                            />
+                            <ErrorMessage name="password" component="div" className="text-red-500" />
                         </div>
-                        <div className="forgot-password">
-                            <p>Quên mật khẩu?</p>
-                        </div>
-                        {/* <div className="alert py-4">
-                            <p className="text-center text-sm font-medium text-[#dc3545]">
-                                Tên tài khoản hoặc mật khẩu không đúng
-                            </p>
-                        </div> */}
+                        {/* Other form fields */}
+                        {/* Submit button */}
                         <button
                             type="submit"
-                            className=" my-4 h-[48px] w-full rounded-lg  bg-orange-600 px-4 py-2 transition-colors disabled:bg-[#2c2c2e]"
+                            //   disabled={isSubmitting}
+                            className="my-4 h-[48px] w-full rounded-lg bg-orange-600 px-4 py-2 transition-colors disabled:bg-[#2c2c2e]"
                         >
                             Đăng nhập
                         </button>
-                    </form>
+                    </Form>
+                </Formik>
+                <div className="">
                     <p className="mb-6 text-center text-sm">Hoặc đăng nhập bằng</p>
                     <div className="flex items-center justify-center">
                         <img
@@ -178,7 +154,9 @@ axios
                     </div>
                     <div className="mt-10 flex items-center justify-center py-4">
                         <p className="text-sm">Chưa có tài khoản?</p>
-                        <strong className="mx-1  cursor-pointer text-orange-600" onClick={openModal}>Đăng ký miễn phí</strong>
+                        <strong className="mx-1  cursor-pointer text-orange-600" onClick={openModal} >
+                            Đăng ký miễn phí
+                        </strong>
                     </div>
                     <SignUpModal isOpen={isModalOpen} onClose={closeModal} />
                 </div>
