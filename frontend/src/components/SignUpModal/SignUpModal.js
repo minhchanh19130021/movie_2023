@@ -1,33 +1,46 @@
 import React, { useEffect, useState } from 'react';
 import { Verify } from '../Verify';
 import { ModalAlert } from '../ModalAlert';
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { toast } from 'react-toastify';
+import * as Yup from 'yup';
+import { ErrorMessage, Form, Field, Formik } from 'formik';
+import * as userService from '~/services/userService';
+import { useNavigate } from 'react-router-dom';
 
 function SignUpModal({ isOpen, onClose }) {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isModalOpenVerify, setIsModalOpenVerify] = useState(false);
 
-    const [username,setUserName] = useState("")
-    const [email,setEmail] = useState("")
-    const [password,setPassword] = useState("")
+    const [username, setUserName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
     const navigate = useNavigate();
-
-    const handleLogin =  (e) =>{
-        e.preventDefault();
-        axios.post('http://localhost:8080/api/auth/register',{email,username,password})
-        .then((response) =>{
-            console.log(response?.data?.data)
-            onClose ()
-        })
-        .catch((error) => {
-            alert('Tên tài khoản hoặc email đã tồn tại');
+    const notifyWarning = (msg) => {
+        toast.warning(msg, {
+            position: 'top-right',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'light',
         });
-     
-    }
+    };
 
-    
     if (!isOpen) return null;
+
+    const validationSchema = Yup.object({
+        username: Yup.string()
+            .min(2, 'Tối thiểu 2 kí tự')
+            .matches(/^[a-zA-Z0-9]+([._]?[a-zA-Z0-9]+)*$/, 'Tên người dùng chỉ được chứa chữ cái và chữ số')
+            .required('Tên tài khoản không được để trống'),
+        email: Yup.string().required('Email không được để trống'),
+        password: Yup.string()
+        .min(4, 'Mật khẩu tối thiểu 4 kí tự')
+        .required('Mật khẩu không được để trống'),
+    });
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
@@ -52,63 +65,64 @@ function SignUpModal({ isOpen, onClose }) {
                 <div className="mb-10">
                     <p className="text-2xl font-medium">Đăng ký</p>
                 </div>
-                <div className="">
-                    <form className="login-form" onSubmit={handleLogin}>
-                        <div className="mb-6">
-                            <label className="text-sm">Vui lòng nhập địa chỉ email của bạn</label>
-                        </div>
+                {/* <div className=""> */}
+                    <Formik
+                        initialValues={{ username: '', email: '', password: '' }}
+                        validationSchema={validationSchema}
+                        onSubmit={(values) => {
+                            const res = userService
+                                .register(values.username, values.email, values.password)
+                                .then((response) => {
+                                    console.log(response?.data)
+                                    onClose()
+                                })
+                                .catch((err) => console.log(err));
+                        }}
+                    >
+                     <Form className="login-form">
                         <div className="form-group mb-4">
-                            <input
-                                value={username}
-                                onChange={(e)=>setUserName(e.target.value)}
-                                placeholder="Tên tài khoản"
-                                type="text"
+                            <Field
                                 name="username"
-                                className="h-[48px] w-[336px] rounded-lg border border-[#111] bg-[#111] p-4 text-sm outline-none"
-                           />
-                        </div>
-                        <div className="form-group mb-4">
-                            <input
-                                value={email}
-                                onChange={(e)=>setEmail(e.target.value)}
-                                placeholder="Địa chỉ email"
+                                placeholder="Tên tài khoản"
                                 type="text"
-                                name='email'
                                 className="h-[48px] w-[336px] rounded-lg border border-[#111] bg-[#111] p-4 text-sm outline-none"
                             />
+                            <ErrorMessage name="username" component="div" className="text-red-500" />
                         </div>
                         <div className="form-group mb-4">
-                            <input
-                                value={password}
-                                onChange={(e)=>setPassword(e.target.value)}
+                                <Field
+                                    placeholder="Địa chỉ email"
+                                    type="text"
+                                    name="email"
+                                    className="h-[48px] w-[336px] rounded-lg border border-[#111] bg-[#111] p-4 text-sm outline-none"
+                                />
+                                <ErrorMessage name="email" component="div" className="text-red-500" />
+                        </div>
+                        <div className="form-group mb-4">
+                            <Field
+                                name="password"
                                 placeholder="Mật khẩu"
                                 type="password"
-                                name='password'
                                 className="h-[48px] w-[336px] rounded-lg border border-[#111] bg-[#111] p-4 text-sm outline-none"
                             />
+                            <ErrorMessage name="password" component="div" className="text-red-500" />
                         </div>
-                        {/* <div className="alert py-4">
-                            <p className="text-center text-sm font-medium text-[#dc3545]">
-                                Thông báo thông tin sai ở đây nha
-                            </p>
-                        </div> */}
+                        {/* Other form fields */}
+                        {/* Submit button */}
                         <button
                             type="submit"
-                            // disabled
-                            className=" my-4 h-[48px] w-full rounded-lg  bg-orange-600 px-4 py-2 transition-colors disabled:bg-[#2c2c2e]"
-                        //    onClick={()=>{
-                        //     setIsModalOpenVerify(true)
-                        //     setIsModalOpen(false)
-                        //    }}
+                            //   disabled={isSubmitting}
+                            className="my-4 h-[48px] w-full rounded-lg bg-orange-600 px-4 py-2 transition-colors disabled:bg-[#2c2c2e]"
                         >
-                            Tiếp tục
+                            Đăng nhập
                         </button>
-                    </form>
+                    </Form>
+                    </Formik>
                     {/* <Verify isOpenVerify={isModalOpenVerify} onCloseVerify={() => setIsModalOpenVerify(false)} /> */}
-                    <ModalAlert isOpenVerify={isModalOpenVerify} onCloseVerify={() => setIsModalOpenVerify(false)}/>
+                    <ModalAlert isOpenVerify={isModalOpenVerify} onCloseVerify={() => setIsModalOpenVerify(false)} />
                 </div>
             </div>
-        </div>
+        // </div>
     );
 }
 

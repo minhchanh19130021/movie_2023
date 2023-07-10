@@ -11,3 +11,16 @@ export const login = async (username, password) => {
         console.log(error?.response?.data);
     }
 };
+
+export const register = async (username,email, password) => {
+    try {
+        const res = await request.post('/auth/register', {
+            username,
+            email,
+            password,
+        });
+        return res?.data;
+    } catch (error) {
+        console.log(error?.response?.data);
+    }
+};

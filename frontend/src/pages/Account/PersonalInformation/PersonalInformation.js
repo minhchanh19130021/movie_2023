@@ -1,6 +1,12 @@
-import { NavLink } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { logoutSuccess } from '~/redux/authSlice';
 
 function PersonalInformation() {
+    const user = useSelector((state) => state?.authentication?.login?.currentUser);
+    // const dispatch = useDispatch();
+    // const navigate = useNavigate();
+
     return (
         <div className="max-w-full">
             <div className="mx-auto max-w-[1200px] grid grid-cols-4 gap-4">
@@ -17,29 +23,29 @@ function PersonalInformation() {
                     <NavLink to="/tai-khoan/danh-sach-yeu-thich" className="px-4 py-2 text-sm text-[#a6a6a6]">
                         Danh sách yêu thích
                     </NavLink>
-                    <NavLink to="" className="px-4 py-2 text-sm text-[#a6a6a6]">
+                    {/* <NavLink to="" className="px-4 py-2 text-sm text-[#a6a6a6]"
+                    onClick={() => {
+                        dispatch(logoutSuccess(null));
+                        navigate('/');
+                    }}
+                    >
                         Đăng xuất
-                    </NavLink>
+                    </NavLink> */}
                 </div>
                 <div className='col-span-3'>
                     <p className="mb-4 font-medium">Tài khoản và bảo mật</p>
                     <div className="rounded-lg bg-[#0c0c0c] px-6 py-4">
                         <div className="flex items-center border-b border-[#2c2c2e] py-7 text-sm">
                             <p className="text-[#616161]">ID: </p>
-                            <p className="mx-2 font-medium">tải thông tin phù hợp theo trường dữ liệu</p>
+                            <p className="mx-2 font-medium">MSTK{user?.id}</p>
                         </div>
                         <div className="flex items-center border-b border-[#2c2c2e] py-7 text-sm">
                             <p className="text-[#616161]">Tài khoản: </p>
-                            <p className="mx-2 font-medium">tải thông tin phù hợp theo trường dữ liệu</p>
+                            <p className="mx-2 font-medium">{user?.username}</p>
                         </div>
-                        <div className="flex items-center border-b border-[#2c2c2e] py-7 text-sm">
-                            <p className="text-[#616161]">Ngày sinh: </p>
-                            <p className="mx-2 font-medium">tải thông tin phù hợp theo trường dữ liệu</p>
-                        </div>
-
                         <div className="flex items-center border-b border-[#2c2c2e] py-7 text-sm">
                             <p className="text-[#616161]">Địa chỉ email: </p>
-                            <p className="mx-2 font-medium">tải thông tin phù hợp theo trường dữ liệu</p>
+                            <p className="mx-2 font-medium">{user?.email}</p>
                         </div>
                         <div className="flex items-center border-b border-[#2c2c2e] py-7 text-sm">
                             <p className="text-[#616161]">Mật khẩu: </p>
