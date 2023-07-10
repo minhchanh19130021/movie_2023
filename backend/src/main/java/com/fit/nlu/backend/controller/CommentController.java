@@ -28,6 +28,17 @@ public class CommentController {
         return ResponseEntity.ok().body(comments);
     }
 
+    @PostMapping("/add")
+    public ResponseEntity<Comment> addComment(@RequestBody Comment comment) {
+
+        if (comment.getReviewText() == null || comment.getReviewText().trim().isEmpty()) {
+            throw new IllegalArgumentException("Review text must not be blank");
+        }
+
+        Comment savedComment = commentService.addComment(comment.getUserId(), comment.getMovieId(), comment.getReviewText());
+        return ResponseEntity.ok(savedComment);
+    }
+
     @PostMapping("/likeComment/{commentId}")
     public ResponseEntity<?> likeComment(@RequestHeader("Authorization") String bearerToken,@PathVariable Integer commentId) {
         Integer userId =tokenProvider.getUserIdFromJWT(bearerToken.substring(7));
