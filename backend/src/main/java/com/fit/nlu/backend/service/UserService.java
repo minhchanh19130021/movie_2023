@@ -56,23 +56,22 @@ public class UserService implements UserDetailsService {
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
 
-        String randomCode = RandomString.make(64);
+        String randomCode = RandomString.make(6);
         user.setActiveCode(randomCode);
         user.setRoleId(1);
 
         userRepository.save(user);
-        sendVerificationEmail(user);
     }
 
-    private void sendVerificationEmail(User user) throws MessagingException, UnsupportedEncodingException {
+    public void sendVerificationEmail(User user) throws MessagingException, UnsupportedEncodingException {
 
         String fromAddress = "MovieNlu@gmail.com";
         String toAddress = user.getEmail();
         String senderName = "Movie Nlu";
         String subject = "Please verify your registration";
         String content = "Dear [[name]],<br>"
-                + "Please click the link below to verify your registration:<br>"
-                + "<h3><a href=\"[[URL]]\" target=\"_self\">VERIFY</a></h3>"
+                + "Here is your verification code:<br>"
+                + "<h3>[[Code]]</h3>"
                 + "Thank you,<br>"
                 + "Movie Nlu.";
 
@@ -84,9 +83,8 @@ public class UserService implements UserDetailsService {
         helper.setSubject(subject);
 
         content = content.replace("[[name]]", user.getUserName());
-        String verifyURL =  "http://localhost:8080/api/auth/verify?email="+user.getEmail()+"&code=" + user.getActiveCode();
 
-        content = content.replace("[[URL]]", verifyURL);
+        content = content.replace("[[Code]]", user.getActiveCode());
 
         helper.setText(content, true);
 
@@ -102,5 +100,11 @@ public class UserService implements UserDetailsService {
             return ResponseEntity.ok("User verified successfully!");
         }
         return ResponseEntity.badRequest().body("Error: Couldn't verify user");
+    }
+
+    public User findById(Integer userId) {
+        return userRepository.findById(userId).orElseThrow(
+                () -> new UsernameNotFoundException("User not found with id : " + userId)
+        );
     }
 }
