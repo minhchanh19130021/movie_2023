@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { logoutSuccess } from '~/redux/authSlice';
@@ -6,7 +7,8 @@ function PersonalInformation() {
     const user = useSelector((state) => state?.authentication?.login?.currentUser);
     // const dispatch = useDispatch();
     // const navigate = useNavigate();
-
+    const [hidden, setHidden] = useState(false);
+    const [show, setShow] = useState(false);
     return (
         <div className="max-w-full">
             <div className="mx-auto max-w-[1200px] grid grid-cols-4 gap-4">
@@ -56,7 +58,15 @@ function PersonalInformation() {
                                 <p className="text-[#616161]">Nhập mã kích hoạt tài khoản: </p>
                                 <input className='px-4 py-2 outline-none border bg-transparent border-transparent' placeholder='Nhập mã kích hoạt'/>
                             </div>
-                            <button className='py-1 px-4 rounded-lg bg-orange-500 hover:bg-orange-600 transition-colors'>Lấy mã kích hoạt</button>
+                            {!hidden && <button className='py-1 px-4 rounded-lg bg-orange-500 hover:bg-orange-600 transition-colors'
+                                    onClick={() => setHidden(true)}>Lấy mã kích hoạt</button>}
+                                    <div>
+                                        {
+                                            hidden?<button className='py-1 px-4 rounded-lg bg-orange-500 hover:bg-orange-600 transition-colors'  
+                                            to={`/`}>Xác nhận</button>:null
+                                        }
+                                    </div>
+                            
                         </div>
                     </div>
                 </div>
