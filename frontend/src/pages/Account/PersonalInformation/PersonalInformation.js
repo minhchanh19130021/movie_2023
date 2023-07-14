@@ -94,9 +94,8 @@ function PersonalInformation() {
                                                         console.log(response);
                                                         setHidden(true);
                                                     })
-                                                    // .catch((err) => console.log(err));
                                                     .catch((error) => {
-                                                        alert('Sai thông tin đăng nhập');
+                                                        alert('Lỗi server');
                                                     });
                                             }}
                                         >
@@ -112,9 +111,12 @@ function PersonalInformation() {
                                                         .verfyCode(code, user?.email)
                                                         .then((response) => {
                                                             console.log(response);
+                                                            alert('Xác thực thành công');
                                                             navigate('/');
                                                         })
-                                                        .catch((err) => console.log(err));
+                                                        .catch((error) => {
+                                                            alert('Mã xác thực không đúng');
+                                                        });
                                                 }}
                                             >
                                                 Xác nhận

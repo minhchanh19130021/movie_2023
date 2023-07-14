@@ -36,7 +36,8 @@ function SignUpModal({ isOpen, onClose }) {
             .min(2, 'Tối thiểu 2 kí tự')
             .matches(/^[a-zA-Z0-9]+([._]?[a-zA-Z0-9]+)*$/, 'Tên người dùng chỉ được chứa chữ cái và chữ số')
             .required('Tên tài khoản không được để trống'),
-        email: Yup.string().required('Email không được để trống'),
+        email: Yup.string().required('Email không được để trống')
+        .email("Vui lòng nhập đúng định dạng email!"),
         password: Yup.string()
         .min(4, 'Mật khẩu tối thiểu 4 kí tự')
         .required('Mật khẩu không được để trống'),

@@ -62,10 +62,17 @@ function SignInModal({ isOpen, onClose }) {
         password: Yup.string().min(4, 'Mật khẩu tối thiểu 4 kí tự').required('Mật khẩu không được để trống'),
     });
 
+    const config = {
+        headers: {'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Methods': 'POST'}
+                    
+    };
+
     const loginFB = event =>{
         event.preventDefault();
-        axios.post('http://localhost:8080/signin/facebook')
-        .then(res =>{
+        axios.post('http://localhost:8080/signin/facebook', "" ,config)
+        .then(() =>{
             onClose();
         })
         .catch(error => console.log(error));
@@ -101,20 +108,28 @@ function SignInModal({ isOpen, onClose }) {
                         const res = userService
                             .login(values.username, values.password)
                             .then((response) => {
-                                console.log(response);
-                                dispatch(
-                                    loginSuccess({
-                                        id: response?.id,
-                                        username: response?.name,
-                                        email: response?.email,
-                                        accessToken: response?.jwt,
-                                        role: response?.role,
-                                        flagActive: response?.flagActive,
-                                    }),
-                                );
-                                onClose();
+                                if(response)
+                                {
+                                    console.log(response);                         
+                                    dispatch(
+                                        loginSuccess({
+                                            id: response?.id,
+                                            username: response?.name,
+                                            email: response?.email,
+                                            accessToken: response?.jwt,
+                                            role: response?.role,
+                                            flagActive: response?.flagActive,
+                                        }),
+                                    );
+                                    onClose();
+                                }
+                                else{
+                                    alert('Sai thông tin đăng nhập');
+                                }
                             })
-                            .catch((err) => console.log(err));
+                            .catch((error) => {
+                                alert('Sai thông tin đăng nhập');
+                            });
                     }}
                 >
                     <Form className="login-form">
