@@ -56,6 +56,7 @@ public class AuthController {
         responseLogin.setEmail(((CustomUserDetails) authentication.getPrincipal()).getUser().getEmail());
         responseLogin.setName(((CustomUserDetails) authentication.getPrincipal()).getUser().getUserName());
         responseLogin.setRole(String.valueOf(((CustomUserDetails) authentication.getPrincipal()).getUser().getRoleId()));
+        responseLogin.setFlagActive(((CustomUserDetails) authentication.getPrincipal()).getUser().getFlagActive());
         responseLogin.setJwt(jwt);
         return new ResponseEntity<>(responseLogin, HttpStatus.OK);
     }
@@ -81,6 +82,7 @@ public class AuthController {
         return ResponseEntity.ok().body("User registered successfully!");
     }
 
+    @CrossOrigin
     @GetMapping(value="/get-verify-code")
     public ResponseEntity<?> getVerifyCode(@RequestParam("user_id") Integer userId) throws MessagingException, UnsupportedEncodingException {
         User user = userService.findById(userId);
@@ -88,6 +90,7 @@ public class AuthController {
         return ResponseEntity.ok().body("Get verify code successfully!");
     }
 
+    @CrossOrigin
     @GetMapping(value="/verify")
     public ResponseEntity<?> confirmUserAccount(@RequestParam("code")String confirmationCode, @RequestParam("email") String email) {
         userService.confirmEmail(confirmationCode, email);

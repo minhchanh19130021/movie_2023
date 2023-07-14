@@ -24,3 +24,28 @@ export const register = async (username,email, password) => {
         console.log(error?.response?.data);
     }
 };
+
+
+export const getVerfyCode = async (userId) => {
+    try {
+        const res = await request.get('auth/get-verify-code?user_id=' + userId, {
+            userId,
+        });
+
+        return res?.data;
+    } catch (error) {
+        console.log(error?.response?.data);
+    }
+};
+export const verfyCode = async (code, email) => {
+    try {
+        const res = await request.get('auth/verify?code=' + code + '&email=' + email, {
+            code,
+            email,
+        });
+
+        return res?.data;
+    } catch (error) {
+        console.log(error?.response?.data);
+    }
+};

@@ -6,6 +6,7 @@ public class LoginResponse {
     private String name;
     private String role;
     private String jwt;
+    private int flagActive;
 
     public Integer getId() {
         return id;
@@ -46,4 +47,14 @@ public class LoginResponse {
     public void setJwt(String jwt) {
         this.jwt = jwt;
     }
+
+    public int getFlagActive() {
+        return flagActive;
+    }
+
+    public void setFlagActive(int flagActive) {
+        this.flagActive = flagActive;
+    }
+
+
 }
