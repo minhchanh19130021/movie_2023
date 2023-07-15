@@ -1,22 +1,17 @@
 import { useEffect, useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { SignInModal } from '~/components/SignInModal';
 import { SignUpModal } from '~/components/SignUpModal';
-import { useNavigate } from 'react-router-dom';
+import { logoutSuccess } from '~/redux/authSlice';
 
 function Header() {
-    // const renderItems = () => {
-    //     const items = [];
-    //     for (let i = 1; i <= 5; i++) {
-    //         items.push(<ModalResultSearch key={i} index={i} />);
-    //     }
-    //     return items;
-    // };
+
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isModalOpenUp, setIsModalOpenUp] = useState(false);
-    const user = localStorage.getItem('dbUser') !== 'undefined' ? JSON.parse(localStorage.getItem('dbUser')) : null;
     const navigate = useNavigate();
-
+    const user = useSelector((state) => state?.authentication?.login?.currentUser);
+    const dispatch = useDispatch();
 
     const openModal = () => {
         setIsModalOpen(true);
@@ -51,7 +46,7 @@ function Header() {
         <div className="max-w-full">
             <div className="mx-auto flex h-[45px] max-w-[1200px] items-center justify-start">
                 <NavLink to="/">
-                    <div className="flex items-center border-r border-slate-100 pr-4 hover:text-orange-500 transition-colors">
+                    <div className="flex items-center border-r border-slate-100 pr-4 transition-colors hover:text-orange-500">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
@@ -71,7 +66,7 @@ function Header() {
                     </div>
                 </NavLink>
                 <NavLink to="/">
-                    <div className="flex items-center pl-4 hover:text-orange-500 transition-colors">
+                    <div className="flex items-center pl-4 transition-colors hover:text-orange-500">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
@@ -159,61 +154,48 @@ function Header() {
                     </svg>
                     {user === null ? (
                         <>
-                    <button
-                        className="flex items-center rounded-lg bg-orange-500 hover:bg-orange-600 px-2 py-2 text-center font-medium leading-4 text-white "
-                        onClick={openModalUp}
-                    >
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth={1.5}
-                            stroke="currentColor"
-                            className="mr-2 h-[20px] w-[20px]"
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z"
-                            />
-                        </svg>
-                        Đăng ký miễn phí
-                    </button>
-                    {/* <NavLink to="/sign-in">
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            fill="currentColor"
-                            className="h-8 w-8"
-                        >
-                            <path
-                                fillRule="evenodd"
-                                d="M18.685 19.097A9.723 9.723 0 0021.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 003.065 7.097A9.716 9.716 0 0012 21.75a9.716 9.716 0 006.685-2.653zm-12.54-1.285A7.486 7.486 0 0112 15a7.486 7.486 0 015.855 2.812A8.224 8.224 0 0112 20.25a8.224 8.224 0 01-5.855-2.438zM15.75 9a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"
-                                clipRule="evenodd"
-                            />
-                        </svg>
-                    </NavLink> */}
-                    <button  className="text-white hover:text-orange-500" onClick={openModal}>
-                        Đăng nhập
-                    </button>
-                    </>
-                    ):(
+                            <button
+                                className="flex items-center rounded-lg bg-orange-500 px-2 py-2 text-center font-medium leading-4 text-white hover:bg-orange-600 "
+                                onClick={openModalUp}
+                            >
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    strokeWidth={1.5}
+                                    stroke="currentColor"
+                                    className="mr-2 h-[20px] w-[20px]"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z"
+                                    />
+                                </svg>
+                                Đăng ký miễn phí
+                            </button>
+                            <button className="text-white hover:text-orange-500" onClick={openModal}>
+                                Đăng nhập
+                            </button>
+                        </>
+                    ) : (
                         <div>
-                        <NavLink
-                            to={`/user/uid=${user?.password}`}
-                            className="mx-1 font-bold text-[#71869d] hover:text-[#35509a]"
-                        >
-                            Tên tài khoản: {user?.username}
-                        </NavLink>
-                        <button className="mx-1 font-bold text-[#71869d] hover:text-[#35509a]"
-                        onClick={()=>{
-                            localStorage.removeItem("dbUser")
-                            document.cookie = ' jwt =; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-                            navigate('/')
-                        }}
-                        >
-                            Đăng xuất</button>
-                    </div>
+                            <NavLink
+                                to={`/tai-khoan/thong-tin-ca-nhan`}
+                                className="mx-1 font-bold text-[#71869d] hover:text-[#35509a]"
+                            >
+                                Tên tài khoản: {user?.username}
+                            </NavLink>
+                            <button
+                                className="mx-1 font-bold text-[#71869d] hover:text-[#35509a]"
+                                onClick={() => {
+                                    dispatch(logoutSuccess(null));
+                                    navigate('/');
+                                }}
+                            >
+                                Đăng xuất
+                            </button>
+                        </div>
                     )}
                     <SignInModal isOpen={isModalOpen} onClose={closeModal} />
                     <SignUpModal isOpen={isModalOpenUp} onClose={closeModalUp} />
