@@ -1,7 +1,9 @@
 package com.fit.nlu.backend.controller;
 
+import com.fit.nlu.backend.entity.Comment;
 import com.fit.nlu.backend.entity.Movie;
 import com.fit.nlu.backend.entity.MovieDetail;
+import com.fit.nlu.backend.exception.CustomException;
 import com.fit.nlu.backend.request.MovieCreateRequest;
 import com.fit.nlu.backend.response.MoviePageResponse;
 import org.springframework.data.domain.Page;
@@ -10,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -92,5 +95,15 @@ public class MovieController {
         return ResponseEntity.ok("Save successfully");
     }
 
+    @GetMapping("/getMoviesInAdmin")
+    public ResponseEntity getMoviesInAdmin(String movieName, int offsetPage, int pageSize, String sortBy) throws CustomException {
+        List<Movie> movies = movieService.getMoviesInAdminPage(movieName, offsetPage, pageSize, sortBy);
+        return ResponseEntity.ok().body(movies);
+    }
 
+    @PutMapping("/increaseViewNumberInAMovie")
+    public ResponseEntity increaseViewNumberInAMovie(int movieId) throws CustomException {
+        int newViewNumber = movieService.increaseNumberOfViewsInMovie(movieId);
+        return ResponseEntity.ok().body(newViewNumber);
+    }
 }

@@ -48,26 +48,40 @@ export const movieDeatailCreate = async (
     category,
     country,
     actor,
-    director
+    director,
 ) => {
     try {
         const res = await request.post('movies/create-movie-detail', {
-            movieId:movid_id,
+            movieId: movid_id,
             summary,
-            trailerUrl:trailer_url,
+            trailerUrl: trailer_url,
             lang,
             quality,
-            episodeTotal:episode_total,
+            episodeTotal: episode_total,
             episodeCurrent: episode_current,
             duration,
             view,
             category,
             country,
             actor,
-            director
+            director,
         });
         return res?.data;
     } catch (error) {
         console.log(error);
+    }
+};
+
+export const getMoviesInAdmin = async (movieName, offsetPage, pageSize, sortBy) => {
+    try {
+        const load = await request.get(
+            `/movies/getMoviesInAdmin?movieName=${movieName}&offsetPage=${offsetPage}&pageSize=${pageSize}&sortBy=${sortBy}`,
+            {
+                headers: {},
+            },
+        );
+        return load;
+    } catch (error) {
+        return Promise.reject(error?.response?.data);
     }
 };

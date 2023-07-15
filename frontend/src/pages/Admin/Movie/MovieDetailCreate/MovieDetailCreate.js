@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import * as adminService from '~/services/adminService';
-import { AdminMenu } from '~/components/AdminMenu';
+// import { AdminMenu } from '~/components/AdminMenu';
 
 const validationSchema = Yup.object().shape({
     movie_id: Yup.number().required('Required'),
