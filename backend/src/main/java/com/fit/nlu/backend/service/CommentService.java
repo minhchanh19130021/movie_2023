@@ -2,9 +2,11 @@ package com.fit.nlu.backend.service;
 
 import com.fit.nlu.backend.entity.Comment;
 import com.fit.nlu.backend.entity.Like;
+import com.fit.nlu.backend.entity.User;
 import com.fit.nlu.backend.exception.CustomException;
 import com.fit.nlu.backend.repository.CommentRepository;
 import com.fit.nlu.backend.repository.LikeRepository;
+import com.fit.nlu.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -30,6 +32,9 @@ public class CommentService {
 
     @Autowired
     private CommentRepository commentRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     public List<Comment> getListComment(int movieId, int currentPage, String sortBy) throws CustomException {
         Pageable pageable = PageRequest.of(currentPage, 5);
@@ -87,5 +92,21 @@ public class CommentService {
         }
         return true;
 
+    }
+    public Comment addComment(Integer userId, Integer movieId, String commentText) {
+        Optional<User> userOptional = userRepository.findById(userId);
+        if (!userOptional.isPresent()) {
+            throw new IllegalArgumentException("Invalid userId");
+        }
+
+        Comment comment = new Comment();
+        comment.setUserId(userId);
+        comment.setMovieId(movieId);
+        comment.setReviewText(commentText);
+        comment.setInsertedDate(new Date());
+        comment.setUpdatedDate(new Date());
+        comment.setNumberLike(0);
+
+        return commentRepository.save(comment);
     }
 }
