@@ -1,7 +1,14 @@
 import Review from './Review/Review';
 import Comment from './Comment/Comment';
+import { increaseNumberOfViewsInMovie } from '~/services/movieService';
 
 function View() {
+    function increaseViewNumber() {
+        // don't need to receive response, it will be make performance better
+        // (in case of increaseNumberOfViewsInMovie in concurrency)
+        increaseNumberOfViewsInMovie(1);
+    }
+
     const renderElements = () => {
         const elements = [];
 
@@ -11,7 +18,9 @@ function View() {
                     key={i}
                     className="rounded-lg bg-[#0f0f0f] py-2 font-medium text-[#616161] transition-colors hover:cursor-pointer hover:bg-[#202020] hover:text-white"
                 >
-                    <p className="text-center">Tập {i}</p>
+                    <p className="text-center" onClick={() => increaseViewNumber()}>
+                        Tập {i}
+                    </p>
                 </div>,
             );
         }

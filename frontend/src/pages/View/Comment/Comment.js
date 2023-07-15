@@ -6,42 +6,42 @@ import { useEffect, useState } from 'react';
 
 function Comment() {
     const [commentList, setCommentList] = useState([]);
-    const [orderBy, setOrderBy] = useState("insertedDateDESC");
+    const [orderBy, setOrderBy] = useState('insertedDateDESC');
     const [offsetPage, setOffsetPage] = useState(0);
     const [showLoadMoreCommentButton, setShowLoadMoreCommentButton] = useState(true);
     const navigate = useNavigate();
 
     useEffect(() => {
-        loadCommentList(offsetPage, orderBy)
+        loadCommentList(offsetPage, orderBy);
     }, []);
 
-    function loadCommentList(offsetPage, orderBy) {            
+    function loadCommentList(offsetPage, orderBy) {
         const load = getCommentsByMovieIdAndPaginationNumber(1, offsetPage, orderBy);
         load.then((e) => {
             setCommentList(e?.data);
-        }).catch(e =>{
-            navigate("/server-error")
-        });    
+        }).catch((e) => {
+            navigate('/server-error');
+        });
     }
-    function loadCommentListAgainBySelectOrder(event) {        
-        loadCommentList(0, event.target.value);     
+    function loadCommentListAgainBySelectOrder(event) {
+        loadCommentList(0, event.target.value);
         setOffsetPage(0);
-        setOrderBy(event.target.value)   
+        setOrderBy(event.target.value);
         setShowLoadMoreCommentButton(true);
     }
-   
+
     function loadMoreComment() {
         const load = getCommentsByMovieIdAndPaginationNumber(1, offsetPage + 1, orderBy);
         load.then((e) => {
-            if(e?.data.length === 0) {
+            if (e?.data.length === 0) {
                 setShowLoadMoreCommentButton(false);
-                return ;
+                return;
             }
             setCommentList([...commentList, ...e?.data]);
             setOffsetPage(offsetPage + 1);
-        }).catch(e =>{
-            navigate("/server-error")
-        });      
+        }).catch((e) => {
+            navigate('/server-error');
+        });
     }
 
     return (
@@ -50,14 +50,17 @@ function Comment() {
                 <div className="col-span-2 mb-6 flex items-center">
                     <h3 className="text-2xl font-medium">Bình luận (41783)</h3>
                 </div>
-                <select onChange={loadCommentListAgainBySelectOrder} className="cursor-pointer w-1/2 border border-black bg-black font-medium text-white outline-none">
-                    <option className="text-right cursor-pointer"  value="insertedDateDESC">
+                <select
+                    onChange={loadCommentListAgainBySelectOrder}
+                    className="w-1/2 cursor-pointer border border-black bg-black font-medium text-white outline-none"
+                >
+                    <option className="cursor-pointer text-right" value="insertedDateDESC">
                         Mới nhất
-                    </option>                
-                    <option className="text-right cursor-pointer"  value="insertedDateASC">
+                    </option>
+                    <option className="cursor-pointer text-right" value="insertedDateASC">
                         Cũ nhất
                     </option>
-                    <option className="text-right cursor-pointer" value="likeDESC">
+                    <option className="cursor-pointer text-right" value="likeDESC">
                         Nhiều like nhất
                     </option>
                 </select>
@@ -72,21 +75,26 @@ function Comment() {
                 </p>
             </div>
             <div className="">
-            {commentList?.map((e, i) => {
-                    console.log(e)
+                {commentList?.map((e, i) => {
                     return (
                         <CommentItem
                             key={i}
                             rating={e?.rating}
                             userName={`${e?.user?.userName}`}
                             time={`${e?.insertedDate} ngày`}
-                            commentText={e?.reviewText}     
+                            commentText={e?.reviewText}
                             likes={e?.likes}
-                        />);
-                })}                        
-                {showLoadMoreCommentButton ? <button onClick={() => loadMoreComment()} className="text-sm font-medium text-[#b8b8b8] transition-colors hover:text-orange-600">
-                    Tải thêm bình luận
-                </button> : null} 
+                        />
+                    );
+                })}
+                {showLoadMoreCommentButton ? (
+                    <button
+                        onClick={() => loadMoreComment()}
+                        className="text-sm font-medium text-[#b8b8b8] transition-colors hover:text-orange-600"
+                    >
+                        Tải thêm bình luận
+                    </button>
+                ) : null}
             </div>
         </div>
     );

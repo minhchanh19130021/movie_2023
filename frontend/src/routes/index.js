@@ -4,6 +4,7 @@ import { HistoryMovie } from '~/pages/Account/HistoryMovie';
 import { PersonalInformation } from '~/pages/Account/PersonalInformation';
 import { MovieCreate } from '~/pages/Admin/Movie/MovieCreate';
 import { MovieDetailCreate } from '~/pages/Admin/Movie/MovieDetailCreate';
+import { MovieList } from '~/pages/Admin/MovieList';
 import { Home } from '~/pages/Home';
 import { Search } from '~/pages/Search';
 import { SignIn } from '~/pages/SignIn';
@@ -29,6 +30,7 @@ const publicRoutes = [
     // admin
     { path: config.routes.movieCreate, component: MovieCreate},
     { path: config.routes.movieDetailCreate, component: MovieDetailCreate},
+    { path: config.routes.movieList, component: MovieList},
 
 
     { path: config.routes.notFound, component: NotFound },

@@ -11,7 +11,8 @@ const routes = {
 
     // admin
     movieCreate: 'quan-ly-phim/them-phim',
-    movieDetailCreate: 'quan-ly-phim/them-chi-tiet-phim'
+    movieDetailCreate: 'quan-ly-phim/them-chi-tiet-phim',
+    movieList: 'quan-ly-phim/danh-sach'
 
 };
 export default routes;

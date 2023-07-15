@@ -3,6 +3,8 @@ package com.fit.nlu.backend.entity;
 import com.fit.nlu.backend.enums.MovieStatus;
 import com.fit.nlu.backend.enums.MovieType;
 import lombok.*;
+import org.hibernate.annotations.OptimisticLockType;
+import org.hibernate.annotations.OptimisticLocking;
 
 import javax.persistence.*;
 
@@ -16,6 +18,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Getter
 @Setter
+@OptimisticLocking(type = OptimisticLockType.VERSION)
 public class Movie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -56,5 +59,11 @@ public class Movie {
     @Builder.Default
     private int commentNumber = 0;
 
+    @Column(name = "view_number")
+    @Builder.Default
+    private int viewNumber = 0;
+
+    @Version
+    private Long version;
 
 }
