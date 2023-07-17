@@ -13,3 +13,14 @@ export const increaseNumberOfViewsInMovie = async (movieId) => {
         return Promise.reject(error?.response?.data);
     }
 };
+
+export const getMovieBySlug = async (slug) => {
+    try {
+        const load = await request.get(`/${controller}/getMovieBySlug/${slug}`, {
+            headers: {},
+        });
+        return load;
+    } catch (error) {
+        return Promise.reject(error?.response?.data);
+    }
+};

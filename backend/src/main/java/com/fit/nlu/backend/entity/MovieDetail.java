@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -65,6 +67,10 @@ public class MovieDetail {
     @Column(name = "updated_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedDate;
+
+    @OneToOne
+    @JoinColumn(name = "movie_id", insertable = false, updatable = false)
+    private Movie movie;
 
     public MovieDetail(Integer movieId, String summary, String trailerUrl, String lang, String quality,
                        Integer episodeTotal, Integer episodeCurrent, String duration, Integer view) {

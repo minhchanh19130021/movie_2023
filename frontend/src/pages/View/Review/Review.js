@@ -4,63 +4,69 @@ import { getReviewsByMovieIdAndPaginationNumber } from '~/services/reviewService
 import ReviewForm from '~/components/Review/ReviewForm';
 import { useNavigate } from 'react-router-dom';
 
-function Review() {
+function Review(props) {
     const [reviewList, setReviewList] = useState([]);
     const [isShowReviewForm, setIsShowReviewForm] = useState(false);
-    const [orderBy, setOrderBy] = useState("insertedDateDESC");
+    const [orderBy, setOrderBy] = useState('insertedDateDESC');
     const [offsetPage, setOffsetPage] = useState(0);
     const [showLoadMoreReviewButton, setShowLoadMoreReviewButton] = useState(true);
     const navigate = useNavigate();
 
     useEffect(() => {
-        loadReviewList(offsetPage, orderBy)
-    }, []);
+        loadReviewList(offsetPage, orderBy);
+    }, [props?.movieId]);
 
-    function loadReviewList(offsetPage, orderBy) {    
-        const load = getReviewsByMovieIdAndPaginationNumber(1, offsetPage, orderBy);
-        load.then((e) => {
-            setReviewList(e?.data);
-        }).catch(e =>{
-            navigate("/server-error")
-        });    
+    function loadReviewList(offsetPage, orderBy) {
+        if (props?.movieId) {
+            const load = getReviewsByMovieIdAndPaginationNumber(props?.movieId, offsetPage, orderBy);
+            load.then((e) => {
+                setReviewList(e?.data);
+            }).catch((e) => {
+                console.log(e);
+                navigate('/server-error');
+            });
+        }
     }
-    function loadReviewListAgainBySelectOrder(event) {        
-        loadReviewList(0, event.target.value);     
+    function loadReviewListAgainBySelectOrder(event) {
+        loadReviewList(0, event.target.value);
         setOffsetPage(0);
-        setOrderBy(event.target.value)   
+        setOrderBy(event.target.value);
         setShowLoadMoreReviewButton(true);
     }
-   
+
     function loadMoreReview() {
-        const load = getReviewsByMovieIdAndPaginationNumber(1, offsetPage + 1, orderBy);
+        const load = getReviewsByMovieIdAndPaginationNumber(props?.movieId, offsetPage + 1, orderBy);
         load.then((e) => {
-            if(e?.data.length === 0) {
+            if (e?.data.length === 0) {
                 setShowLoadMoreReviewButton(false);
-                return ;
+                return;
             }
             setReviewList([...reviewList, ...e?.data]);
             setOffsetPage(offsetPage + 1);
-        }).catch(e =>{
-            navigate("/server-error")
-        });      
+        }).catch((e) => {
+            navigate('/server-error');
+        });
     }
 
     return (
         <div>
             <div className="grid grid-cols-3">
                 <div className="col-span-2 mb-6 flex items-center">
-                    <h3 className="text-2xl font-medium">Đánh giá ({reviewList?.length})</h3>
+                    <h3 className="text-2xl font-medium">Đánh giá ({props?.reviewNumber})</h3>
                 </div>
-                <select onChange={loadReviewListAgainBySelectOrder} className="w-1/2 border border-black bg-black font-medium text-white outline-none cursor-pointer">
-                    <option className="text-right cursor-pointer" value="insertedDateDESC">
+                <select
+                    onChange={loadReviewListAgainBySelectOrder}
+                    className="w-1/2 cursor-pointer border border-black bg-black font-medium text-white outline-none"
+                >
+                    <option className="cursor-pointer text-right" value="insertedDateDESC">
                         Mới nhất
                     </option>
-                    <option className="text-right cursor-pointer" value="ratingDESC">
+                    <option className="cursor-pointer text-right" value="ratingDESC">
                         Giảm dần
                     </option>
-                    <option className="text-right cursor-pointer" value="ratingASC">
+                    <option className="cursor-pointer text-right" value="ratingASC">
                         Tăng dần
-                    </option>              
+                    </option>
                 </select>
             </div>
             <div className="pb-4 pt-2">
@@ -71,13 +77,20 @@ function Review() {
                     </NavLink>
                     tài khoản FPT Play để sử dụng Bình luận
                 </p> */}
-                <div>              
-                    <button 
-                    onClick={() => setIsShowReviewForm(true)}
-                    className="cursor-pointer rounded-lg bg-[#ff6500] px-3 py-1 text-md leading-tight text-white hover:bg-[#ff6520]">
+                <div>
+                    <button
+                        onClick={() => setIsShowReviewForm(true)}
+                        className="text-md cursor-pointer rounded-lg bg-[#ff6500] px-3 py-1 leading-tight text-white hover:bg-[#ff6520]"
+                    >
                         Thêm đánh giá của bạn
                     </button>
-                    {isShowReviewForm ? <ReviewForm setIsShowReviewForm={setIsShowReviewForm} reviewList={reviewList} setReviewList={setReviewList}></ReviewForm> : null}                    
+                    {isShowReviewForm ? (
+                        <ReviewForm
+                            setIsShowReviewForm={setIsShowReviewForm}
+                            reviewList={reviewList}
+                            setReviewList={setReviewList}
+                        ></ReviewForm>
+                    ) : null}
                 </div>
             </div>
             <div className="">
@@ -88,13 +101,18 @@ function Review() {
                             rating={e?.rating}
                             userName={`${e?.user?.userName}`}
                             time={`${e?.insertedDate} ngày`}
-                            reviewText={e?.reviewText}                      
+                            reviewText={e?.reviewText}
                         />
                     );
                 })}
-                {showLoadMoreReviewButton ? <button onClick={() => loadMoreReview()} className="text-sm font-medium text-[#b8b8b8] transition-colors hover:text-orange-600">
-                    Tải thêm đánh giá
-                </button> : null}                
+                {showLoadMoreReviewButton ? (
+                    <button
+                        onClick={() => loadMoreReview()}
+                        className="text-sm font-medium text-[#b8b8b8] transition-colors hover:text-orange-600"
+                    >
+                        Tải thêm đánh giá
+                    </button>
+                ) : null}
             </div>
         </div>
     );

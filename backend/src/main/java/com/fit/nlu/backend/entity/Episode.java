@@ -1,9 +1,7 @@
 package com.fit.nlu.backend.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -40,6 +38,11 @@ public class Episode {
     @Column(name = "updated_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedDate;
+
+    @ManyToOne
+    @JoinColumn(name = "movie_id", insertable = false, updatable = false)
+    @JsonBackReference
+    private Movie movie;
 
     public Episode(Integer movieId, String title, Integer episodeNumber, String duration, String link) {
         this.movieId = movieId;

@@ -1,7 +1,6 @@
 package com.fit.nlu.backend.entity;
 
-import com.fit.nlu.backend.enums.MovieStatus;
-import com.fit.nlu.backend.enums.MovieType;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import org.hibernate.annotations.OptimisticLockType;
 import org.hibernate.annotations.OptimisticLocking;
@@ -9,6 +8,7 @@ import org.hibernate.annotations.OptimisticLocking;
 import javax.persistence.*;
 
 
+import java.util.Collection;
 import java.util.Date;
 
 @Entity(name = "movie")
@@ -66,4 +66,7 @@ public class Movie {
     @Version
     private Long version;
 
+    @OneToMany(mappedBy = "movie")
+    @JsonManagedReference
+    private Collection<Episode> episodes;
 }
