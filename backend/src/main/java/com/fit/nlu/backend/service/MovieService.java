@@ -22,6 +22,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.*;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class MovieService {
@@ -132,5 +133,13 @@ public class MovieService {
         movie.setViewNumber(movie.getViewNumber() + 1);
         repository.save(movie);
         return movie.getViewNumber() + 1;
+    }
+
+    public MovieDetail getMovieAndMovieDetailBySlug(String slug) throws CustomException {
+        MovieDetail movieDetail = movieDetailRepository.findMovieDetailBySlug(slug)
+                .orElseThrow(() ->
+                    new CustomException(HttpStatus.NOT_FOUND, "not found movie by slug")
+                );
+        return movieDetail;
     }
 }

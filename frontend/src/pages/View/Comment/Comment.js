@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { getCommentsByMovieIdAndPaginationNumber } from '~/services/commentServices';
 import { useEffect, useState } from 'react';
 
-function Comment() {
+function Comment(props) {
     const [commentList, setCommentList] = useState([]);
     const [orderBy, setOrderBy] = useState('insertedDateDESC');
     const [offsetPage, setOffsetPage] = useState(0);
@@ -13,15 +13,18 @@ function Comment() {
 
     useEffect(() => {
         loadCommentList(offsetPage, orderBy);
-    }, []);
+        console.log(123);
+    }, [props?.movieId]);
 
     function loadCommentList(offsetPage, orderBy) {
-        const load = getCommentsByMovieIdAndPaginationNumber(1, offsetPage, orderBy);
-        load.then((e) => {
-            setCommentList(e?.data);
-        }).catch((e) => {
-            navigate('/server-error');
-        });
+        if (props?.movieId) {
+            const load = getCommentsByMovieIdAndPaginationNumber(props?.movieId, offsetPage, orderBy);
+            load.then((e) => {
+                setCommentList(e?.data);
+            }).catch((e) => {
+                navigate('/server-error');
+            });
+        }
     }
     function loadCommentListAgainBySelectOrder(event) {
         loadCommentList(0, event.target.value);
@@ -31,7 +34,7 @@ function Comment() {
     }
 
     function loadMoreComment() {
-        const load = getCommentsByMovieIdAndPaginationNumber(1, offsetPage + 1, orderBy);
+        const load = getCommentsByMovieIdAndPaginationNumber(props?.movieId, offsetPage + 1, orderBy);
         load.then((e) => {
             if (e?.data.length === 0) {
                 setShowLoadMoreCommentButton(false);
@@ -48,7 +51,7 @@ function Comment() {
         <div>
             <div className="grid grid-cols-3">
                 <div className="col-span-2 mb-6 flex items-center">
-                    <h3 className="text-2xl font-medium">Bình luận (41783)</h3>
+                    <h3 className="text-2xl font-medium">Bình luận ({props?.commentNumber})</h3>
                 </div>
                 <select
                     onChange={loadCommentListAgainBySelectOrder}
