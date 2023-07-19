@@ -34,7 +34,6 @@ public class AuthController {
     @Autowired
     private JwtTokenProvider tokenProvider;
 
-    @CrossOrigin
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
         // Valid username and password.
@@ -61,7 +60,6 @@ public class AuthController {
         return new ResponseEntity<>(responseLogin, HttpStatus.OK);
     }
 
-    @CrossOrigin
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterRequest registerRequest) throws CustomException, MessagingException, UnsupportedEncodingException {
         if (userService.existsByUsername(registerRequest.getUsername())) {
@@ -82,7 +80,6 @@ public class AuthController {
         return ResponseEntity.ok().body("User registered successfully!");
     }
 
-    @CrossOrigin
     @GetMapping(value="/get-verify-code")
     public ResponseEntity<?> getVerifyCode(@RequestParam("user_id") Integer userId) throws MessagingException, UnsupportedEncodingException {
         User user = userService.findById(userId);
@@ -90,7 +87,6 @@ public class AuthController {
         return ResponseEntity.ok().body("Get verify code successfully!");
     }
 
-    @CrossOrigin
     @GetMapping(value="/verify")
     public ResponseEntity<?> confirmUserAccount(@RequestParam("code")String confirmationCode, @RequestParam("email") String email) {
         userService.confirmEmail(confirmationCode, email);
