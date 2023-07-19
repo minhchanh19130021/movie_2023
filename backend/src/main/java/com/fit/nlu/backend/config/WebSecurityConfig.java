@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -24,7 +25,12 @@ import org.springframework.social.facebook.connect.FacebookConnectionFactory;
 
 @EnableWebSecurity
 @Configuration
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+@EnableGlobalMethodSecurity(
+        securedEnabled = true,
+        jsr250Enabled = true,
+        prePostEnabled = true
+)
+public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 
    @Autowired
    private UserService userService;
@@ -71,9 +77,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                .csrf().disable()
                .authorizeRequests()
                // Allow all to access this url
-               .anyRequest().permitAll();
-//               .antMatchers("/api/movies/**").permitAll()
-//               .anyRequest().authenticated(); // All request except 'api/auth/login' must be authenticated
+//               .anyRequest().permitAll();
+               .antMatchers("/api/auth/**", "signin/facebook").permitAll()
+               .antMatchers("/login/oauth2/code/facebook").permitAll() // Allow access to Facebook login endpoint
+               .anyRequest().authenticated()
+               .and()
+               .oauth2Login();
+       // All request except 'api/auth/login' must be authenticated
+
        // Add other classs to check jwt
        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
    }
