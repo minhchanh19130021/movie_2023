@@ -13,7 +13,6 @@ function Comment(props) {
 
     useEffect(() => {
         loadCommentList(offsetPage, orderBy);
-        console.log(123);
     }, [props?.movieId]);
 
     function loadCommentList(offsetPage, orderBy) {

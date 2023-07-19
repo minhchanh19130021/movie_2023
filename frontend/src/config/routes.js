@@ -8,6 +8,7 @@ const routes = {
     favorateMovie: 'tai-khoan/danh-sach-yeu-thich',
     notFound: 'not-found',
     serverError: 'server-error',
+    order: 'thanh-toan',
 
     // admin
     movieCreate: 'quan-ly-phim/them-phim',
