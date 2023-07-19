@@ -2,6 +2,7 @@ package com.fit.nlu.backend.service;
 
 import com.fit.nlu.backend.entity.Movie;
 import com.fit.nlu.backend.entity.Review;
+import com.fit.nlu.backend.entity.User;
 import com.fit.nlu.backend.exception.CustomException;
 import com.fit.nlu.backend.repository.MovieRepository;
 import com.fit.nlu.backend.repository.ReviewRepository;
@@ -35,7 +36,14 @@ public class ReviewService {
         Movie movie = movieRepository
                 .findById(review.getMovieId())
                 .orElseThrow(() -> new CustomException(HttpStatus.BAD_REQUEST, "cannot find movie Id"));
-        review.setInsertedDate(new Date());
+        // tmp add
+        User user = new User();
+        user.setId(1);
+        review.setUser(user);
+        // tmp end
+        Date date = new Date();
+        review.setInsertedDate(date);
+        review.setUpdatedDate(date);
         Review newReview = reviewRepository.save(review);
         movie.setReviewNumber(movie.getReviewNumber() + 1);
         movieRepository.save(movie);

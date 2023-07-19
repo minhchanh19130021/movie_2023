@@ -13,6 +13,7 @@ import { View } from '~/pages/View';
 import { NotFound } from '~/pages/NofFound';
 import { ServerError } from '~/pages/ServerError';
 import { SearchResult } from '~/pages/SearchResult';
+import { Order } from '~/pages/Home/Order';
 
 const publicRoutes = [
     { path: config.routes.home, component: Home },
@@ -27,11 +28,12 @@ const publicRoutes = [
     { path: config.routes.historyMovie, component: HistoryMovie },
     { path: config.routes.personalInformation, component: PersonalInformation },
     { path: config.routes.favorateMovie, component: FavorateMovie },
-    // admin
-    { path: config.routes.movieCreate, component: MovieCreate},
-    { path: config.routes.movieDetailCreate, component: MovieDetailCreate},
-    { path: config.routes.movieList, component: MovieList},
+    { path: config.routes.order, component: Order },
 
+    // admin
+    { path: config.routes.movieCreate, component: MovieCreate },
+    { path: config.routes.movieDetailCreate, component: MovieDetailCreate },
+    { path: config.routes.movieList, component: MovieList },
 
     { path: config.routes.notFound, component: NotFound },
     { path: config.routes.serverError, component: ServerError },

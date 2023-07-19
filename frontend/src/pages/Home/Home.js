@@ -6,7 +6,6 @@ import HotBanner from './HotBanner/HotBanner';
 import ReleaseSlider from './ReleaseSlider/ReleaseSlider';
 
 function Home() {
-
     useEffect(() => {
         const fetchPost = async () => {
             const result = await getPosts();
@@ -16,7 +15,7 @@ function Home() {
     }, []);
 
     return (
-        <div className="max-w-full  ">
+        <div className="max-w-full">
             <div className="mx-auto max-w-[1200px]">
                 <div className="">
                     <BannerSlider />

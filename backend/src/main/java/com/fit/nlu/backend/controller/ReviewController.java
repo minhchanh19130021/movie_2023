@@ -30,13 +30,6 @@ public class ReviewController {
     @PostMapping("/add")
     public ResponseEntity<Review> createNewReview(@RequestBody @Valid Review review) throws CustomException {
         Review newReview =  reviewService.createNewReview(review);
-        // tmp add
-        User user = new User();
-        user.setId(1);
-        newReview.setUser(user);
-        // tmp end
-        Date date = new Date();
-        review.setInsertedDate(date);
         return ResponseEntity.ok().body(newReview);
     }
 }

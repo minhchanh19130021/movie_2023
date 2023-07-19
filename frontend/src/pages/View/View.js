@@ -3,6 +3,7 @@ import Comment from './Comment/Comment';
 import { getMovieBySlug, increaseNumberOfViewsInMovie } from '~/services/movieService';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { checkUserIdInOrder } from '~/services/orderServices';
 
 function View() {
     const params = useParams();
@@ -61,8 +62,21 @@ function View() {
                                     <p
                                         className="text-center"
                                         onClick={() => {
-                                            openVideo(e?.link);
-                                            increaseViewNumber();
+                                            const load = checkUserIdInOrder(1);
+                                            load.then((e2) => {
+                                                if (e2?.status === 200) {
+                                                    if (e2?.data === true) {
+                                                        openVideo(e?.link);
+                                                        increaseViewNumber();
+                                                    } else {
+                                                        navigate('/thanh-toan');
+                                                    }
+                                                } else {
+                                                    navigate('/server-error');
+                                                }
+                                            }).catch(() => {
+                                                navigate('/server-error');
+                                            });
                                         }}
                                     >
                                         Tập {e?.title}
