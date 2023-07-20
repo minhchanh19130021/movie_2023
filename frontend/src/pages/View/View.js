@@ -1,76 +1,114 @@
 import Review from './Review/Review';
 import Comment from './Comment/Comment';
-import { increaseNumberOfViewsInMovie } from '~/services/movieService';
+import { getMovieBySlug, increaseNumberOfViewsInMovie } from '~/services/movieService';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { checkUserIdInOrder } from '~/services/orderServices';
 
 function View() {
+    const params = useParams();
+    const [movieInfo, setMovieInfo] = useState({});
+    const [slugMovie, setSlugMovie] = useState();
+    const [movieId, setMovieId] = useState();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const currentSlugMovie = params.slug;
+        setSlugMovie(slugMovie);
+        const load = getMovieBySlug(currentSlugMovie);
+        load.then(
+            (e) => {
+                if (e?.status === 200) {
+                    setMovieInfo(e?.data);
+                    if (e?.data?.movieId) {
+                        setMovieId(e?.data?.movieId);
+                    }
+                } else {
+                    navigate('/server-error');
+                }
+            },
+            (e) => {
+                navigate('/not-found');
+                console.log(e);
+            },
+        );
+    }, []);
+
     function increaseViewNumber() {
         // don't need to receive response, it will be make performance better
         // (in case of increaseNumberOfViewsInMovie in concurrency)
         increaseNumberOfViewsInMovie(1);
     }
 
-    const renderElements = () => {
-        const elements = [];
+    function openVideo(link) {
+        window.open(link, '_blank');
+    }
 
-        for (let i = 1; i < 100; i++) {
-            elements.push(
-                <div
-                    key={i}
-                    className="rounded-lg bg-[#0f0f0f] py-2 font-medium text-[#616161] transition-colors hover:cursor-pointer hover:bg-[#202020] hover:text-white"
-                >
-                    <p className="text-center" onClick={() => increaseViewNumber()}>
-                        Tập {i}
-                    </p>
-                </div>,
-            );
-        }
-
-        return elements;
-    };
     return (
         <div className="max-w-full">
-            <div className="padding-responsive  mx-auto max-w-[1200px]">
-                <div className="mb-12 mt-4 h-[740px] w-full rounded-lg bg-white"></div>
+            <div className="padding-responsive mx-auto max-w-[1200px]">
+                <div className="mb-12 mt-4 h-[740px] w-full rounded-lg bg-white">
+                    <img className="w-100 h-100" src={movieInfo?.movie?.poster}></img>
+                </div>
                 <div className="mb-8">
                     <h3 className="mb-8 text-2xl font-medium">Danh sách</h3>
-                    <div className="grid grid-cols-10 gap-3">{renderElements()}</div>
+                    <div className="grid grid-cols-10 gap-3">
+                        {movieInfo?.movie?.episodes?.map((e, i) => {
+                            return (
+                                <div
+                                    key={i}
+                                    className="rounded-lg bg-[#0f0f0f] py-2 font-medium text-[#616161] transition-colors hover:cursor-pointer hover:bg-[#202020] hover:text-white"
+                                >
+                                    <p
+                                        className="text-center"
+                                        onClick={() => {
+                                            const load = checkUserIdInOrder(1);
+                                            load.then((e2) => {
+                                                if (e2?.status === 200) {
+                                                    if (e2?.data === true) {
+                                                        openVideo(e?.link);
+                                                        increaseViewNumber();
+                                                    } else {
+                                                        navigate('/thanh-toan');
+                                                    }
+                                                } else {
+                                                    navigate('/server-error');
+                                                }
+                                            }).catch(() => {
+                                                navigate('/server-error');
+                                            });
+                                        }}
+                                    >
+                                        Tập {e?.title}
+                                    </p>
+                                </div>
+                            );
+                        })}
+                    </div>
                 </div>
                 <div className="mb-12 grid grid-cols-3 gap-x-5 text-[#d2d2d2]">
                     <div className="col-span-2">
                         <div className="font-medium">
-                            <p className="mb-4 text-2xl text-white">Bạn Trai Tôi Là Hồ Ly</p>
-                            <p className="mb-3 text-base">Tale of the Nine-tailed</p>
+                            <p className="mb-4 text-2xl text-white">{movieInfo?.movie?.name}</p>
+                            <p className="mb-3 text-base">{movieInfo?.movie?.subName}</p>
                         </div>
                         <div className="mb-3 flex items-center text-sm">
-                            <p>2020</p>
+                            <p>{movieInfo?.movie?.insertedDate.substring(0, 4)}</p>
                             <div className="mx-2 h-1 w-1 rounded-full bg-gray-50 opacity-80"></div>
                             <p>16+</p>
                             <div className="mx-2 h-1 w-1 rounded-full bg-gray-50 opacity-80"></div>
-                            <p>100/100 tập</p>
+                            <p>
+                                {movieInfo?.episodeCurrent}/{movieInfo?.episodeTotal} tập
+                            </p>
                             <div className="mx-2 h-1 w-1 rounded-full bg-gray-50 opacity-80"></div>
-                            <p className="capitalize">Hàn quốc</p>
+                            <p className="capitalize">{movieInfo?.country}</p>
                             <div className="mx-2 h-1 w-1 rounded-full bg-gray-50 opacity-80"></div>
                         </div>
                         <div className="mb-3">
-                            <p className="text-sm">Thể loại: tên thể loại</p>
+                            <p className="text-sm">Thể loại: {movieInfo?.movie?.type}</p>
                         </div>
                         <div>
-                            <p className="text-sm">
-                                Lee Yeon là hồ ly mang nhiệm vụ như một người giám sát, có quyền trừng trị những kẻ hại
-                                cuộc sống của loài người. Trong khi đó, người em cùng cha khác mẹ của anh là Lee Rang,
-                                mang hai dòng máu nửa người nửa yêu, thì chuyên đi gây họa. Cuộc sống vốn dĩ sẽ bình
-                                yên, nếu Lee Yeon không phải lòng Nam Ji Ah - người thực hiện những chương trình tìm
-                                hiểu về thế lực siêu nhiên. Bạn, trai, tôi, là, hồ, ly, The, Tale, of, a, Gumiho, Tale,
-                                of, the, Nine-Tailed, Bạn trai tôi là hồ ly, phim Bạn trai tôi là hồ ly, xem phim Bạn
-                                trai tôi là hồ ly tập 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16, Bạn trai tôi là hồ ly
-                                vietsub, tình cảm, Tale of the Nine-Tailed, Bạn trai tôi là hồ ly online, xem Tale of
-                                the Nine-Tailed, Bạn trai tôi là hồ ly FPT Play, phim Tale of the Nine-Tailed, Tale of
-                                the Nine-Tailed phụ đề, xem phim Tale of the Nine-Tailed tập 1 2 3 4 5 6 7 8 9 10 11 12
-                                13 14 15 16, Tale of the Nine-Tailed fptplay, FPT, The Tale of a Gumiho, xem The Tale of
-                                a Gumiho, phim The Tale of a Gumiho, The Tale of a Gumiho phụ đề, xem phim The Tale of a
-                                Gumiho tập 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16, The Tale of a Gumiho fptplay, tail,
-                                tails
-                            </p>
+                            <p className="text-sm">{movieInfo?.movie?.summary}</p>
                         </div>
                     </div>
                     <div>
@@ -113,24 +151,24 @@ function View() {
                             </div>
                             <div className="grid grid-cols-3 py-1 text-sm text-[#d2d2d2]">
                                 <p>Diễn viên:</p>
-                                <p className="col-span-2 ">Lee Dong Wook , Jo Bo Ah , Kim Bum , Ahn Gil Kang</p>
+                                <p className="col-span-2 ">{movieInfo?.actor}</p>
                             </div>
                             <div className="grid grid-cols-3 py-1 text-sm text-[#d2d2d2]">
                                 <p>Đạo diễn:</p>
-                                <p className="col-span-2 ">Kang Shin Hyo</p>
+                                <p className="col-span-2 ">{movieInfo?.director}</p>
                             </div>
                             <div className="grid grid-cols-3 py-1 text-sm text-[#d2d2d2]">
                                 <p>Thể loại:</p>
-                                <p className="col-span-2 ">Tâm lý , Lãng mạn , Hành động , Kỳ ảo</p>
+                                <p className="col-span-2 ">{movieInfo?.movie?.type}</p>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div className="">
-                    <Review></Review>
+                    <Review reviewNumber={movieInfo?.movie?.reviewNumber} movieId={movieId}></Review>
                 </div>
                 <div className="mt-5">
-                    <Comment />
+                    <Comment commentNumber={movieInfo?.movie?.commentNumber} movieId={movieId} />
                 </div>
             </div>
         </div>

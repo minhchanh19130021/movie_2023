@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@RestController
+@RestController()
 @RequestMapping("/api/movies")
 @CrossOrigin
 public class MovieController {
@@ -102,8 +102,14 @@ public class MovieController {
     }
 
     @PutMapping("/increaseViewNumberInAMovie")
-    public ResponseEntity increaseViewNumberInAMovie(int movieId) throws CustomException {
+    public ResponseEntity<Integer> increaseViewNumberInAMovie(int movieId) throws CustomException {
         int newViewNumber = movieService.increaseNumberOfViewsInMovie(movieId);
         return ResponseEntity.ok().body(newViewNumber);
+    }
+
+    @GetMapping("/getMovieBySlug/{slug}")
+    public ResponseEntity<MovieDetail> getMovieAndMovieDetailBySlug(@PathVariable String slug) throws CustomException {
+        MovieDetail movie = movieService.getMovieAndMovieDetailBySlug(slug);
+        return ResponseEntity.ok().body(movie);
     }
 }
