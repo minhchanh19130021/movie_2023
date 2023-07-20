@@ -79,7 +79,7 @@ public class AuthController {
         userService.register(user);
         return ResponseEntity.ok().body("User registered successfully!");
     }
-    
+
     @GetMapping(value="/get-verify-code")
     public ResponseEntity<?> getVerifyCode(@RequestParam("user_id") Integer userId) throws MessagingException, UnsupportedEncodingException {
         User user = userService.findById(userId);
