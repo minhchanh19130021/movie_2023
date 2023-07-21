@@ -86,24 +86,6 @@ function SignInModal({ isOpen, onClose }) {
         password: Yup.string().min(4, 'Mật khẩu tối thiểu 4 kí tự').required('Mật khẩu không được để trống'),
     });
 
-    const config = {
-        headers: {'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*',
-                    'Access-Control-Allow-Methods': 'GET'},
-                    'Access-Control-Allow-Origin': 'https://localhost:3000'
-
-    };
-
-    const loginFB = event =>{
-        console.log('loginFB');
-        event.preventDefault();
-        axios.get('https://cors-anywhere.herokuapp.com/http://localhost:8080/login/facebook', config)
-        .then(() =>{
-            onClose();
-        })
-        .catch(error => console.log(error));
-    }
-
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
             <div className="fixed inset-0 bg-black opacity-50"></div>
