@@ -1,8 +1,9 @@
 import request from '~/utils/requestUtils';
+import axios from "axios";
 
 export const login = async (username, password) => {
     try {
-        const res = await request.post('/auth/login', {
+        const res = await axios.post('/api/auth/login', {
             username,
             password,
         });
