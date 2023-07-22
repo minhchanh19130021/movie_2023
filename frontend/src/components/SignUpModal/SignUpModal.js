@@ -115,7 +115,7 @@ function SignUpModal({ isOpen, onClose }) {
                             //   disabled={isSubmitting}
                             className="my-4 h-[48px] w-full rounded-lg bg-orange-600 px-4 py-2 transition-colors disabled:bg-[#2c2c2e]"
                         >
-                            Đăng nhập
+                            Đăng ký
                         </button>
                     </Form>
                     </Formik>

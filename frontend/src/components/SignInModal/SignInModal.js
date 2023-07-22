@@ -118,18 +118,38 @@ function SignInModal({ isOpen, onClose }) {
                             .then((response) => {
                                 if(response)
                                 {
-                                    console.log(response);                         
-                                    dispatch(
-                                        loginSuccess({
-                                            id: response?.id,
-                                            username: response?.name,
-                                            email: response?.email,
-                                            accessToken: response?.jwt,
-                                            role: response?.role,
-                                            flagActive: response?.flagActive,
-                                        }),
-                                    );
-                                    onClose();
+                                    if(response?.role == 0){
+                                        console.log(response);                         
+                                        dispatch(
+                                            loginSuccess({
+                                                id: response?.id,
+                                                username: response?.name,
+                                                email: response?.email,
+                                                accessToken: response?.jwt,
+                                                role: response?.role,
+                                                flagActive: response?.flagActive,
+                                            }),
+                                        );
+                                        onClose();
+                                        navigate('/quan-ly-phim/danh-sach')
+                                    }
+                                    else{
+                                        console.log(response);                         
+                                        dispatch(
+                                            loginSuccess({
+                                                id: response?.id,
+                                                username: response?.name,
+                                                email: response?.email,
+                                                accessToken: response?.jwt,
+                                                role: response?.role,
+                                                flagActive: response?.flagActive,
+                                            }),
+                                        );
+                                        onClose();
+                                        navigate('/')
+
+                                    }
+                                    
                                 }
                                 else{
                                     alert('Sai thông tin đăng nhập');
