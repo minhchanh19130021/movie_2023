@@ -89,7 +89,7 @@ function PersonalInformation() {
                                             className="rounded-lg bg-orange-500 px-4 py-1 transition-colors hover:bg-orange-600"
                                             onClick={(values) => {
                                                 const res = userService
-                                                    .getVerfyCode(user?.id)
+                                                    .getVerifyCode(user?.id)
                                                     .then((response) => {
                                                         console.log(response);
                                                         setHidden(true);
@@ -108,7 +108,7 @@ function PersonalInformation() {
                                                 className="rounded-lg bg-orange-500 px-4 py-1 transition-colors hover:bg-orange-600"
                                                 onClick={(values) => {
                                                     const resVerycode = userService
-                                                        .verfyCode(code, user?.email)
+                                                        .verifyCode(code, user?.email)
                                                         .then((response) => {
                                                             console.log(response);
                                                             alert('Xác thực thành công');
