@@ -1,5 +1,5 @@
 import request from '~/utils/requestUtils';
-import axios from 'axios';
+import axios from "axios";
 
 export const login = async (username, password) => {
     try {
@@ -13,9 +13,9 @@ export const login = async (username, password) => {
     }
 };
 
-export const register = async (username, email, password) => {
+export const register = async (username,email, password) => {
     try {
-        const res = await request.post('/api/auth/register', {
+        const res = await axios.post('/api/auth/register', {
             username,
             email,
             password,
@@ -26,9 +26,10 @@ export const register = async (username, email, password) => {
     }
 };
 
-export const getVerfyCode = async (userId) => {
+
+export const getVerifyCode = async (userId) => {
     try {
-        const res = await request.get('auth/get-verify-code?user_id=' + userId, {
+        const res = await axios.get('/api/auth/get-verify-code?user_id=' + userId, {
             userId,
         });
 
@@ -37,9 +38,9 @@ export const getVerfyCode = async (userId) => {
         console.log(error?.response?.data);
     }
 };
-export const verfyCode = async (code, email) => {
+export const verifyCode = async (code, email) => {
     try {
-        const res = await request.get('auth/verify?code=' + code + '&email=' + email, {
+        const res = await axios.get('/api/auth/verify?code=' + code + '&email=' + email, {
             code,
             email,
         });
