@@ -4,6 +4,7 @@ import { getMovieBySlug, increaseNumberOfViewsInMovie } from '~/services/movieSe
 import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { checkUserIdInOrder } from '~/services/orderServices';
+import { useSelector } from 'react-redux';
 
 function View() {
     const params = useParams();
@@ -11,6 +12,7 @@ function View() {
     const [slugMovie, setSlugMovie] = useState();
     const [movieId, setMovieId] = useState();
     const navigate = useNavigate();
+    const user = useSelector((state) => state?.authentication?.login?.currentUser);
 
     useEffect(() => {
         const currentSlugMovie = params.slug;
@@ -62,13 +64,19 @@ function View() {
                                     <p
                                         className="text-center"
                                         onClick={() => {
-                                            const load = checkUserIdInOrder(1);
+                                            if (!user?.accessToken) {
+                                                alert('cần đăng nhập để thực hiện chức năng đánh giá');
+                                                return;
+                                            }
+
+                                            const load = checkUserIdInOrder(user?.accessToken);
                                             load.then((e2) => {
                                                 if (e2?.status === 200) {
                                                     if (e2?.data === true) {
                                                         openVideo(e?.link);
                                                         increaseViewNumber();
                                                     } else {
+                                                        alert('cần đăng kí gói cước để thực hiện chức năng đánh giá');
                                                         navigate('/thanh-toan');
                                                     }
                                                 } else {

@@ -2,14 +2,15 @@ import request from '~/utils/requestUtils';
 
 const controller = 'order';
 
-export const saveNewOrder = async (orderId, userId) => {
+export const saveNewOrder = async (orderId, accessToken) => {
     const newOrder = {
         orderId: orderId,
-        userId: userId,
     };
     try {
-        const load = await request.post(`/${controller}/add`, newOrder, {
-            headers: {},
+        const load = await request.post(`/api/${controller}/add`, newOrder, {
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+            },
         });
         return load;
     } catch (error) {
@@ -17,9 +18,13 @@ export const saveNewOrder = async (orderId, userId) => {
     }
 };
 
-export const checkUserIdInOrder = async (userId) => {
+export const checkUserIdInOrder = async (accessToken) => {
     try {
-        const load = await request.get(`/${controller}/checkUserIdInOrder/${userId}`);
+        const load = await request.get(`/api/${controller}/checkUserIdInOrder`, {
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+            },
+        });
         return load;
     } catch (error) {
         return Promise.reject(error?.response?.data);
