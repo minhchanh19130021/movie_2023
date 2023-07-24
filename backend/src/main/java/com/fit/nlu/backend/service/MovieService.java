@@ -142,4 +142,8 @@ public class MovieService {
                 );
         return movieDetail;
     }
+
+    public List<Movie> suggestionsByUpdateDate(){
+        return repository.suggestionsByUpdatedDate();
+    }
 }

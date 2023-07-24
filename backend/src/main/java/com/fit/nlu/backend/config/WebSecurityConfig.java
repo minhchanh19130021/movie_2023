@@ -72,6 +72,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 //               .anyRequest().permitAll();
                .antMatchers("/api/auth/**", "signin/facebook").permitAll()
                .antMatchers("/login/oauth2/code/facebook").permitAll() // Allow access to Facebook login endpoint
+               .antMatchers("/api/movies/suggestions/*").permitAll()
                .anyRequest().authenticated()
                .and()
                .oauth2Login();
