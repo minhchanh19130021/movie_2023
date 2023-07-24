@@ -112,4 +112,9 @@ public class MovieController {
         MovieDetail movie = movieService.getMovieAndMovieDetailBySlug(slug);
         return ResponseEntity.ok().body(movie);
     }
+
+    @GetMapping("/suggestions/updated_date")
+    public ResponseEntity<List<Movie>> suggetionsByUpdateDate() throws CustomException {
+        return ResponseEntity.ok().body(movieService.suggestionsByUpdateDate());
+    }
 }
