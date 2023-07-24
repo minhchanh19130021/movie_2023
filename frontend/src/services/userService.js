@@ -1,5 +1,5 @@
 import request from '~/utils/requestUtils';
-import axios from "axios";
+import axios from 'axios';
 
 export const login = async (username, password) => {
     try {
@@ -13,9 +13,9 @@ export const login = async (username, password) => {
     }
 };
 
-export const register = async (username,email, password) => {
+export const register = async (username, email, password) => {
     try {
-        const res = await request.post('/auth/register', {
+        const res = await request.post('/api/auth/register', {
             username,
             email,
             password,
@@ -25,7 +25,6 @@ export const register = async (username,email, password) => {
         console.log(error?.response?.data);
     }
 };
-
 
 export const getVerfyCode = async (userId) => {
     try {

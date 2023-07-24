@@ -5,7 +5,7 @@ const controller = 'movies';
 export const increaseNumberOfViewsInMovie = async (movieId) => {
     console.log(movieId);
     try {
-        const load = await request.put(`/${controller}/increaseViewNumberInAMovie?movieId=${movieId}`, {
+        const load = await request.put(`/api/${controller}/increaseViewNumberInAMovie?movieId=${movieId}`, {
             headers: {},
         });
         return load;
@@ -16,7 +16,7 @@ export const increaseNumberOfViewsInMovie = async (movieId) => {
 
 export const getMovieBySlug = async (slug) => {
     try {
-        const load = await request.get(`/${controller}/getMovieBySlug/${slug}`, {
+        const load = await request.get(`/api/${controller}/getMovieBySlug/${slug}`, {
             headers: {},
         });
         return load;

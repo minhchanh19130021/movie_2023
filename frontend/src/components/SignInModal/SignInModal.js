@@ -29,31 +29,31 @@ function SignInModal({ isOpen, onClose }) {
             theme: 'light',
         });
     };
-        const handleFacebookLogin = (name) => {
-            // Handle the Facebook access token in your app
-            axios.get(`https://graph.facebook.com/me?access_token=${name}`)
-                .then((response) => {
-                    // Handle the response from the Facebook API
-                    console.log(response.data);
-                    // navigate to home page
-                    dispatch(
-                        loginSuccess({
-                            id: response?.id,
-                            username: response?.data?.name,
-                            email: response?.data?.email,
-                            accessToken: response?.jwt,
-                            role: response?.role,
-                            flagActive: response?.flagActive,
-                        }),
-                    );
-                    onClose();
-
-                })
-                .catch((error) => {
-                    // Handle the error
-                    console.error(error);
-                });
-        };
+    const handleFacebookLogin = (name) => {
+        // Handle the Facebook access token in your app
+        axios
+            .get(`https://graph.facebook.com/me?access_token=${name}`)
+            .then((response) => {
+                // Handle the response from the Facebook API
+                console.log(response.data);
+                // navigate to home page
+                dispatch(
+                    loginSuccess({
+                        id: response?.id,
+                        username: response?.data?.name,
+                        email: response?.data?.email,
+                        accessToken: response?.jwt,
+                        role: response?.role,
+                        flagActive: response?.flagActive,
+                    }),
+                );
+                onClose();
+            })
+            .catch((error) => {
+                // Handle the error
+                console.error(error);
+            });
+    };
     const openModal = () => {
         setIsModalOpen(true);
     };
@@ -116,9 +116,8 @@ function SignInModal({ isOpen, onClose }) {
                         const res = userService
                             .login(values.username, values.password)
                             .then((response) => {
-                                if(response)
-                                {
-                                    console.log(response);                         
+                                if (response) {
+                                    console.log(response);
                                     dispatch(
                                         loginSuccess({
                                             id: response?.id,
@@ -130,8 +129,7 @@ function SignInModal({ isOpen, onClose }) {
                                         }),
                                     );
                                     onClose();
-                                }
-                                else{
+                                } else {
                                     alert('Sai thông tin đăng nhập');
                                 }
                             })

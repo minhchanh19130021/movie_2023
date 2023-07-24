@@ -4,12 +4,16 @@ import com.fit.nlu.backend.entity.Movie;
 import com.fit.nlu.backend.entity.Review;
 import com.fit.nlu.backend.entity.User;
 import com.fit.nlu.backend.exception.CustomException;
+import com.fit.nlu.backend.model.CustomUserDetails;
 import com.fit.nlu.backend.repository.MovieRepository;
 import com.fit.nlu.backend.repository.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
@@ -36,14 +40,14 @@ public class ReviewService {
         Movie movie = movieRepository
                 .findById(review.getMovieId())
                 .orElseThrow(() -> new CustomException(HttpStatus.BAD_REQUEST, "cannot find movie Id"));
-        // tmp add
-        User user = new User();
-        user.setId(1);
-        review.setUser(user);
-        // tmp end
+
         Date date = new Date();
         review.setInsertedDate(date);
         review.setUpdatedDate(date);
+        CustomUserDetails userDetails =
+                (CustomUserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        review.setUser(userDetails.getUser());
+
         Review newReview = reviewRepository.save(review);
         movie.setReviewNumber(movie.getReviewNumber() + 1);
         movieRepository.save(movie);

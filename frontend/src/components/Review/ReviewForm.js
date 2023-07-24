@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { saveNewReview } from '~/services/reviewServices';
 import { useNavigate } from 'react-router-dom';
 import { checkUserIdInOrder } from '~/services/orderServices';
+import { useSelector } from 'react-redux';
 
 const { Rating } = require('../Rating');
 
@@ -9,22 +10,28 @@ const ReviewForm = ({ author, rating, content, reviewList, setReviewList, setIsS
     const [ratingValue, setRatingValue] = useState(0);
     const [reviewText, setReviewText] = useState('');
     const navigate = useNavigate();
+    const user = useSelector((state) => state?.authentication?.login?.currentUser);
 
     const handleReviewTextChange = (event) => {
         setReviewText(event.target.value);
     };
 
     function submitForm() {
+        if (!user?.accessToken) {
+            alert('cần đăng nhập để thực hiện chức năng đánh giá');
+            return;
+        }
         if (reviewText === '' || ratingValue === 0) {
             return;
         }
 
-        const isExist = checkUserIdInOrder(1);
+        const isExist = checkUserIdInOrder(user?.accessToken);
+
         isExist
             .then((e) => {
                 if (e?.status === 200) {
                     if (e?.data === true) {
-                        const load = saveNewReview(ratingValue, reviewText);
+                        const load = saveNewReview(ratingValue, reviewText, user?.accessToken);
                         load.then((e) => {
                             if (e.status === 200) {
                                 setReviewList([e?.data, ...reviewList]);
@@ -35,9 +42,11 @@ const ReviewForm = ({ author, rating, content, reviewList, setReviewList, setIsS
                                 navigate('/server-error');
                             }
                         }).catch((e) => {
+                            console.log(e);
                             navigate('/server-error');
                         });
                     } else {
+                        alert('cần đăng kí gói cước để thực hiện chức năng đánh giá');
                         navigate('/thanh-toan');
                     }
                 } else {

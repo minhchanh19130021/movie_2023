@@ -14,6 +14,6 @@ public class AddOrderRequest {
     @JsonProperty("orderId")
     private String orderId;
 
-    @JsonProperty("userId")
-    private int userId;
+//    @JsonProperty("userId")
+//    private int userId;
 }
