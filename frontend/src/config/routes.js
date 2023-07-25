@@ -14,5 +14,7 @@ const routes = {
     movieCreate: 'quan-ly-phim/them-phim',
     movieDetailCreate: 'quan-ly-phim/them-chi-tiet-phim',
     movieList: 'quan-ly-phim/danh-sach',
+    movieUpload: 'upload',
+    episodeUpload: 'episode-upload'
 };
 export default routes;

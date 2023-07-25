@@ -14,6 +14,7 @@ import { NotFound } from '~/pages/NofFound';
 import { ServerError } from '~/pages/ServerError';
 import { SearchResult } from '~/pages/SearchResult';
 import { Order } from '~/pages/Home/Order';
+import { Upload } from '~/pages/Upload';
 
 const publicRoutes = [
     { path: config.routes.home, component: Home },
@@ -34,6 +35,8 @@ const publicRoutes = [
     { path: config.routes.movieCreate, component: MovieCreate },
     { path: config.routes.movieDetailCreate, component: MovieDetailCreate },
     { path: config.routes.movieList, component: MovieList },
+    { path: config.routes.movieList, component: MovieList},
+    { path: config.routes.movieUpload, component: Upload},
 
     { path: config.routes.notFound, component: NotFound },
     { path: config.routes.serverError, component: ServerError },

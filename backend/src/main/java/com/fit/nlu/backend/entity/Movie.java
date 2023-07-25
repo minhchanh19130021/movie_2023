@@ -64,6 +64,7 @@ public class Movie {
     private int viewNumber = 0;
 
     @Version
+    @Column(name = "version")
     private Long version;
 
     @OneToMany(mappedBy = "movie")
