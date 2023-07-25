@@ -23,6 +23,10 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.*;
 import java.util.List;
 import java.util.Optional;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 
 @Service
 public class MovieService {
@@ -145,5 +149,81 @@ public class MovieService {
 
     public List<Movie> suggestionsByUpdateDate(){
         return repository.suggestionsByUpdatedDate();
+    }
+
+    public void importMoviesFromCsv(List<String[]> lines) {
+        List<Movie> movies = new ArrayList<>();
+        List<MovieDetail> movieDetails = new ArrayList<>();
+
+        boolean isFirstLine = true;
+
+        for (String[] line : lines) {
+            if (isFirstLine) {
+                isFirstLine = false;
+                continue;
+            }
+
+            Movie movie = createMovieFromCsvLine(line);
+            movies.add(movie);
+            repository.saveAll(movies);
+            MovieDetail movieDetail = createMovieDetailFromCsvLine(line, movie.getId());
+            movieDetails.add(movieDetail);
+        }
+        movieDetailRepository.saveAll(movieDetails);
+    }
+
+    private Movie createMovieFromCsvLine(String[] line) {
+        Date d = convertStringToDate(line[1].toString());
+        Movie movie = new Movie();
+        movie.setSlug(generateSlug(line[0]));
+        movie.setName(line[0]);
+        movie.setReleaseDate(d);
+        movie.setType(line[2]);
+        movie.setStatus(line[3]);
+        movie.setPoster(line[4]);
+        movie.setSubName(line[5]);
+        movie.setInsertedDate(new Date());
+        movie.setUpdatedDate(new Date());
+        movie.setReviewNumber(0);
+        movie.setCommentNumber(0);
+        movie.setViewNumber(0);
+        movie.setVersion(0L);
+        System.out.println(line[1]);
+        return movie;
+    }
+
+    private MovieDetail createMovieDetailFromCsvLine(String[] line, Integer movieId) {
+        MovieDetail movieDetail = new MovieDetail();
+        movieDetail.setMovieId(movieId);
+        movieDetail.setSummary(line[6]);
+        movieDetail.setTrailerUrl(line[7]);
+        movieDetail.setLang(line[8]);
+        movieDetail.setQuality(line[9]);
+        movieDetail.setEpisodeTotal(1);
+        movieDetail.setEpisodeCurrent(1);
+        movieDetail.setDuration(line[12]);
+        movieDetail.setView(0);
+        movieDetail.setCategory(line[14]);
+        movieDetail.setCountry(line[15]);
+        movieDetail.setActor(line[16]);
+        movieDetail.setDirector(line[17]);
+        movieDetail.setInsertedDate(new Date());
+        movieDetail.setUpdatedDate(new Date());
+        return movieDetail;
+    }
+
+    public static Date convertStringToDate(String dateString) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            return sdf.parse(dateString);
+        } catch (ParseException e) {
+            System.out.println(dateString);
+            throw new RuntimeException(e);
+        }
+    }
+
+    private String generateSlug(String name) {
+        String slug = name.toLowerCase().replaceAll("[^a-z0-9\\s-]", "").replaceAll(" ", "-");
+        return slug;
     }
 }

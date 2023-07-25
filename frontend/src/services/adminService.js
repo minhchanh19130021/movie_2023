@@ -1,4 +1,5 @@
 import request from '~/utils/requestUtils';
+import axios from "axios";
 
 export const getMoviesNonDetail = async () => {
     try {
@@ -83,5 +84,15 @@ export const getMoviesInAdmin = async (movieName, offsetPage, pageSize, sortBy) 
         return load;
     } catch (error) {
         return Promise.reject(error?.response?.data);
+    }
+};
+export const importMovie = async (formData) => {
+    try {
+        const res = await axios.post('/api/movies/import', {
+            formData
+        });
+        return res?.data;
+    } catch (error) {
+        console.log(error?.response?.data);
     }
 };

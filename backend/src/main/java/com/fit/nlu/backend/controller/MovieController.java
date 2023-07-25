@@ -11,10 +11,14 @@ import com.fit.nlu.backend.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 
 @RestController()
 @RequestMapping("/api/movies")
@@ -25,8 +29,9 @@ public class MovieController {
 
     @GetMapping("/getMovies")
     public ResponseEntity<?> getMovies() {
-        return ResponseEntity.ok( movieService.getMovies());
+        return ResponseEntity.ok(movieService.getMovies());
     }
+
     @GetMapping("/get-movies-non-detail")
     public ResponseEntity<?> getMoviesNoneDetail() {
         return ResponseEntity.ok(movieService.getMoviesNonDetail());
@@ -116,5 +121,27 @@ public class MovieController {
     @GetMapping("/suggestions/updated_date")
     public ResponseEntity<List<Movie>> suggetionsByUpdateDate() throws CustomException {
         return ResponseEntity.ok().body(movieService.suggestionsByUpdateDate());
+    }
+
+    @PostMapping("/import")
+    public ResponseEntity<String> importMovies(@RequestParam("file") MultipartFile file) {
+        try {
+            List<String[]> lines = readCsvFile(file.getInputStream());
+            movieService.importMoviesFromCsv(lines);
+            return ResponseEntity.ok("CSV import successful.");
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to import CSV: " + e.getMessage());
+        }
+    }
+
+    private List<String[]> readCsvFile(InputStream inputStream) throws IOException {
+        List<String[]> lines = new ArrayList<>();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
+        String line;
+        while ((line = reader.readLine()) != null) {
+            String[] data = line.split(",");
+            lines.add(data);
+        }
+        return lines;
     }
 }
