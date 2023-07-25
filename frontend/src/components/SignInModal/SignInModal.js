@@ -193,13 +193,6 @@ function SignInModal({ isOpen, onClose }) {
                 <div className="">
                     <p className="mb-6 text-center text-sm">Hoặc đăng nhập bằng</p>
                     <div className="flex items-center justify-center">
-                        {/*<button onClick={loginFB}>*/}
-                        {/*    <img*/}
-                        {/*        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAALaSURBVHgBzZg/aBNxFMffpQlJVUo6tlA4HZtChU7qYASFCBbqYF3jYEcVFNwUO7fYuHbRTZFIwMFCA01BO4iSCsaxFxHqaBCEtGn7831zd+nlmjTvlzRpP/Ca5pd3d9+8P7/LO4M0UUqZ/DLFNs4WZ4s6BkpsRcdW2TKGYRSpG7CQJNuK0iePY+mo4JPF2SzVOVZHwvjgKNtzdfTgnFFdMaayQ90tLGXXoliMpbqP1VKUstNkqd6BLNSlL+DT9JTNpN5x3rnmQZTd1sdF3NVheARZ1NvoeCnyBnoW/wQdMUldMWsbu7T0o0JLhV369WevujY2HKDYUB89vBqmkUFD53RopCSLemk4gvJk57Mlf8uK5pa3aPFT5VC/u5dCNDsZIQ1yLOiKoezWs6RHXXvxj75v7ol8EbH0zCkaiIijZaLLpqTeT96XG4oZGQzQ7I0wfX58hpbvnabpiVB1Hb6IpgY3UUOXJZ6ok2ZpQhTcmsGrt35wTCIWoovn+kjAOASZEs+57HbD9dhQoCYAhb74cZsKv+ujiOIXCooHpIL8F3EZ6N+Pxnx2iy++U+u6miDuRCFRCBLdeQub4pMewC/wEKJBapMLnIJ3XDte0s57FH+rbaEZiFBJ4ohOkuJPL+pMSEksKDFaX5QFbukHb8vVInaZ58LHmn9rGBsWFTQoQtCqxBOt6wU79puvFfrAReyytrFTXcNnXtx9ScBPCFqXeKJtE6P6JXd7QrwHgRwEZaTeqemIVi1Vd/DJMGmQCThzU07ijXtSeqZflAJ0Yfa+1n1sHVrcHLwie+hrCb516laErseC9PpLhbyXwyYJIY/454dGmlxS+HPifqB5C+IOHR/PGq5ylBZU71loKlPZY1A3B0Q/lmo1xaqTNCj2UFReLMaXvm7UFM6p97DBJwwDpKU6x1KegbBjHGHtFPyK0ngupDXNOcJMsicVDAemY95HerAc2zdq45Hef4npH9ivTtQ/AAAAAElFTkSuQmCC"*/}
-                        {/*        alt="facebook-img-login"*/}
-                        {/*        className="mx-4 cursor-pointer"*/}
-                        {/*    />*/}
-                        {/*</button>*/}
                         <FacebookLoginButton onFacebookLogin={handleFacebookLogin} />
                         <button>
                             <img
