@@ -6,13 +6,7 @@ import HotBanner from './HotBanner/HotBanner';
 import ReleaseSlider from './ReleaseSlider/ReleaseSlider';
 
 function Home() {
-    useEffect(() => {
-        const fetchPost = async () => {
-            const result = await getPosts();
-            console.log(result);
-        };
-        fetchPost();
-    }, []);
+  
 
     return (
         <div className="max-w-full">

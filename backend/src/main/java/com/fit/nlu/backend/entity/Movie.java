@@ -8,6 +8,7 @@ import org.hibernate.annotations.OptimisticLocking;
 import javax.persistence.*;
 
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Date;
 
@@ -37,7 +38,7 @@ public class Movie {
     private String subName;
 
     @Column(name = "release_date")
-    private Date releaseDate;
+    private LocalDate releaseDate;
 
     @Column(name = "type")
     private String type;
