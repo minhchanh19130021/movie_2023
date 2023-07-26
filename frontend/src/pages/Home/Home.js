@@ -4,6 +4,8 @@ import BannerSlider from './BannerSlider/BannerSlider';
 import CategorySlider from './CategorySlider.js/CategorySlider';
 import HotBanner from './HotBanner/HotBanner';
 import ReleaseSlider from './ReleaseSlider/ReleaseSlider';
+import MovieSuggetions from './MovieSuggetions/MovieSuggetions';
+
 
 function Home() {
     useEffect(() => {
@@ -13,6 +15,9 @@ function Home() {
         };
         fetchPost();
     }, []);
+
+
+   
 
     return (
         <div className="max-w-full">
@@ -28,6 +33,9 @@ function Home() {
                 </div>
                 <div className="">
                     <HotBanner />
+                </div>
+                <div className="">
+                    <MovieSuggetions name="Phim mới cập nhật" />
                 </div>
             </div>
         </div>
