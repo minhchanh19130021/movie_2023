@@ -1,9 +1,11 @@
 package com.fit.nlu.backend.utils;
 
+import org.springframework.stereotype.Component;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-
+@Component
 public class DateUtils {
 
     public static final String[] SUPPORTED_DATE_FORMATS = {

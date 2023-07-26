@@ -1,4 +1,3 @@
-import request from '~/utils/requestUtils';
 import axios from "axios";
 
 export const getMovieByKeyword = async (keyword, page, size, sortBy, sortOrder) => {
