@@ -7,6 +7,8 @@ import com.fit.nlu.backend.exception.CustomException;
 import com.fit.nlu.backend.repository.EpisodeRepository;
 import com.fit.nlu.backend.repository.MovieDetailsRepository;
 import com.fit.nlu.backend.repository.MovieRepository;
+import com.fit.nlu.backend.utils.DateUtils;
+import com.fit.nlu.backend.utils.SlugUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -42,6 +44,12 @@ public class MovieService {
 
     @PersistenceContext
     private EntityManager entityManager;
+
+    @Autowired
+    private SlugUtils slugUtils;
+
+    @Autowired
+    private DateUtils dateUtils;
 
     public List<Movie> getMovies() {
         return repository.findAll();
@@ -152,8 +160,8 @@ public class MovieService {
     }
 
     public void importMoviesFromCsv(List<String[]> lines) {
-        List<Movie> movies = new ArrayList<>();
-        List<MovieDetail> movieDetails = new ArrayList<>();
+        List<Movie> moviesToSave = new ArrayList<>();
+        List<MovieDetail> movieDetailsToSave = new ArrayList<>();
 
         boolean isFirstLine = true;
 
@@ -164,20 +172,27 @@ public class MovieService {
             }
 
             Movie movie = createMovieFromCsvLine(line);
-            movies.add(movie);
-            repository.saveAll(movies);
-            MovieDetail movieDetail = createMovieDetailFromCsvLine(line, movie.getId());
-            movieDetails.add(movieDetail);
+            moviesToSave.add(movie);
         }
-        movieDetailRepository.saveAll(movieDetails);
+
+        List<Movie> savedMovies = repository.saveAll(moviesToSave);
+
+        for (int i = 0; i < lines.size() - 1; i++) {
+            String[] line = lines.get(i + 1); // Skip the header line
+
+            MovieDetail movieDetail = createMovieDetailFromCsvLine(line, savedMovies.get(i).getId());
+            movieDetailsToSave.add(movieDetail);
+        }
+
+        movieDetailRepository.saveAll(movieDetailsToSave);
     }
 
+
     private Movie createMovieFromCsvLine(String[] line) {
-        Date d = convertStringToDate(line[1].toString());
         Movie movie = new Movie();
-        movie.setSlug(generateSlug(line[0]));
+        movie.setSlug(slugUtils.createSlug(line[0]));
         movie.setName(line[0]);
-        movie.setReleaseDate(d);
+        movie.setReleaseDate(dateUtils.convertStringToDate(line[1]));
         movie.setType(line[2]);
         movie.setStatus(line[3]);
         movie.setPoster(line[4]);
@@ -210,20 +225,5 @@ public class MovieService {
         movieDetail.setInsertedDate(new Date());
         movieDetail.setUpdatedDate(new Date());
         return movieDetail;
-    }
-
-    public static Date convertStringToDate(String dateString) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        try {
-            return sdf.parse(dateString);
-        } catch (ParseException e) {
-            System.out.println(dateString);
-            throw new RuntimeException(e);
-        }
-    }
-
-    private String generateSlug(String name) {
-        String slug = name.toLowerCase().replaceAll("[^a-z0-9\\s-]", "").replaceAll(" ", "-");
-        return slug;
     }
 }
