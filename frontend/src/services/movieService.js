@@ -1,4 +1,5 @@
 import request from '~/utils/requestUtils';
+import axios from 'axios';
 
 const controller = 'movies';
 
@@ -23,4 +24,16 @@ export const getMovieBySlug = async (slug) => {
     } catch (error) {
         return Promise.reject(error?.response?.data);
     }
+};
+
+
+// suggest movie at home page
+export const suggestMovie = async () => {
+    try {
+        const res = await axios.get('/api/movies/suggestions/updated_date');
+        return res?.data;
+    } catch (error) {
+        console.log(error?.response?.data);
+    }
+
 };
