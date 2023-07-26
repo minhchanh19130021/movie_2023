@@ -1,14 +1,14 @@
+import axios from 'axios';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import * as Yup from 'yup';
+import { loginSuccess } from '~/redux/authSlice';
 import * as userService from '~/services/userService';
-import { SignUpModal } from '../SignUpModal';
-import { loginSuccess, logoutSuccess } from '~/redux/authSlice';
-import axios from 'axios';
 import FacebookLoginButton from '../Button/FacebookLoginButton';
+import { SignUpModal } from '../SignUpModal';
 function SignInModal({ isOpen, onClose }) {
     const dispatch = useDispatch();
     const [isModalOpen, setIsModalOpen] = useState(false);

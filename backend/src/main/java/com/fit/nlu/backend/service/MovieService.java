@@ -203,7 +203,6 @@ public class MovieService {
         movie.setCommentNumber(0);
         movie.setViewNumber(0);
         movie.setVersion(0L);
-        System.out.println(line[1]);
         return movie;
     }
 
