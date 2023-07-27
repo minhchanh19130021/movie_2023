@@ -26,7 +26,9 @@ public interface MovieRepository extends JpaRepository<Movie, Integer> {
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     Optional<Movie> findWithLockingById(int id);
 
-//    @Query(value = "select * from movie order by updated_date", nativeQuery = true)
-@Query("SELECT m FROM movie m ORDER BY m.updatedDate desc ")
+    @Query("SELECT m FROM movie m ORDER BY m.updatedDate desc ")
     List<Movie> suggestionsByUpdatedDate();
+
+    @Query(value = "select * from movie where movie.type like %:type%", nativeQuery = true)
+    Page<Movie> searchMoviesByType(@Param("type") String type, Pageable pageable);
 }

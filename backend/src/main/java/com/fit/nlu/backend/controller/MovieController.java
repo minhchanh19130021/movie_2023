@@ -1,10 +1,8 @@
 package com.fit.nlu.backend.controller;
 
-import com.fit.nlu.backend.entity.Comment;
 import com.fit.nlu.backend.entity.Movie;
 import com.fit.nlu.backend.entity.MovieDetail;
 import com.fit.nlu.backend.exception.CustomException;
-import com.fit.nlu.backend.request.MovieCreateRequest;
 import com.fit.nlu.backend.response.MoviePageResponse;
 import org.springframework.data.domain.Page;
 import com.fit.nlu.backend.service.MovieService;
@@ -143,5 +141,25 @@ public class MovieController {
             lines.add(data);
         }
         return lines;
+    }
+
+    @GetMapping("/mType")
+    public ResponseEntity<?> searchMoviesByType(
+            @RequestParam("type") String type,
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "size", defaultValue = "3") int size,
+            @RequestParam(defaultValue = "inserted_date") String sortBy,
+            @RequestParam(defaultValue = "asc") String sortOrder
+                                               ) {
+        Page<Movie> moviePage = movieService.searchMoviesByType(type, page - 1, size, sortBy, sortOrder);
+        MoviePageResponse response = new MoviePageResponse();
+        response.setContent(moviePage.getContent());
+        response.setLast(moviePage.isLast());
+        response.setFirst(moviePage.isFirst());
+        response.setTotalElements(moviePage.getTotalElements());
+        response.setTotalPages(moviePage.getTotalPages());
+        response.setSize(moviePage.getSize());
+        response.setCurrentPage(moviePage.getNumber() + 1);
+        return ResponseEntity.ok(response);
     }
 }
