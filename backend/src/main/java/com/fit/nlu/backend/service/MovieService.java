@@ -139,9 +139,9 @@ public class MovieService {
     @Transactional(propagation = Propagation.REQUIRED)
     public int increaseNumberOfViewsInMovie(int movieId) throws CustomException {
         Movie movie = repository.findWithLockingById(movieId).orElseThrow(() ->
-                                                                       new CustomException(HttpStatus.NOT_FOUND, "can" +
-                                                                               " not find movie by movie id")
-                                                              );
+                                                                                  new CustomException(HttpStatus.NOT_FOUND, "can" +
+                                                                                          " not find movie by movie id")
+                                                                         );
         movie.setViewNumber(movie.getViewNumber() + 1);
         repository.save(movie);
         return movie.getViewNumber() + 1;
@@ -150,12 +150,12 @@ public class MovieService {
     public MovieDetail getMovieAndMovieDetailBySlug(String slug) throws CustomException {
         MovieDetail movieDetail = movieDetailRepository.findMovieDetailBySlug(slug)
                 .orElseThrow(() ->
-                    new CustomException(HttpStatus.NOT_FOUND, "not found movie by slug")
-                );
+                                     new CustomException(HttpStatus.NOT_FOUND, "not found movie by slug")
+                            );
         return movieDetail;
     }
 
-    public List<Movie> suggestionsByUpdateDate(){
+    public List<Movie> suggestionsByUpdateDate() {
         return repository.suggestionsByUpdatedDate();
     }
 
@@ -172,7 +172,9 @@ public class MovieService {
             }
 
             Movie movie = createMovieFromCsvLine(line);
+//            repository.save(movie);
             moviesToSave.add(movie);
+
         }
 
         List<Movie> savedMovies = repository.saveAll(moviesToSave);
@@ -224,5 +226,14 @@ public class MovieService {
         movieDetail.setInsertedDate(new Date());
         movieDetail.setUpdatedDate(new Date());
         return movieDetail;
+    }
+
+    public Page<Movie> searchMoviesByType(String type, int page, int size, String sortBy, String sortOrder) {
+        Sort.Direction sortDirection = sortOrder.equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, sortBy));
+        if (type == null || type.trim().isEmpty()) {
+            return repository.findAll(pageable);
+        }
+        return repository.searchMoviesByType(type, pageable);
     }
 }

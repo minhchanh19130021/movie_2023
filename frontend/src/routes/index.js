@@ -12,6 +12,7 @@ import { NotFound } from '~/pages/NofFound';
 import { Search } from '~/pages/Search';
 import { SearchResult } from '~/pages/SearchResult';
 import { ServerError } from '~/pages/ServerError';
+import { TypeSearch } from '~/pages/TypeSearch';
 import { View } from '~/pages/View';
 
 const publicRoutes = [
@@ -20,6 +21,8 @@ const publicRoutes = [
     { path: config.routes.search, component: Search },
     { path: config.routes.searchResult, component: SearchResult },
     { path: config.routes.videoView, component: View },
+    { path: config.routes.typeSearch, component: TypeSearch },
+
 
     // exception route
     { path: config.routes.notFound, component: NotFound },
