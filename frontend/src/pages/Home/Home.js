@@ -1,18 +1,14 @@
-import { useEffect } from 'react';
-import { getPosts } from '~/services/postServices';
 import BannerSlider from './BannerSlider/BannerSlider';
 import CategorySlider from './CategorySlider.js/CategorySlider';
 import HotBanner from './HotBanner/HotBanner';
 import ReleaseSlider from './ReleaseSlider/ReleaseSlider';
+import MovieSuggetions from './MovieSuggetions/MovieSuggetions';
+
 
 function Home() {
-    useEffect(() => {
-        const fetchPost = async () => {
-            const result = await getPosts();
-            console.log(result);
-        };
-        fetchPost();
-    }, []);
+
+
+   
 
     return (
         <div className="max-w-full">
@@ -28,6 +24,9 @@ function Home() {
                 </div>
                 <div className="">
                     <HotBanner />
+                </div>
+                <div className="">
+                    <MovieSuggetions name="Phim mới cập nhật" />
                 </div>
             </div>
         </div>

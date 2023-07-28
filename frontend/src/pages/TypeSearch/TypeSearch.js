@@ -1,32 +1,24 @@
 import { useEffect, useState } from 'react';
 import { NavLink, useNavigate, useParams } from 'react-router-dom';
-import * as searchService from '~/services/searchService';
-import Search from '../Search/Search';
+import * as typesService from '~/services/typeService';
 
-function SearchResult() {
-    const [searchValue, setSearchValue] = useState('');
+function TypeSearch() {
     const [searchResult, setSearchResult] = useState([]);
     const navigate = useNavigate();
 
-    const { tuKhoa, trang } = useParams();
-    const keywordFromUrl = tuKhoa.split('=')[1];
+    const { theLoai, trang } = useParams();
+    const keywordFromUrl = theLoai.split('=')[1];
     const pageValue = trang.split('=')[1];
 
-    const [totalProduct, setTotalProduct] = useState(1);
-    const pageSize = 8;
+    // const [totalProduct, setTotalProduct] = useState(1);
+    const pageSize = 2;
     const [numberPage, setNumberPage] = useState([]);
-
     useEffect(() => {
         const fetchApi = async () => {
-            const res = await searchService.getMovieByKeyword(
-                keywordFromUrl,
-                pageValue,
-                pageSize,
-                'release_date',
-                'asc',
-            );
+            const res = await typesService.getMoviesByType(keywordFromUrl, pageValue, pageSize, 'inserted_date', 'asc');
             setSearchResult(res?.content);
-            setTotalProduct(res?.totalElements);
+            console.log(res?.content);
+            // setTotalProduct(res?.totalElements);
             const totalPages = Math.ceil(res?.totalElements / pageSize);
             setNumberPage(Array.from({ length: totalPages }, (_, index) => index + 1));
         };
@@ -35,29 +27,24 @@ function SearchResult() {
 
     const prevPage = () => {
         const currentPage = parseInt(pageValue) - 1;
-        navigate(`/tim-kiem/tu-khoa=${keywordFromUrl}/trang=${currentPage}`);
+        navigate(`/the-loai=${keywordFromUrl}/trang=${currentPage}`);
     };
 
     const nextPage = () => {
         const currentPage = parseInt(pageValue) + 1;
-        navigate(`/tim-kiem/tu-khoa=${keywordFromUrl}/trang=${currentPage}`);
+        navigate(`/the-loai=${keywordFromUrl}/trang=${currentPage}`);
     };
 
     return (
         <div className="max-w-full">
             <div className="padding-responsive padding-responsive mx-auto max-w-[1200px] ">
-                <Search />
                 {searchResult?.length > 0 ? (
                     <>
                         <div className="grid grid-cols-5 gap-4">
                             {searchResult?.map((e) => {
                                 return (
                                     <NavLink to={'/'} className="mb-12 rounded-lg !text-white">
-                                        <img
-                                            src={e?.poster}
-                                            alt="result-search-img"
-                                            className="mb-2 rounded-lg"
-                                        />
+                                        <img src={e?.poster} alt="result-search-img" className="mb-2 rounded-lg" />
                                         {e?.name}
                                     </NavLink>
                                 );
@@ -97,7 +84,7 @@ function SearchResult() {
                                                 : 'transition-all hover:bg-[#dbdbdb] hover:text-black'
                                         }`}
                                         onClick={() => {
-                                            navigate(`/tim-kiem/tu-khoa=${keywordFromUrl}/trang=${pageNumber}`);
+                                            navigate(`/the-loai=${keywordFromUrl}/trang=${pageNumber}`);
                                         }}
                                     >
                                         {pageNumber}
@@ -129,10 +116,9 @@ function SearchResult() {
                     </>
                 ) : (
                     <div>
-                        <h3>
-                            Không tìm thấy kết quả cho từ khóa{' '}
-                            <strong className="text-orange-500">{keywordFromUrl}</strong>
-                        </h3>
+                        {/* <h3>
+                            Không tìm thấy kết quả cho từ khóa <strong className='text-orange-500'>{keywordFromUrl}</strong>
+                        </h3> */}
                     </div>
                 )}
             </div>
@@ -140,4 +126,4 @@ function SearchResult() {
     );
 }
 
-export default SearchResult;
+export default TypeSearch;

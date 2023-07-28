@@ -6,7 +6,6 @@ import { SignUpModal } from '~/components/SignUpModal';
 import { logoutSuccess } from '~/redux/authSlice';
 
 function Header() {
-
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isModalOpenUp, setIsModalOpenUp] = useState(false);
     const navigate = useNavigate();
@@ -29,14 +28,10 @@ function Header() {
     };
     useEffect(() => {
         if (isModalOpen) {
-            // Thêm lớp CSS khi modal được mở
             document.body.classList.add('modal-open');
         } else {
-            // Xóa lớp CSS khi modal được đóng
             document.body.classList.remove('modal-open');
         }
-
-        // Cleanup effect
         return () => {
             document.body.classList.remove('modal-open');
         };
@@ -92,32 +87,32 @@ function Header() {
                         <img src="https://fptplay.vn/images/logo-2.png" alt="fpt-logo" className="h-[29px] w-[125px]" />
                     </NavLink>
                     <div className="menus">
-                        <NavLink to="/menu-item" className="px-3 py-3 text-base font-bold hover:text-orange-500">
+                        <NavLink to="/" className="px-3 py-3 text-base font-bold hover:text-orange-500">
                             Trang chủ
                         </NavLink>
                         <NavLink
-                            to="/menu-item"
+                            to="/the-loai=hành động/trang=1"
                             className="px-3 py-3 text-base font-medium text-[#9b9b9b] hover:text-orange-500"
                         >
-                            Truyền hình
+                            Hành động
                         </NavLink>
                         <NavLink
-                            to="/menu-item"
+                            to="/the-loai=tình cảm/trang=1"
                             className="px-3 py-3 text-base font-medium text-[#9b9b9b] hover:text-orange-500"
                         >
-                            Phim lẻ
+                            Tình cảm
                         </NavLink>
                         <NavLink
-                            to="/menu-item"
+                            to="/the-loai=gia đình/trang=1"
                             className="px-3 py-3 text-base font-medium text-[#9b9b9b] hover:text-orange-500"
                         >
-                            Phim bộ
+                            Gia đình
                         </NavLink>
                         <NavLink
-                            to="/menu-item"
+                            to="/the-loai=kinh dị/trang=1"
                             className="px-3 py-3 text-base font-medium text-[#9b9b9b] hover:text-orange-500"
                         >
-                            Thể thao
+                            Kinh dị
                         </NavLink>
                     </div>
                 </div>

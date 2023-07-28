@@ -1,5 +1,5 @@
-import request from '~/utils/requestUtils';
 import axios from "axios";
+import request from '~/utils/requestUtils';
 
 export const getMoviesNonDetail = async () => {
     try {

@@ -9,6 +9,7 @@ const routes = {
     notFound: 'not-found',
     serverError: 'server-error',
     order: 'thanh-toan',
+    typeSearch: '/:theLoai/:trang',
 
     // admin
     movieCreate: 'quan-ly-phim/them-phim',
