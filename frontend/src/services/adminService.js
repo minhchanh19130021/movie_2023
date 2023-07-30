@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from 'axios';
 import request from '~/utils/requestUtils';
 
 export const getMoviesNonDetail = async () => {
@@ -76,7 +76,7 @@ export const movieDeatailCreate = async (
 export const getMoviesInAdmin = async (movieName, offsetPage, pageSize, sortBy) => {
     try {
         const load = await request.get(
-            `/movies/getMoviesInAdmin?movieName=${movieName}&offsetPage=${offsetPage}&pageSize=${pageSize}&sortBy=${sortBy}`,
+            `/api/movies/getMoviesInAdmin?movieName=${movieName}&offsetPage=${offsetPage}&pageSize=${pageSize}&sortBy=${sortBy}`,
             {
                 headers: {},
             },

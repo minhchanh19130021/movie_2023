@@ -14,6 +14,7 @@ import { SearchResult } from '~/pages/SearchResult';
 import { ServerError } from '~/pages/ServerError';
 import { TypeSearch } from '~/pages/TypeSearch';
 import { View } from '~/pages/View';
+import { WatchMovie } from '~/pages/WatchMovie';
 
 const publicRoutes = [
     // basic route
@@ -22,7 +23,7 @@ const publicRoutes = [
     { path: config.routes.searchResult, component: SearchResult },
     { path: config.routes.videoView, component: View },
     { path: config.routes.typeSearch, component: TypeSearch },
-
+    { path: config.routes.watchMovie, component: WatchMovie },
 
     // exception route
     { path: config.routes.notFound, component: NotFound },
@@ -42,4 +43,3 @@ const privateRoutes = [
     { path: config.routes.movieUpload, component: Upload },
 ];
 export { privateRoutes, publicRoutes };
-
