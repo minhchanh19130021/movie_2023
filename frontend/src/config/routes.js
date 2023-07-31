@@ -10,12 +10,13 @@ const routes = {
     serverError: 'server-error',
     order: 'thanh-toan',
     typeSearch: '/:theLoai/:trang',
+    watchMovie: 'xem-phim',
 
     // admin
     movieCreate: 'quan-ly-phim/them-phim',
     movieDetailCreate: 'quan-ly-phim/them-chi-tiet-phim',
     movieList: 'quan-ly-phim/danh-sach',
     movieUpload: 'upload',
-    episodeUpload: 'episode-upload'
+    episodeUpload: 'episode-upload',
 };
 export default routes;

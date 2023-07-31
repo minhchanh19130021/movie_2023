@@ -13,6 +13,8 @@ import lombok.Setter;
 public class AddOrderRequest {
     @JsonProperty("orderId")
     private String orderId;
+    @JsonProperty("typeOrder")
+    private int typeOrder;
 
 //    @JsonProperty("userId")
 //    private int userId;
