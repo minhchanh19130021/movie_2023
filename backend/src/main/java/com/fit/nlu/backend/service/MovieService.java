@@ -156,7 +156,12 @@ public class MovieService {
     }
 
     public List<Movie> suggestionsByUpdateDate() {
-        return repository.suggestionsByUpdatedDate();
+
+        List<Movie> list = repository.suggestionsByUpdatedDate();
+        int size = list.size();
+
+         if(size>= 8) return list.subList(0, 8);
+        else return list.subList(0, 4);
     }
 
     public void importMoviesFromCsv(List<String[]> lines) {
