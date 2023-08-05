@@ -29,6 +29,9 @@ public interface MovieRepository extends JpaRepository<Movie, Integer> {
     @Query(value = "SELECT * FROM movie m ORDER BY m.updated_date desc ",nativeQuery = true)
     List<Movie> suggestionsByUpdatedDate();
 
+    @Query(value = "SELECT * FROM movie m ORDER BY m.inserted_date desc ",nativeQuery = true)
+    List<Movie> suggestionsByInsertedDate();
+
     @Query(value = "select * from movie where movie.type like %:type%", nativeQuery = true)
     Page<Movie> searchMoviesByType(@Param("type") String type, Pageable pageable);
 }
