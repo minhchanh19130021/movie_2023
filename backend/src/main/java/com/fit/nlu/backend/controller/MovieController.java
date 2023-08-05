@@ -116,9 +116,10 @@ public class MovieController {
         return ResponseEntity.ok().body(movie);
     }
 
-    @GetMapping("/suggestions/updated_date")
-    public ResponseEntity<List<Movie>> suggetionsByUpdateDate() throws CustomException {
-        return ResponseEntity.ok().body(movieService.suggestionsByUpdateDate());
+    @GetMapping("/suggestions/{byField}")
+    public ResponseEntity<List<Movie>> suggestionsMovie(@PathVariable String byField) throws CustomException {
+        System.out.println(byField);
+        return ResponseEntity.ok().body(movieService.suggestionsMovie(byField));
     }
 
     @PostMapping("/import")
