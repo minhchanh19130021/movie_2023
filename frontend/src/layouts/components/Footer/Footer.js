@@ -1,11 +1,13 @@
 import React from 'react';
+import logo from '../../../movie-logo.png';
+
 
 const Footer = () => {
     return (
         <footer className="max-w-[1200px] mx-auto py-6 text-white">
             <div className="container mx-auto flex items-center justify-between">
                 <div className="flex items-center">
-                    <img className="mr-4 object-cover" src="https://fptplay.vn/images/logo-2.png" alt="Logo" />
+                    <img className="h-[70px] w-[125px] mr-4 object-cover " src={logo} alt="Logo" />
                 </div>
                 <div className="flex items-center">
                     <div className="mr-6">
