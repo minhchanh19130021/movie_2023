@@ -26,9 +26,12 @@ export const getMovieBySlug = async (slug) => {
 };
 
 // suggest movie at home page
-export const suggestMovie = async () => {
+export const suggestMovie = async (byField) => {
     try {
-        const res = await axios.get('/api/movies/suggestions/updated_date');
+        console.log({})
+        const res = await axios.get(`/api/movies/suggestions/${byField}`,{
+            headers: {},
+        });
         return res?.data;
     } catch (error) {
         console.log(error?.response?.data);
