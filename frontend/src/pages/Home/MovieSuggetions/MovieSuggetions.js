@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 function MovieSuggetions(props) {
     const slider = useRef(null);
     const [movies, setMovies] = useState([]);
+    const { name, byField } = props;
 
     const settingsHot = {
         // dots: true,
@@ -20,7 +21,8 @@ function MovieSuggetions(props) {
 
     useEffect(() => {
         const fetchPost = async () => {
-            const data = await suggestMovie();
+            console.log(byField);
+            const data = await suggestMovie(byField);
             setMovies(data);
             console.log(data);
         };
@@ -34,7 +36,7 @@ function MovieSuggetions(props) {
               
                 
                 {movies.map((movie) => (
-                    <MovieComponent movie={movie} key={movie.id} className="w-1/4 "/>
+                    <MovieComponent movie={movie} key={movie.id} className=" "/>
                    
                 ))}
             </div>

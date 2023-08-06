@@ -139,9 +139,9 @@ public class MovieService {
     @Transactional(propagation = Propagation.REQUIRED)
     public int increaseNumberOfViewsInMovie(int movieId) throws CustomException {
         Movie movie = repository.findWithLockingById(movieId).orElseThrow(() ->
-                                                                                  new CustomException(HttpStatus.NOT_FOUND, "can" +
-                                                                                          " not find movie by movie id")
-                                                                         );
+                new CustomException(HttpStatus.NOT_FOUND, "can" +
+                        " not find movie by movie id")
+        );
         movie.setViewNumber(movie.getViewNumber() + 1);
         repository.save(movie);
         return movie.getViewNumber() + 1;
@@ -150,18 +150,23 @@ public class MovieService {
     public MovieDetail getMovieAndMovieDetailBySlug(String slug) throws CustomException {
         MovieDetail movieDetail = movieDetailRepository.findMovieDetailBySlug(slug)
                 .orElseThrow(() ->
-                                     new CustomException(HttpStatus.NOT_FOUND, "not found movie by slug")
-                            );
+                        new CustomException(HttpStatus.NOT_FOUND, "not found movie by slug")
+                );
         return movieDetail;
     }
 
-    public List<Movie> suggestionsByUpdateDate() {
-
-        List<Movie> list = repository.suggestionsByUpdatedDate();
+    public List<Movie> suggestionsMovie(String byField) {
+        List<Movie> list= new ArrayList<>();
+        if (byField.equals("inserted_date"))
+          list = repository.suggestionsByInsertedDate();
+        else if (byField.equals("updated_date"))
+            list = repository.suggestionsByUpdatedDate();
         int size = list.size();
 
-         if(size>= 8) return list.subList(0, 8);
-        else return list.subList(0, 4);
+        if (size >= 8) return list.subList(0, 8);
+        else if (size >= 4) return list.subList(0, 4);
+        return list;
+
     }
 
     public void importMoviesFromCsv(List<String[]> lines) {

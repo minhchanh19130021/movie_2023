@@ -4,6 +4,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { SignInModal } from '~/components/SignInModal';
 import { SignUpModal } from '~/components/SignUpModal';
 import { logoutSuccess } from '~/redux/authSlice';
+import logo from '../../../movie-logo.png';
 
 function Header() {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -57,7 +58,7 @@ function Header() {
                             />
                         </svg>
 
-                        <span className="ml-3 text-sm">FPT Play Box</span>
+                        <span className="ml-3 text-sm">Movie Online</span>
                     </div>
                 </NavLink>
                 <NavLink to="/">
@@ -84,7 +85,7 @@ function Header() {
             <div className="mx-auto flex h-[71px] max-w-[1200px] items-center justify-between">
                 <div className="left flex items-center">
                     <NavLink to="/">
-                        <img src="https://fptplay.vn/images/logo-2.png" alt="fpt-logo" className="h-[29px] w-[125px]" />
+                        <img src={logo} alt="fpt-logo" className="h-[70px] w-[125px]" />
                     </NavLink>
                     <div className="menus">
                         <NavLink to="/" className="px-3 py-3 text-base font-bold hover:text-orange-500">
