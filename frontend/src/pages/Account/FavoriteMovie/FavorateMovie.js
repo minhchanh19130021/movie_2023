@@ -20,34 +20,6 @@ function FavorateMovie() {
                     </NavLink>
                 </div>
                 <div className="col-span-3">
-                    <MovieFavorite
-                        image="https://images.fptplay.net/media/OTT/VOD/2022/09/08/phi-ho-ngoai-truyen-40-tap-fpt-play-1662619769467_Landscape.jpg?w=282&mode=scale&fmt=webp"
-                        title="Phi hồ ngoại truyện"
-                        duration="100/100 tập"
-                        category="Tình cảm, hành động"
-                        to="/xem-video"
-                    />
-                     <MovieFavorite
-                        image="https://images.fptplay.net/media/OTT/VOD/2022/09/08/phi-ho-ngoai-truyen-40-tap-fpt-play-1662619769467_Landscape.jpg?w=282&mode=scale&fmt=webp"
-                        title="Phi hồ ngoại truyện"
-                        duration="100/100 tập"
-                        category="Tình cảm, hành động"
-                        to="/xem-video"
-                    />
-                     <MovieFavorite
-                        image="https://images.fptplay.net/media/OTT/VOD/2022/09/08/phi-ho-ngoai-truyen-40-tap-fpt-play-1662619769467_Landscape.jpg?w=282&mode=scale&fmt=webp"
-                        title="Phi hồ ngoại truyện"
-                        duration="100/100 tập"
-                        category="Tình cảm, hành động"
-                        to="/xem-video"
-                    />
-                     <MovieFavorite
-                        image="https://images.fptplay.net/media/OTT/VOD/2022/09/08/phi-ho-ngoai-truyen-40-tap-fpt-play-1662619769467_Landscape.jpg?w=282&mode=scale&fmt=webp"
-                        title="Phi hồ ngoại truyện"
-                        duration="100/100 tập"
-                        category="Tình cảm, hành động"
-                        to="/xem-video"
-                    />
                      <MovieFavorite
                         image="https://images.fptplay.net/media/OTT/VOD/2022/09/08/phi-ho-ngoai-truyen-40-tap-fpt-play-1662619769467_Landscape.jpg?w=282&mode=scale&fmt=webp"
                         title="Phi hồ ngoại truyện"
