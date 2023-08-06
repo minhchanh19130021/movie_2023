@@ -26,6 +26,10 @@ public class Order {
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedDate;
 
+    @Column(name = "expiration_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date expirationDate;
+
     @Column(name = "user_id")
     private int userId;
 

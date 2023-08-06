@@ -1,11 +1,13 @@
 import { useEffect, useRef, useState} from 'react';
 import Slider from 'react-slick';
 import {suggestMovie} from '~/services/movieService';
+import MovieComponent from '~/components/MovieComponent/MovieComponent';
 import { Link } from 'react-router-dom';
 
 function MovieSuggetions(props) {
     const slider = useRef(null);
     const [movies, setMovies] = useState([]);
+    const { name, byField } = props;
 
     const settingsHot = {
         // dots: true,
@@ -19,7 +21,8 @@ function MovieSuggetions(props) {
 
     useEffect(() => {
         const fetchPost = async () => {
-            const data = await suggestMovie();
+            console.log(byField);
+            const data = await suggestMovie(byField);
             setMovies(data);
             console.log(data);
         };
@@ -28,55 +31,14 @@ function MovieSuggetions(props) {
 
     return (
         <div>
-            <div className="relative">
-                <h2 className="mb-4 text-2xl font-medium"> {props.name} </h2>
-                <button
-                    className="absolute left-0 top-1/2 z-20 h-11 w-11 text-[#4c4d50] transition-colors hover:text-white"
-                    onClick={() => slider?.current?.slickPrev()}
-                >
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1.5}
-                        stroke="currentColor"
-                        className="h-11 w-11"
-                    >
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-                    </svg>
-                </button>
-                <Slider ref={slider} {...settingsHot}>
+              <h2 className="mb-4 text-2xl font-medium"> {props.name} </h2>
+            <div className="relative flex flex-row flex-wrap ">
+              
+                
                 {movies.map((movie) => (
-                    <Link to={`/xem-video/${movie.slug}`} key={movie.id}>
-                    <div className="rounded-xl">
-                        <img
-                            src={movie.poster}
-                            alt=""
-                            className="cursor-pointer rounded-xl px-2"
-                        />
-                        <div className='text-center mt-2'>
-                            <b className='text-blue-600/75'> {movie.name}</b>
-                            <p className='text-sm'>{movie.type}</p>
-                        </div>
-                    </div>
-                    </Link>
-                    ))}
-                </Slider>
-                <button
-                    className="absolute right-0 top-1/2 z-20 h-11 w-11 text-[#4c4d50] transition-colors hover:text-white"
-                    onClick={() => slider?.current?.slickNext()}
-                >
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1.5}
-                        stroke="currentColor"
-                        className="h-11 w-11"
-                    >
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-                    </svg>
-                </button>
+                    <MovieComponent movie={movie} key={movie.id} className=" "/>
+                   
+                ))}
             </div>
         </div>
     );

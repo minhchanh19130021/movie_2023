@@ -12,6 +12,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.text.ParseException;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/order")
@@ -23,15 +25,23 @@ public class OrderController {
 
     @PostMapping("/add")
     public ResponseEntity<Order> createNewReview(@Valid @RequestBody AddOrderRequest addOrderRequest) throws CustomException {
-        Order newOrder =  orderService.createNewOrder(addOrderRequest.getOrderId());
+        Order newOrder =  orderService.createNewOrder(addOrderRequest.getOrderId(), addOrderRequest.getTypeOrder());
         return ResponseEntity.ok().body(newOrder);
     }
 
     @GetMapping("/checkUserIdInOrder")
-    public ResponseEntity<Boolean> getMovieAndMovieDetailBySlug() throws CustomException {
+    public ResponseEntity<String> getMovieAndMovieDetailBySlug() throws CustomException, ParseException {
         CustomUserDetails userDetails =
                 (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        boolean isExist = orderService.findByUserId(userDetails.getUser().getId());
-        return ResponseEntity.ok().body(isExist);
+        Optional<Order> order = orderService.findByUserId(userDetails.getUser().getId());
+        if (order.isPresent()) {
+            if (orderService.checkExpirationOrder(order.get())) {
+                return ResponseEntity.ok().body("ok");
+            }
+            else {
+                return ResponseEntity.ok().body("expiration");
+            }
+        }
+        return ResponseEntity.ok().body("not found");
     }
 }

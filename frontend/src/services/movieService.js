@@ -4,7 +4,6 @@ import axios from 'axios';
 const controller = 'movies';
 
 export const increaseNumberOfViewsInMovie = async (movieId) => {
-    console.log(movieId);
     try {
         const load = await request.put(`/api/${controller}/increaseViewNumberInAMovie?movieId=${movieId}`, {
             headers: {},
@@ -26,14 +25,15 @@ export const getMovieBySlug = async (slug) => {
     }
 };
 
-
 // suggest movie at home page
-export const suggestMovie = async () => {
+export const suggestMovie = async (byField) => {
     try {
-        const res = await axios.get('/api/movies/suggestions/updated_date');
+        console.log({})
+        const res = await axios.get(`/api/movies/suggestions/${byField}`,{
+            headers: {},
+        });
         return res?.data;
     } catch (error) {
         console.log(error?.response?.data);
     }
-
 };

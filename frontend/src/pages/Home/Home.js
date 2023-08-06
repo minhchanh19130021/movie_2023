@@ -16,7 +16,7 @@ function Home() {
                 <div className="">
                     <BannerSlider />
                 </div>
-                <div className="mb-5 mt-10">
+                {/* <div className="mb-5 mt-10">
                     <CategorySlider />
                 </div>
                 <div className="">
@@ -25,9 +25,16 @@ function Home() {
                 <div className="">
                     <HotBanner />
                 </div>
-                <div className="">
-                    <MovieSuggetions name="Phim mới cập nhật" />
+                 */}
+
+<div className="">
+                    <MovieSuggetions name="Phim mới ra mắt" byField="inserted_date"/>
                 </div>
+                <div className="">
+                    <MovieSuggetions name="Phim mới cập nhật" byField="updated_date"/>
+                </div>
+
+               
             </div>
         </div>
     );

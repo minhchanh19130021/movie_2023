@@ -43,15 +43,25 @@ function View() {
     }
 
     function openVideo(link) {
-        window.open(link, '_blank');
+        navigate('/xem-phim', {
+            state: {
+                link: link,
+            },
+        });
     }
 
     return (
         <div className="max-w-full">
             <div className="padding-responsive mx-auto max-w-[1200px]">
-                <div className="mb-12 mt-4 h-[740px] w-full rounded-lg bg-white">
-                    <img className="w-100 h-100" src={movieInfo?.movie?.poster}></img>
-                </div>
+                <div
+                    style={{
+                        backgroundImage: `url(${movieInfo?.movie?.poster})`,
+                        backgroundSize: 'contain',
+                        backgroundPosition: 'center',
+                        backgroundRepeat: 'no-repeat',
+                    }}
+                    className="mb-12 mt-4 h-[440px] w-full rounded-lg"
+                ></div>
                 <div className="mb-8">
                     <h3 className="mb-8 text-2xl font-medium">Danh sách</h3>
                     <div className="grid grid-cols-10 gap-3">
@@ -65,18 +75,21 @@ function View() {
                                         className="text-center"
                                         onClick={() => {
                                             if (!user?.accessToken) {
-                                                alert('cần đăng nhập để thực hiện chức năng đánh giá');
+                                                alert('cần đăng nhập để xem phim');
                                                 return;
                                             }
 
                                             const load = checkUserIdInOrder(user?.accessToken);
                                             load.then((e2) => {
                                                 if (e2?.status === 200) {
-                                                    if (e2?.data === true) {
+                                                    if (e2?.data === 'ok') {
                                                         openVideo(e?.link);
                                                         increaseViewNumber();
-                                                    } else {
-                                                        alert('cần đăng kí gói cước để thực hiện chức năng đánh giá');
+                                                    } else if (e2?.data === 'expiration') {
+                                                        alert('cần gia hạn gói cước để xem phim');
+                                                        navigate('/thanh-toan');
+                                                    } else if (e2?.data === 'not found') {
+                                                        alert('cần đăng kí gói cước để xem phim');
                                                         navigate('/thanh-toan');
                                                     }
                                                 } else {

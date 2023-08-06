@@ -2,9 +2,10 @@ import request from '~/utils/requestUtils';
 
 const controller = 'order';
 
-export const saveNewOrder = async (orderId, accessToken) => {
+export const saveNewOrder = async (orderId, typeOrder, accessToken) => {
     const newOrder = {
         orderId: orderId,
+        typeOrder: typeOrder,
     };
     try {
         const load = await request.post(`/api/${controller}/add`, newOrder, {
