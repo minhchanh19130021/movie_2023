@@ -12,7 +12,7 @@ function App() {
             <div className="App">
                 <Routes>
                     {/* Public routes */}
-                    {publicRoutes.map((route, index) => {
+                    {publicRoutes?.map((route, index) => {
                         // ... Code for determining Layout
                         const Layout = DefaultLayout;
                         const Page = route.component;
@@ -30,7 +30,7 @@ function App() {
                     })}
 
                     {/* Private routes */}
-                    {privateRoutes.map((route, index) => {
+                    {privateRoutes?.map((route, index) => {
                         const Layout = DefaultLayout;
                         const Page = route.component;
                         return (

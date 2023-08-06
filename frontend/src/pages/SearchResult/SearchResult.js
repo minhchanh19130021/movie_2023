@@ -85,7 +85,7 @@ function SearchResult() {
                                     </svg>
                                 </button>
                             )}
-                            {numberPage.map((pageNumber) => {
+                            {numberPage?.map((pageNumber) => {
                                 const isCurrentPage = parseInt(pageValue) === pageNumber;
                                 return (
                                     <button
