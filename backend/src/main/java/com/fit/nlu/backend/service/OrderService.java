@@ -21,17 +21,28 @@ public class OrderService {
     private OrderRepository orderRepository;
 
     public Order createNewOrder(String orderId, int typeOrder) {
-        Order order = new Order();
-        order.setOrderId(orderId);
+
         Date date = new Date();
-        order.setInsertedDate(date);
-        order.setUpdatedDate(date);
         Date expirationDate = getExpirationDateByTypeOrder(typeOrder);
-        order.setExpirationDate(expirationDate);
         CustomUserDetails userDetails =
                 (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        order.setUserId(userDetails.getUser().getId());
-        return orderRepository.save(order);
+
+        Optional<Order> order = orderRepository.findByUserId(userDetails.getUser().getId());
+        if (order.isPresent()) {
+            order.get().setOrderId(orderId);
+            order.get().setUpdatedDate(date);
+            order.get().setExpirationDate(expirationDate);
+            return orderRepository.save(order.get());
+        }
+        else {
+            Order newOrder = new Order();
+            newOrder.setOrderId(orderId);
+            newOrder.setInsertedDate(date);
+            newOrder.setUpdatedDate(date);
+            newOrder.setExpirationDate(expirationDate);
+            newOrder.setUserId(userDetails.getUser().getId());
+            return orderRepository.save(newOrder);
+        }
     }
 
     public Optional<Order> findByUserId(int userId) {
