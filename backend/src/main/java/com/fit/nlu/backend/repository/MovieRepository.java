@@ -34,4 +34,16 @@ public interface MovieRepository extends JpaRepository<Movie, Integer> {
 
     @Query(value = "select * from movie where movie.type like %:type%", nativeQuery = true)
     Page<Movie> searchMoviesByType(@Param("type") String type, Pageable pageable);
+
+    @Query(value = "SELECT DISTINCT * FROM movie m " +
+            "JOIN movie_detail md ON m.id = md.movie_id " +
+            "WHERE (:keyword IS NULL OR m.name LIKE %:keyword%) " +
+            "AND (COALESCE(:types, 'ALL') = 'ALL' OR m.type IN (:types)) " +
+            "AND (COALESCE(:countries, 'ALL') = 'ALL' OR md.country IN (:countries)) " +
+            "AND (COALESCE(:directors, 'ALL') = 'ALL' OR md.director IN (:directors)) ", nativeQuery = true)
+    Page<Movie> filterMovies(@Param("keyword") String keyword,
+                             @Param("types") List<String> types,
+                             @Param("countries") List<String> countries,
+                             @Param("directors") List<String> directors,
+                             Pageable pageable);
 }

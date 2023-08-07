@@ -3,6 +3,7 @@ package com.fit.nlu.backend.controller;
 import com.fit.nlu.backend.entity.Movie;
 import com.fit.nlu.backend.entity.MovieDetail;
 import com.fit.nlu.backend.exception.CustomException;
+import com.fit.nlu.backend.request.MovieFilterRequest;
 import com.fit.nlu.backend.response.MoviePageResponse;
 import org.springframework.data.domain.Page;
 import com.fit.nlu.backend.service.MovieService;
@@ -161,6 +162,36 @@ public class MovieController {
         response.setTotalPages(moviePage.getTotalPages());
         response.setSize(moviePage.getSize());
         response.setCurrentPage(moviePage.getNumber() + 1);
+        return ResponseEntity.ok(response);
+    }
+
+
+    @GetMapping("/filter")
+    public ResponseEntity<MoviePageResponse> filterMovies(@RequestParam(name = "keyword", required = false) String keyword,
+                                                          @RequestParam(name = "types", required = false) List<String> types,
+                                                          @RequestParam(name = "countries", required = false) List<String> countries,
+                                                          @RequestParam(name = "directors", required = false) List<String> directors,
+                                                          @RequestParam(name = "page", defaultValue = "0") int page,
+                                                          @RequestParam(name = "size", defaultValue = "10") int size,
+                                                          @RequestParam(name = "sortBy", defaultValue = "release_date") String sortBy,
+                                                          @RequestParam(name = "sortOrder", defaultValue = "desc") String sortOrder) {
+        MovieFilterRequest filterRequest = new MovieFilterRequest();
+        filterRequest.setKeyword(keyword);
+        filterRequest.setTypes(types);
+        filterRequest.setCountries(countries);
+        filterRequest.setDirectors(directors);
+
+        Page<Movie> moviePage = movieService.filterMovies(filterRequest, page, size, sortBy, sortOrder);
+
+        MoviePageResponse response = new MoviePageResponse();
+        response.setContent(moviePage.getContent());
+        response.setLast(moviePage.isLast());
+        response.setFirst(moviePage.isFirst());
+        response.setTotalElements(moviePage.getTotalElements());
+        response.setTotalPages(moviePage.getTotalPages());
+        response.setSize(moviePage.getSize());
+        response.setCurrentPage(moviePage.getNumber() + 1);
+
         return ResponseEntity.ok(response);
     }
 }
