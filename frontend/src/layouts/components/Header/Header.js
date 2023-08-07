@@ -92,28 +92,34 @@ function Header() {
                             Trang chủ
                         </NavLink>
                         <NavLink
-                            to="/the-loai=hành động/trang=1"
+                            to="/the-loai=am-nhac/trang=1"
                             className="px-3 py-3 text-base font-medium text-[#9b9b9b] hover:text-orange-500"
                         >
-                            Hành động
+                            Âm nhạc
                         </NavLink>
                         <NavLink
-                            to="/the-loai=tình cảm/trang=1"
+                            to="/the-loai=hai-huoc/trang=1"
                             className="px-3 py-3 text-base font-medium text-[#9b9b9b] hover:text-orange-500"
                         >
-                            Tình cảm
+                            Hài hước
                         </NavLink>
                         <NavLink
-                            to="/the-loai=gia đình/trang=1"
+                            to="/the-loai=hoat-hinh/trang=1"
                             className="px-3 py-3 text-base font-medium text-[#9b9b9b] hover:text-orange-500"
                         >
-                            Gia đình
+                           Hoạt hình
                         </NavLink>
                         <NavLink
-                            to="/the-loai=kinh dị/trang=1"
+                            to="/the-loai=chinh-kich/trang=1"
                             className="px-3 py-3 text-base font-medium text-[#9b9b9b] hover:text-orange-500"
                         >
-                            Kinh dị
+                            Chính kịch
+                        </NavLink>
+                        <NavLink
+                            to="/loc/trang=1"
+                            className="px-3 py-3 text-base font-medium text-[#9b9b9b] hover:text-orange-500"
+                        >
+                            Lọc
                         </NavLink>
                     </div>
                 </div>

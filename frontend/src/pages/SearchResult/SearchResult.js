@@ -10,6 +10,7 @@ function SearchResult() {
 
     const { tuKhoa, trang } = useParams();
     const keywordFromUrl = tuKhoa.split('=')[1];
+    
     const pageValue = trang.split('=')[1];
 
     const [totalProduct, setTotalProduct] = useState(1);
