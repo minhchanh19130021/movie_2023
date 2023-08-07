@@ -28,6 +28,7 @@ public class FavoriteController {
         movieFavorite.setMovieId(request.getMovieId());
         movieFavorite.setUserId(request.getUserId());
         movieFavorite.setInsertedDate(new Date());
+        movieFavorite.setUpdatedDate(new Date());
         favoriteService.addFavorite(movieFavorite);
         return ResponseEntity.ok().body("Add favorite successfully");
     }

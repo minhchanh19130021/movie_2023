@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class FavoriteService {
@@ -21,7 +22,7 @@ public class FavoriteService {
     }
 
     public List<Integer> getAllFavorite(Integer userId) {
-        return repository.findAllByUserId(userId);
+        return repository.findAllByUserId(userId).stream().map(x -> x.getMovieId()).collect(Collectors.toList());
     }
 
     public MovieFavorite findByUserIdAndMovieId(Integer userId, Integer movieId) {

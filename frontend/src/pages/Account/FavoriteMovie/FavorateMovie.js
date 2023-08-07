@@ -1,7 +1,23 @@
 import { NavLink } from 'react-router-dom';
 import { MovieFavorite } from '~/components/MovieFavorite';
+import {  useSelector } from 'react-redux';
+import { useEffect,useState } from 'react';
+import { getAllFavoriteMovie } from '~/services/favoriteService';
 
 function FavorateMovie() {
+    const user = useSelector((state) => state?.authentication?.login?.currentUser);
+    const [favoriteMovieList, setFavoriteMovieList]= useState([]);
+    useEffect(()=>{
+        const fetchPost = async () => {
+            // console.log(user.id);
+            const data = await getAllFavoriteMovie(user.id);
+            setFavoriteMovieList(data.data)
+            console.log(data.data);
+        };
+        fetchPost();
+    },[])
+
+    
     return (
         <div className="max-w-full">
             <div className="mx-auto grid max-w-[1200px] grid-cols-4 gap-4">
@@ -20,13 +36,22 @@ function FavorateMovie() {
                     </NavLink>
                 </div>
                 <div className="col-span-3">
-                     <MovieFavorite
-                        image="https://images.fptplay.net/media/OTT/VOD/2022/09/08/phi-ho-ngoai-truyen-40-tap-fpt-play-1662619769467_Landscape.jpg?w=282&mode=scale&fmt=webp"
-                        title="Phi hồ ngoại truyện"
-                        duration="100/100 tập"
-                        category="Tình cảm, hành động"
-                        to="/xem-video"
-                    />
+                {favoriteMovieList.length > 0 ? (
+        favoriteMovieList.map((item) => (
+            <MovieFavorite
+                key={item.id}
+                movieId={item.id}
+                image={item.poster}
+                title={item.name}
+                duration={item.episodes.length}
+                category={item.type}
+                viewNumber={item.viewNumber}
+                to={`/xem-video/${item.slug}`}
+            />
+        ))
+    ) : (
+        <p>Bạn chưa yêu thích bộ phim nào!</p>
+    )}
                     
                 </div>
             </div>
