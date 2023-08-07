@@ -35,6 +35,22 @@ function SignInModal({ isOpen, onClose }) {
                 .then((response) => {
                     // Handle the response from the Facebook API
                     console.log(response.data);
+                    axios.get('/api/auth/get-by-username?username=' + response?.data?.name,{
+                      username: response?.data?.name,
+                    }).then(r => {
+                      console.log(r.data);
+                      if (r.data === undefined || r.data === null || r.data === '') {
+                        axios.post('/api/auth/register-for-social', {
+                          username: response?.data?.name,
+                          email: response?.data?.name + '@gmail.com',
+                          password: response?.data?.name,
+                          role: '1',
+                          flagActive: 1,
+                        }).then(r => {
+                          console.log(r.data);
+                        })
+                      }
+                    });
                     // navigate to home page
                     dispatch(
                         loginSuccess({
@@ -194,13 +210,6 @@ function SignInModal({ isOpen, onClose }) {
                     <p className="mb-6 text-center text-sm">Hoặc đăng nhập bằng</p>
                     <div className="flex items-center justify-center">
                         <FacebookLoginButton onFacebookLogin={handleFacebookLogin} />
-                        <button>
-                            <img
-                                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACUAAAAkCAYAAAAOwvOmAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAANtSURBVHgBzZhfSFNRHMd/d04nc+l6aGoPesX+PBgpiPgQ1OiPBYqZQSA+NB8k0oesIOrFP0Uv9lBC9VCEvglChCRBEmx7KOiPNSmDqLUZmGwSG86Fburpd+68l6l37py7OfrAb/fec7/n7rvfOTv3nCMAJ4QQMx6aMI5gVGHQazFO4sIIYjgxHIIgOGC7QDNWDDvhx4NhwxAhXdCHaTSjZq4LUgUfcgkjQNKLh2jNGlYcJNuHB6PqfzIkE2A2hsK7JHNQY2IyQzaSeTwkNswo6OIMiXjogcwjYqj/K0lm+tFWiLIXYc0QLfAAByQcgqjrIyy9cULENSGVZRXtBn35XjCebQFdYTFwMoCjf1e8qUE82FhrRycnINR/E1Z8swk1uXUNkHe+ncccfTWVobGg3KesrDUXx8cgePXiloZkXdT9DTignd1GTwQSGys+sdRaRSN/Wk+vK8uurMas1GPTFcOy+zv8fTos6fKvdYMBs8XJKGaqiTZdF2tPDHScIv5jNVLMNR4lEdcHVV2icpavoM5o84ksP4EEnGBqfgWGGr90beq8LGVJjUTlDJjRmFmPJ5UsajI3Kh2Nx2dAX1oodeR4fvhXYWGRJKxfVZIFjBToWZWwOK2cGg4f2HT74XgEJn+tqFY15QowesUIjJTpQAOCvoBLv1UG1aCZCjIpc0uV0/n5r2DecHtPoW6TETc2KYVmioMgNTXNohRMsVmGc6kIbv80wJ2SKai2VCj3O07krNP3P19STJVbuBrES9VeFqVgaYQnkVq4HqqFEMmGvnf3YTY8p6p1+1bh5edl5frkQeau65VHdAeTXG+G/PIbyiU1dMHeDWNeh2JuNuyHx1Mj0PFiWNEVFQg8pibph/zuo4OWmaVW39sHaMSeVJcTrAND4Azcat4Jh/Yxm2rDTA3JjT3AWqunthPaK84l1Rl2vYbeVh+PIYqDfmieutCmevRlBJwz7yEUDSvlxUYLNJRZoWV/PezIzuN4IgxhltrWlaCxIaKR+cgC+b3gk44pIG6ySWKLznSv8VjpTZg/wjFjSCPJuw2K7pHM4SGsq2WSQv/igH0xmqGMebgNxRnrJenHTlLdFiKxf+Uzkjq0uVLfCtpgzqrRHDVDM870GqNwTXTWzIkQW5LRoJMseYuRElwLusVIX66athf/AT7zI6BitzPdAAAAAElFTkSuQmCC"
-                                alt="google-img-login"
-                                className="mx-4 cursor-pointer"
-                            />
-                        </button>
                     </div>
                     <div className="mt-10 flex items-center justify-center py-4">
                         <p className="text-sm">Chưa có tài khoản?</p>

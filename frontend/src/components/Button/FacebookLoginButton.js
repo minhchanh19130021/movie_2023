@@ -8,7 +8,7 @@ const FacebookLoginButton = ({ onFacebookLogin }) => {
 
     return (
         <FacebookLogin
-            appId="1530965687722853" // Replace with your Facebook app ID
+            appId="" // Replace with your Facebook app ID
             autoLoad={false}
             fields="name,email,picture"
             callback={responseFacebook}

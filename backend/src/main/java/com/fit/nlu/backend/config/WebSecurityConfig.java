@@ -69,14 +69,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
                .authorizeRequests()
                // Allow all to access this url
 //               .anyRequest().permitAll();
-               .antMatchers("/api/auth/**", "signin/facebook").permitAll()
-               .antMatchers("/login/oauth2/code/facebook").permitAll() // Allow access to Facebook login endpoint
+               .antMatchers("/api/auth/**").permitAll()
                .antMatchers("/api/movies/**").permitAll()
                .antMatchers("/api/review/get").permitAll()
                .antMatchers("/api/comment/get").permitAll()
-               .anyRequest().authenticated()
-               .and()
-               .oauth2Login();
+               .anyRequest().authenticated();
        // All request except 'api/auth/login' must be authenticated
 
        // Add other classs to check jwt
