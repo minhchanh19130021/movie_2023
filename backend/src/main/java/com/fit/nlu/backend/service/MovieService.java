@@ -7,6 +7,7 @@ import com.fit.nlu.backend.exception.CustomException;
 import com.fit.nlu.backend.repository.EpisodeRepository;
 import com.fit.nlu.backend.repository.MovieDetailsRepository;
 import com.fit.nlu.backend.repository.MovieRepository;
+import com.fit.nlu.backend.request.MovieFilterRequest;
 import com.fit.nlu.backend.utils.DateUtils;
 import com.fit.nlu.backend.utils.SlugUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -245,5 +246,16 @@ public class MovieService {
             return repository.findAll(pageable);
         }
         return repository.searchMoviesByType(type, pageable);
+    }
+
+    public Page<Movie> filterMovies(MovieFilterRequest filterRequest, int page, int size, String sortBy, String sortOrder) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(sortOrder), sortBy));
+        return repository.filterMovies(
+                filterRequest.getKeyword(),
+                filterRequest.getTypes(),
+                filterRequest.getCountries(),
+                filterRequest.getDirectors(),
+                pageable
+        );
     }
 }
