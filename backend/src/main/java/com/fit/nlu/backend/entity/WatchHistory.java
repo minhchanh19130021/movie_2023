@@ -16,7 +16,7 @@ import java.util.Date;
 @Setter
 public class WatchHistory {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
     @Column(name = "movie_id")
