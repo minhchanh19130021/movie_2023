@@ -23,4 +23,8 @@ public class FavoriteService {
     public List<Integer> getAllFavorite(Integer userId) {
         return repository.findAllByUserId(userId);
     }
+
+    public MovieFavorite findByUserIdAndMovieId(Integer userId, Integer movieId) {
+        return repository.findByUserIdAndMovieId(userId, movieId);
+    }
 }

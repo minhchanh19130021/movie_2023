@@ -34,9 +34,7 @@ public class FavoriteController {
 
     @PostMapping("/remove")
     public ResponseEntity<?> removeFavorite(@RequestBody @Valid MovieFavoriteRequest request) {
-        MovieFavorite movieFavorite = new MovieFavorite();
-        movieFavorite.setMovieId(request.getMovieId());
-        movieFavorite.setUserId(request.getUserId());
+        MovieFavorite movieFavorite = favoriteService.findByUserIdAndMovieId(request.getUserId(), request.getMovieId());
         favoriteService.removeFavorite(movieFavorite);
         return ResponseEntity.ok().body("Remove favorite successfully");
     }
