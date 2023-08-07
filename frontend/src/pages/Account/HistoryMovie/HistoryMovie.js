@@ -1,7 +1,22 @@
+
 import { NavLink } from 'react-router-dom';
 import { MovieCardHistory } from '~/components/MovieCardHistory';
+import {  useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { getWatchHistory } from '~/services/historyService';
 
 function HistoryMovie() {
+    const user = useSelector((state) => state?.authentication?.login?.currentUser);
+    const [watchHistoryList, setWatchHistoryList] = useState([]);
+    useEffect(()=>{
+        const fetchPost = async () => {
+            // console.log(user.id);
+            const data = await getWatchHistory(user.id);
+            setWatchHistoryList(data.data)
+            // console.log(data.data);
+        };
+        fetchPost();
+    },[])
     return (
         <div className="max-w-full">
             <div className="mx-auto grid max-w-[1200px] grid-cols-4 gap-4">
@@ -20,42 +35,24 @@ function HistoryMovie() {
                     </NavLink>
                 </div>
                 <div className="col-span-3">
-                    <MovieCardHistory
-                        image="https://images.fptplay.net/media/OTT/VOD/2022/09/08/phi-ho-ngoai-truyen-40-tap-fpt-play-1662619769467_Landscape.jpg?w=282&mode=scale&fmt=webp"
-                        title="Phi hồ ngoại truyện"
-                        duration="100/100 tập"
-                        category="Tình cảm, hành động"
-                        to="/xem-video"
-                    />
-                     <MovieCardHistory
-                        image="https://images.fptplay.net/media/OTT/VOD/2022/09/08/phi-ho-ngoai-truyen-40-tap-fpt-play-1662619769467_Landscape.jpg?w=282&mode=scale&fmt=webp"
-                        title="Phi hồ ngoại truyện"
-                        duration="100/100 tập"
-                        category="Tình cảm, hành động"
-                        to="/xem-video"
-                    />
-                     <MovieCardHistory
-                        image="https://images.fptplay.net/media/OTT/VOD/2022/09/08/phi-ho-ngoai-truyen-40-tap-fpt-play-1662619769467_Landscape.jpg?w=282&mode=scale&fmt=webp"
-                        title="Phi hồ ngoại truyện"
-                        duration="100/100 tập"
-                        category="Tình cảm, hành động"
-                        to="/xem-video"
-                    />
-                     <MovieCardHistory
-                        image="https://images.fptplay.net/media/OTT/VOD/2022/09/08/phi-ho-ngoai-truyen-40-tap-fpt-play-1662619769467_Landscape.jpg?w=282&mode=scale&fmt=webp"
-                        title="Phi hồ ngoại truyện"
-                        duration="100/100 tập"
-                        category="Tình cảm, hành động"
-                        to="/xem-video"
-                    />
-                     <MovieCardHistory
-                        image="https://images.fptplay.net/media/OTT/VOD/2022/09/08/phi-ho-ngoai-truyen-40-tap-fpt-play-1662619769467_Landscape.jpg?w=282&mode=scale&fmt=webp"
-                        title="Phi hồ ngoại truyện"
-                        duration="100/100 tập"
-                        category="Tình cảm, hành động"
-                        to="/xem-video"
-                    />
-                    
+                       
+                 {watchHistoryList.length > 0 ? (
+        watchHistoryList.map((item) => (
+            <MovieCardHistory
+                key={item.id}
+                image={item.poster}
+                title={item.name}
+                duration={item.episodes.length}
+                category={item.type}
+                viewNumber={item.viewNumber}
+                to={`/xem-video/${item.slug}`}
+            />
+        ))
+    ) : (
+        <p>Bạn chưa xem bộ phim nào!</p>
+    )}
+                   
+             
                 </div>
             </div>
         </div>

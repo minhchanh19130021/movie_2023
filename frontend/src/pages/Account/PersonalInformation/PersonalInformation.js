@@ -6,6 +6,7 @@ import * as userService from '~/services/userService';
 
 function PersonalInformation() {
     const user = useSelector((state) => state?.authentication?.login?.currentUser);
+    console.log(user);
     // const dispatch = useDispatch();
     // const navigate = useNavigate();
     useEffect(() => {
