@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class HistoryService {
@@ -17,6 +18,6 @@ public class HistoryService {
     }
 
     public List<Integer> getAllHistory(Integer userId) {
-        return repository.findAllByUserId(userId);
+        return repository.findAllByUserId(userId).stream().map(x -> x.getMovieId()).collect(Collectors.toList());
     }
 }
