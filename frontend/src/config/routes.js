@@ -11,6 +11,7 @@ const routes = {
     order: 'thanh-toan',
     typeSearch: '/:theLoai/:trang',
     watchMovie: 'xem-phim',
+    filter: 'loc/:quocGia',
 
     // admin
     movieCreate: 'quan-ly-phim/them-phim',

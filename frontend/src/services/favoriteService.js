@@ -14,12 +14,26 @@ export const getAllFavoriteMovie = async (userId) => {
     }
 };
 
-export const removeFavoriteMovie = async (userId,movieId) => {
+export const removeFavoriteMovie = async (user_id,movie_id) => {
     try {
         const res = await axios.post('/api/favorite/remove', {
-            userId,
-            movieId,
+            user_id,
+            movie_id,
         });
+        alert(res?.data);
+        return res?.data;
+    } catch (error) {
+        console.log(error?.response?.data);
+    }
+};
+
+export const addFavoriteMovie = async (user_id,movie_id) => {
+    try {
+        const res = await axios.post('/api/favorite/add', {
+            user_id,
+            movie_id,
+        });
+        alert(res?.data);
         return res?.data;
     } catch (error) {
         console.log(error?.response?.data);

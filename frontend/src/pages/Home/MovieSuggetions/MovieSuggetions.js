@@ -35,7 +35,7 @@ function MovieSuggetions(props) {
             <div className="relative flex flex-row flex-wrap ">
               
                 
-                {movies.map((movie) => (
+                {movies?.map((movie) => (
                     <MovieComponent movie={movie} key={movie.id} className=" "/>
                    
                 ))}

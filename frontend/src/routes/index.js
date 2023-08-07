@@ -6,6 +6,7 @@ import { MovieCreate } from '~/pages/Admin/Movie/MovieCreate';
 import { MovieDetailCreate } from '~/pages/Admin/Movie/MovieDetailCreate';
 import { MovieList } from '~/pages/Admin/MovieList';
 import { Upload } from '~/pages/Admin/Upload';
+import Filter from '~/pages/Filter/Filter';
 import { Home } from '~/pages/Home';
 import { Order } from '~/pages/Home/Order';
 import { NotFound } from '~/pages/NofFound';
@@ -24,6 +25,8 @@ const publicRoutes = [
     { path: config.routes.videoView, component: View },
     { path: config.routes.typeSearch, component: TypeSearch },
     { path: config.routes.watchMovie, component: WatchMovie },
+    { path: config.routes.filter, component: Filter },
+
 
     // exception route
     { path: config.routes.notFound, component: NotFound },

@@ -1,4 +1,4 @@
-import ReactPlayer from 'react-player';
+// import ReactPlayer from 'react-player';
 import { useLocation } from 'react-router-dom';
 
 function WatchMovie() {

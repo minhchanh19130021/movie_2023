@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface FavoriteRepository extends JpaRepository<MovieFavorite, Integer> {
     List<MovieFavorite> findAllByUserId(Integer userId);
+
+    MovieFavorite findByUserIdAndMovieId(Integer userId, Integer movieId);
 }

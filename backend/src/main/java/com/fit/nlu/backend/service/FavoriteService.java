@@ -21,11 +21,11 @@ public class FavoriteService {
         repository.delete(movieFavorite);
     }
 
-//    public List<Integer> getAllFavorite(Integer userId) {
-//        return repository.findAllByUserId(userId);
-//    }
-
     public List<Integer> getAllFavorite(Integer userId) {
         return repository.findAllByUserId(userId).stream().map(x -> x.getMovieId()).collect(Collectors.toList());
+    }
+
+    public MovieFavorite findByUserIdAndMovieId(Integer userId, Integer movieId) {
+        return repository.findByUserIdAndMovieId(userId, movieId);
     }
 }

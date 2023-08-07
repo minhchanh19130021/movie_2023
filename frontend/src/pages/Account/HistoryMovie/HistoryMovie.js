@@ -1,4 +1,3 @@
-
 import { NavLink } from 'react-router-dom';
 import { MovieCardHistory } from '~/components/MovieCardHistory';
 import {  useSelector } from 'react-redux';
@@ -13,7 +12,7 @@ function HistoryMovie() {
             // console.log(user.id);
             const data = await getWatchHistory(user.id);
             setWatchHistoryList(data.data)
-            // console.log(data.data);
+            console.log(data.data);
         };
         fetchPost();
     },[])
