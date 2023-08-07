@@ -194,4 +194,22 @@ public class MovieController {
 
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/filter2")
+    public ResponseEntity<?> getMoviesByFilter(@RequestParam List<String> countries,
+                                               @RequestParam List<String> directors,
+                                               @RequestParam(value = "page", defaultValue = "1") int page,
+                                               @RequestParam(value = "size", defaultValue = "3") int size) throws CustomException {
+        Page<Movie> moviePage = movieService.getMoviesByFilter(countries, directors, page - 1, size);
+        MoviePageResponse response = new MoviePageResponse();
+        response.setContent(moviePage.getContent());
+        response.setLast(moviePage.isLast());
+        response.setFirst(moviePage.isFirst());
+        response.setTotalElements(moviePage.getTotalElements());
+        response.setTotalPages(moviePage.getTotalPages());
+        response.setSize(moviePage.getSize());
+        response.setCurrentPage(moviePage.getNumber() + 1);
+
+        return ResponseEntity.ok(response);
+    }
 }

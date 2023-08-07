@@ -26,14 +26,15 @@ public interface MovieRepository extends JpaRepository<Movie, Integer> {
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     Optional<Movie> findWithLockingById(int id);
 
-    @Query(value = "SELECT * FROM movie m ORDER BY m.updated_date desc ",nativeQuery = true)
+    @Query(value = "SELECT * FROM movie m ORDER BY m.updated_date desc ", nativeQuery = true)
     List<Movie> suggestionsByUpdatedDate();
 
-    @Query(value = "SELECT * FROM movie m ORDER BY m.inserted_date desc ",nativeQuery = true)
+    @Query(value = "SELECT * FROM movie m ORDER BY m.inserted_date desc ", nativeQuery = true)
     List<Movie> suggestionsByInsertedDate();
 
     @Query(value = "select * from movie where movie.type like %:type%", nativeQuery = true)
     Page<Movie> searchMoviesByType(@Param("type") String type, Pageable pageable);
+
 
     @Query(value = "SELECT DISTINCT * FROM movie m " +
             "JOIN movie_detail md ON m.id = md.movie_id " +
@@ -46,4 +47,8 @@ public interface MovieRepository extends JpaRepository<Movie, Integer> {
                              @Param("countries") List<String> countries,
                              @Param("directors") List<String> directors,
                              Pageable pageable);
+    @Query("SELECT m FROM movie m LEFT JOIN movie_detail md ON m.id = md.movieId WHERE md.country" +
+            " in :countries or md.director IN :directors")
+    Page<Movie> findByCountryInAndDirectorIn(@Param("countries") List<String> countries,
+                                             @Param("directors") List<String> directors, Pageable pageable);
 }

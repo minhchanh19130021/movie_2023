@@ -43,7 +43,7 @@ function TypeSearch() {
                         <div className="grid grid-cols-5 gap-4">
                             {searchResult?.map((e) => {
                                 return (
-                                    <NavLink to={'/'} className="mb-12 rounded-lg !text-white">
+                                    <NavLink key={e?.id} to={'/'} className="mb-12 rounded-lg !text-white">
                                         <img src={e?.poster} alt="result-search-img" className="mb-2 rounded-lg" />
                                         {e?.name}
                                     </NavLink>

@@ -140,9 +140,9 @@ public class MovieService {
     @Transactional(propagation = Propagation.REQUIRED)
     public int increaseNumberOfViewsInMovie(int movieId) throws CustomException {
         Movie movie = repository.findWithLockingById(movieId).orElseThrow(() ->
-                new CustomException(HttpStatus.NOT_FOUND, "can" +
-                        " not find movie by movie id")
-        );
+                                                                                  new CustomException(HttpStatus.NOT_FOUND, "can" +
+                                                                                          " not find movie by movie id")
+                                                                         );
         movie.setViewNumber(movie.getViewNumber() + 1);
         repository.save(movie);
         return movie.getViewNumber() + 1;
@@ -151,15 +151,15 @@ public class MovieService {
     public MovieDetail getMovieAndMovieDetailBySlug(String slug) throws CustomException {
         MovieDetail movieDetail = movieDetailRepository.findMovieDetailBySlug(slug)
                 .orElseThrow(() ->
-                        new CustomException(HttpStatus.NOT_FOUND, "not found movie by slug")
-                );
+                                     new CustomException(HttpStatus.NOT_FOUND, "not found movie by slug")
+                            );
         return movieDetail;
     }
 
     public List<Movie> suggestionsMovie(String byField) {
-        List<Movie> list= new ArrayList<>();
+        List<Movie> list = new ArrayList<>();
         if (byField.equals("inserted_date"))
-          list = repository.suggestionsByInsertedDate();
+            list = repository.suggestionsByInsertedDate();
         else if (byField.equals("updated_date"))
             list = repository.suggestionsByUpdatedDate();
         int size = list.size();
@@ -248,7 +248,8 @@ public class MovieService {
         return repository.searchMoviesByType(type, pageable);
     }
 
-    public Page<Movie> filterMovies(MovieFilterRequest filterRequest, int page, int size, String sortBy, String sortOrder) {
+    public Page<Movie> filterMovies(MovieFilterRequest filterRequest, int page, int size, String sortBy,
+                                    String sortOrder) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(sortOrder), sortBy));
         return repository.filterMovies(
                 filterRequest.getKeyword(),
@@ -256,6 +257,15 @@ public class MovieService {
                 filterRequest.getCountries(),
                 filterRequest.getDirectors(),
                 pageable
-        );
+                                      );
+    }
+
+    public Page<Movie> getMoviesByFilter(List<String> countries, List<String> directors, int page, int size) throws CustomException {
+        Pageable pageable = PageRequest.of(page, size);
+        if (countries.size() == 0 && directors.size() == 0) {
+            return repository.findAll(pageable);
+        } else {
+            return repository.findByCountryInAndDirectorIn(countries, directors, pageable);
+        }
     }
 }
