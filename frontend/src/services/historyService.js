@@ -13,3 +13,16 @@ export const getWatchHistory = async (userId) => {
         return Promise.reject(error?.response?.data);
     }
 };
+
+export const addWatchHistory = async (user_id, movie_id) => {
+    try {
+        const res = await axios.post('/api/history/add', {
+            user_id,
+            movie_id,
+        });
+       
+        return res?.data;
+    } catch (error) {
+        console.log(error?.response?.data);
+    }
+};
