@@ -5,6 +5,7 @@ import com.fit.nlu.backend.jwt.JwtTokenProvider;
 import com.fit.nlu.backend.model.CustomUserDetails;
 import com.fit.nlu.backend.request.LoginRequest;
 import com.fit.nlu.backend.request.RegisterRequest;
+import com.fit.nlu.backend.request.RegisterSocialRequest;
 import com.fit.nlu.backend.response.LoginResponse;
 import com.fit.nlu.backend.service.UserService;
 import com.fit.nlu.backend.utils.CustomException;
@@ -64,7 +65,7 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterRequest registerRequest) throws CustomException, MessagingException, UnsupportedEncodingException {
         if (userService.existsByUsername(registerRequest.getUsername())) {
-             return ResponseEntity.unprocessableEntity().body("Tên người dùng đã tồn tại");
+            return ResponseEntity.unprocessableEntity().body("Tên người dùng đã tồn tại");
         }
         if (userService.existsByEmail(registerRequest.getEmail())) {
             return ResponseEntity.unprocessableEntity().body("Email đã tồn tại");
@@ -81,16 +82,39 @@ public class AuthController {
         return ResponseEntity.ok().body("User registered successfully!");
     }
 
-    @GetMapping(value="/get-verify-code")
+    @PostMapping("/register-for-social")
+    public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterSocialRequest registerRequest) throws CustomException, MessagingException, UnsupportedEncodingException {
+        User user = new User();
+        user.setUserName(registerRequest.getUsername());
+        user.setEmail(registerRequest.getEmail());
+        user.setPassword(registerRequest.getPassword());
+        user.setRoleId(registerRequest.getRole());
+        user.setFlagActive(registerRequest.getFlagActive());
+        user.setInsertedDate(new Date());
+        user.setUpdatedDate(new Date());
+        userService.register(user);
+        return ResponseEntity.ok().body("User registered successfully!");
+    }
+
+
+    @GetMapping(value = "/get-verify-code")
     public ResponseEntity<?> getVerifyCode(@RequestParam("user_id") Integer userId) throws MessagingException, UnsupportedEncodingException {
         User user = userService.findById(userId);
         userService.sendVerificationEmail(user);
         return ResponseEntity.ok().body("Get verify code successfully!");
     }
 
-    @GetMapping(value="/verify")
-    public ResponseEntity<?> confirmUserAccount(@RequestParam("code")String confirmationCode, @RequestParam("email") String email) {
+    @GetMapping(value = "/verify")
+    public ResponseEntity<?> confirmUserAccount(@RequestParam("code") String confirmationCode, @RequestParam("email") String email) {
         userService.confirmEmail(confirmationCode, email);
         return ResponseEntity.ok().body("User verified successfully!");
+    }
+    @GetMapping(value = "/get-by-username")
+    public ResponseEntity<?> confirmUserAccount(@RequestParam("username") String username) {
+        User user = userService.findByUserName(username);
+        if (user == null) {
+            return ResponseEntity.ok().body(null);
+        }
+        return ResponseEntity.ok().body(user);
     }
 }
