@@ -30,7 +30,8 @@ const ReviewForm = ({ author, rating, content, reviewList, setReviewList, setIsS
         isExist
             .then((e) => {
                 if (e?.status === 200) {
-                    if (e?.data === true) {
+                    console.log(e);
+                    if (e?.data === 'ok') {
                         const load = saveNewReview(ratingValue, reviewText, user?.accessToken);
                         load.then((e) => {
                             if (e.status === 200) {
