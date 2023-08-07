@@ -129,7 +129,8 @@ function Order() {
                                             const load = saveNewOrder(data?.orderID, typeOrder, user?.accessToken);
                                             load.then((e) => {
                                                 if (e?.status === 200) {
-                                                    navigate('/');
+                                                    alert('Thanh toán thành công, mời bạn xem phim');
+                                                    window.history.go(-1);
                                                 } else {
                                                     navigate('/server-error');
                                                 }
