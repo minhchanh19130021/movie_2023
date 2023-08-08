@@ -13,12 +13,14 @@ function Order() {
     const [wholeLifeOrder, setWholeLifeOrder] = useState(false);
 
     useEffect(() => {
+        console.log(user?.accessToken);
         if (!user?.accessToken) {
             navigate('/');
         } else {
             checkUserIdInOrder(user?.accessToken)
                 .then((e) => {
-                    if (e?.data === 'ok' || e?.data === 'expiration') {
+                    console.log(e);
+                    if (e?.data === 'ok' || e?.data === 'expiration' || e?.data === 'not found') {
                         setIsLogin(true);
                     } else {
                         navigate('/');
