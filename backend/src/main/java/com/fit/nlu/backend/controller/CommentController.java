@@ -4,10 +4,13 @@ import com.fit.nlu.backend.entity.Comment;
 import com.fit.nlu.backend.exception.CustomException;
 import com.fit.nlu.backend.jwt.JwtTokenProvider;
 import com.fit.nlu.backend.request.CommentRequest;
+import com.fit.nlu.backend.model.CustomUserDetails;
+import com.fit.nlu.backend.response.LikeResponse;
 import com.fit.nlu.backend.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -32,8 +35,10 @@ public class CommentController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<?> addComment(@RequestHeader("Authorization") String token, @RequestBody CommentRequest commentRequest) {
-        Integer userId = tokenProvider.getUserIdFromJWT(token.substring(7));
+    public ResponseEntity<?> addComment(@RequestBody CommentRequest commentRequest) {
+        CustomUserDetails userDetails =
+                (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Integer userId = userDetails.getUser().getId();
         if (commentRequest.getReviewText() == null || commentRequest.getReviewText().trim().isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Review text must not be blank");
         }
@@ -49,10 +54,11 @@ public class CommentController {
         return ResponseEntity.ok(savedComment);
     }
 
-    @PostMapping("/likeComment/{commentId}")
-    public ResponseEntity<?> likeComment(@RequestHeader("Authorization") String bearerToken,@PathVariable Integer commentId) {
-        Integer userId =tokenProvider.getUserIdFromJWT(bearerToken.substring(7));
-        return ResponseEntity.ok().body(commentService.likeComment(userId, commentId));
+    @PostMapping("/likeComment")
+    public ResponseEntity<LikeResponse> likeComment(@RequestBody String commentId) {
+        CustomUserDetails userDetails =
+                (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return ResponseEntity.ok().body(commentService.likeComment(userDetails .getUser().getId(), Integer.parseInt(commentId.substring(commentId.length() - 2, commentId.length() - 1))));
     }
 
 }

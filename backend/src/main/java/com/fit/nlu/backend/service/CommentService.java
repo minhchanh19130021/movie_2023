@@ -7,6 +7,7 @@ import com.fit.nlu.backend.exception.CustomException;
 import com.fit.nlu.backend.repository.CommentRepository;
 import com.fit.nlu.backend.repository.LikeRepository;
 import com.fit.nlu.backend.repository.UserRepository;
+import com.fit.nlu.backend.response.LikeResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -65,32 +66,35 @@ public class CommentService {
                 .getResultList();
     }
 
-    public boolean likeComment(Integer userId, Integer commentId) {
+    public LikeResponse likeComment(Integer userId, Integer commentId) {
+        LikeResponse response = new LikeResponse();
         try {
             Optional<Like> like = likeRepository.findLikeByUserIdAndCommentId(userId, commentId);
             Comment comment = commentRepository.findById(commentId).get();
             if (like.isPresent()) {
                 likeRepository.delete(like.get());
                 comment.setNumberLike(comment.getNumberLike() - 1);
+                response.setStatus("unlike");
+                response.setNumber(comment.getNumberLike() - 1);
             } else {
-
                 comment.setNumberLike(comment.getNumberLike() + 1);
                 Like newLike = new Like();
                 newLike.setUserId(userId);
                 newLike.setComment(commentRepository.findById(commentId).get());
-            newLike.setInsertedDate(new Date());
+                newLike.setInsertedDate(new Date());
                 newLike.setUpdatedDate(new Date());
                 Collection<Like> c = comment.getLikes();
                 c.add(newLike);
                 comment.setLikes(c);
                 likeRepository.save(newLike);
+                response.setStatus("like");
+                response.setNumber(comment.getNumberLike() + 1);
             }
             commentRepository.save(comment);
         } catch (Exception e) {
-            System.out.println(e);
-            return false;
+            return null;
         }
-        return true;
+        return response;
 
     }
     public Comment addComment(Comment comment) {

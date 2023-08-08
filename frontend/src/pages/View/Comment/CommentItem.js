@@ -1,28 +1,60 @@
-function CommentItem({userName, time, commentText, likes}) {
+import { likeComment } from '~/services/commentServices';
+import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { useState } from 'react';
 
-    // tmp add
-    const userId = 1;
-    // tmp end
+function CommentItem({ commentId, userName, time, commentText, likes }) {
+    const navigate = useNavigate();
+    const user = useSelector((state) => state?.authentication?.login?.currentUser);
+    const [likeNumber, setLikeNumber] = useState(likes?.length ? likes?.length : 0);
+    const [status, setStatus] = useState(false);
+
+    function clickLikeIcon() {
+        likeComment(commentId, user?.accessToken)
+            .then((e) => {
+                console.log(e);
+                if (e.status === 200) {
+                    setLikeNumber(e?.data?.number);
+                    if (e?.data?.status === 'like') {
+                        setStatus(true);
+                    } else {
+                        setStatus(false);
+                    }
+                } else {
+                    navigate('/server-error');
+                }
+            })
+            .catch((e) => {
+                console.log(e);
+                navigate('/server-error');
+            });
+    }
 
     function renderLikeIcon() {
-        for (let i = 0; i < likes.length; i++) {
-            if (likes[0]?.userId === userId) {
-                return  (<svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            fill="#ff6500"
-                            className="mr-1 h-5 w-5 text-[#888] hover:cursor-pointer">
-                            <path d="M7.493 18.75c-.425 0-.82-.236-.975-.632A7.48 7.48 0 016 15.375c0-1.75.599-3.358 1.602-4.634.151-.192.373-.309.6-.397.473-.183.89-.514 1.212-.924a9.042 9.042 0 012.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 00.322-1.672V3a.75.75 0 01.75-.75 2.25 2.25 0 012.25 2.25c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 01-2.649 7.521c-.388.482-.987.729-1.605.729H14.23c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 00-1.423-.23h-.777zM2.331 10.977a11.969 11.969 0 00-.831 4.398 12 12 0 00.52 3.507c.26.85 1.084 1.368 1.973 1.368H4.9c.445 0 .72-.498.523-.898a8.963 8.963 0 01-.924-3.977c0-1.708.476-3.305 1.302-4.666.245-.403-.028-.959-.5-.959H4.25c-.832 0-1.612.453-1.918 1.227z" />
-                        </svg>)
+        for (let i = 0; i < likes?.length; i++) {
+            if (likes[0]?.userId == user?.id) {
+                return (
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="#ff6500"
+                        className="mr-1 h-5 w-5 text-[#888] hover:cursor-pointer"
+                    >
+                        <path d="M7.493 18.75c-.425 0-.82-.236-.975-.632A7.48 7.48 0 016 15.375c0-1.75.599-3.358 1.602-4.634.151-.192.373-.309.6-.397.473-.183.89-.514 1.212-.924a9.042 9.042 0 012.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 00.322-1.672V3a.75.75 0 01.75-.75 2.25 2.25 0 012.25 2.25c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 01-2.649 7.521c-.388.482-.987.729-1.605.729H14.23c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 00-1.423-.23h-.777zM2.331 10.977a11.969 11.969 0 00-.831 4.398 12 12 0 00.52 3.507c.26.85 1.084 1.368 1.973 1.368H4.9c.445 0 .72-.498.523-.898a8.963 8.963 0 01-.924-3.977c0-1.708.476-3.305 1.302-4.666.245-.403-.028-.959-.5-.959H4.25c-.832 0-1.612.453-1.918 1.227z" />
+                    </svg>
+                );
             }
         }
-        return  (<svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    className="mr-1 h-5 w-5 text-[#888] hover:cursor-pointer">
-                    <path d="M7.493 18.75c-.425 0-.82-.236-.975-.632A7.48 7.48 0 016 15.375c0-1.75.599-3.358 1.602-4.634.151-.192.373-.309.6-.397.473-.183.89-.514 1.212-.924a9.042 9.042 0 012.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 00.322-1.672V3a.75.75 0 01.75-.75 2.25 2.25 0 012.25 2.25c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 01-2.649 7.521c-.388.482-.987.729-1.605.729H14.23c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 00-1.423-.23h-.777zM2.331 10.977a11.969 11.969 0 00-.831 4.398 12 12 0 00.52 3.507c.26.85 1.084 1.368 1.973 1.368H4.9c.445 0 .72-.498.523-.898a8.963 8.963 0 01-.924-3.977c0-1.708.476-3.305 1.302-4.666.245-.403-.028-.959-.5-.959H4.25c-.832 0-1.612.453-1.918 1.227z" />
-                </svg>)
+        return (
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                className="mr-1 h-5 w-5 text-[#888] hover:cursor-pointer"
+            >
+                <path d="M7.493 18.75c-.425 0-.82-.236-.975-.632A7.48 7.48 0 016 15.375c0-1.75.599-3.358 1.602-4.634.151-.192.373-.309.6-.397.473-.183.89-.514 1.212-.924a9.042 9.042 0 012.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 00.322-1.672V3a.75.75 0 01.75-.75 2.25 2.25 0 012.25 2.25c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 01-2.649 7.521c-.388.482-.987.729-1.605.729H14.23c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 00-1.423-.23h-.777zM2.331 10.977a11.969 11.969 0 00-.831 4.398 12 12 0 00.52 3.507c.26.85 1.084 1.368 1.973 1.368H4.9c.445 0 .72-.498.523-.898a8.963 8.963 0 01-.924-3.977c0-1.708.476-3.305 1.302-4.666.245-.403-.028-.959-.5-.959H4.25c-.832 0-1.612.453-1.918 1.227z" />
+            </svg>
+        );
     }
     return (
         <div className="comment-item flex w-full">
@@ -38,16 +70,14 @@ function CommentItem({userName, time, commentText, likes}) {
                     <div className="mb-2 flex w-full items-center">
                         <p className="font-bold text-white">{userName}</p>
                         <div className="mx-2 h-1 w-1 rounded-full bg-white opacity-90"></div>
-                        <p className="text-[#616161] text-sm">{time.substring(0, 10)}</p>
+                        <p className="text-sm text-[#616161]">{time.substring(0, 10)}</p>
                     </div>
-                    <p className="text-[#d2d2d2]">
-                       {commentText}
-                    </p>
+                    <p className="text-[#d2d2d2]">{commentText}</p>
                 </div>
                 <div className="mt-2 flex items-center">
-                    <div className="flex items-center">
-                        {/*{renderLikeIcon()}*/}
-                        <p className="mr-4 text-sm text-[#888]">{likes?.length !== 0 ? likes?.length : null}</p>
+                    <div className="flex items-center" onClick={() => clickLikeIcon()}>
+                        {renderLikeIcon()}
+                        <p className="mr-4 text-sm text-[#888]">{likeNumber}</p>
                     </div>
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
