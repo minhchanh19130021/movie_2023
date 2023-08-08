@@ -61,7 +61,7 @@ function Header() {
                         <span className="ml-3 text-sm">Movie Online</span>
                     </div>
                 </NavLink>
-                <NavLink to="/">
+                <NavLink to="/tai-khoan/lich-su-da-xem">
                     <div className="flex items-center pl-4 transition-colors hover:text-orange-500">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -78,7 +78,7 @@ function Header() {
                             />
                         </svg>
 
-                        <span className="ml-3 text-sm ">Thông tin</span>
+                        <span className="ml-3 text-sm">Thông tin</span>
                     </div>
                 </NavLink>
             </div>
@@ -107,7 +107,7 @@ function Header() {
                             to="/the-loai=hoat-hinh/trang=1"
                             className="px-3 py-3 text-base font-medium text-[#9b9b9b] hover:text-orange-500"
                         >
-                           Hoạt hình
+                            Hoạt hình
                         </NavLink>
                         <NavLink
                             to="/the-loai=chinh-kich/trang=1"

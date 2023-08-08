@@ -28,6 +28,7 @@ public class HistoryController {
         history.setMovieId(request.getMovieId());
         history.setUserId(request.getUserId());
         history.setInsertedDate(new Date());
+        history.setUpdatedDate(new Date());
         historyService.addHistory(history);
         return ResponseEntity.ok("Added history");
     }

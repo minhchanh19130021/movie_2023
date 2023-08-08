@@ -5,6 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { checkUserIdInOrder } from '~/services/orderServices';
 import { useSelector } from 'react-redux';
+import { addWatchHistory } from '~/services/historyService';
 
 function View() {
     const params = useParams();
@@ -23,6 +24,9 @@ function View() {
                 if (e?.status === 200) {
                     setMovieInfo(e?.data);
                     if (e?.data?.movieId) {
+//them lich su xem (truong hop muon them lich su khi mo trang chi tiet phim)
+                        // addWatchHistory(user.id,e?.data?.movieId);
+                        
                         setMovieId(e?.data?.movieId);
                     }
                 } else {
@@ -40,6 +44,7 @@ function View() {
         // don't need to receive response, it will be make performance better
         // (in case of increaseNumberOfViewsInMovie in concurrency)
         increaseNumberOfViewsInMovie(1);
+        addWatchHistory(user.id, movieId);
     }
 
     function openVideo(link) {

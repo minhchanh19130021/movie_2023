@@ -22,12 +22,12 @@ function MovieComponent(props) {
                             src={props.movie.poster}
                             alt=""
                             className="cursor-pointer rounded-xl px-2"
-                            style={{ width: '100%' }}
+                            style={{ width: '100%' , height:'400px'}}
                         />
                         <div className='text-center mt-2'>
                             <div>
                             <b className='text-blue-600/75'> {props.movie.name}</b>
-                            <p className='text-sm'>{props.movie.type}</p>
+                            {/* <p className='text-sm'>{props.movie.type}</p> */}
                             </div>
                            
                         </div>
