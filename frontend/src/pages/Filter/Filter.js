@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import * as filterMovie from '~/services/searchService';
+import MovieComponent from '~/components/MovieComponent/MovieComponent';
 
 function Filter() {
     const [countries, setCountries] = useState([]);
@@ -225,7 +226,13 @@ function Filter() {
                                 <p className="font-bold text-orange-500">Không tìm thấy video phù hợp</p>
                             ) : (
                                 <>
-                                    <div className="grid grid-cols-3 gap-4">
+                                 <div className="relative flex flex-row flex-wrap  ">
+                        {movies?.map((movie) => (
+                    <MovieComponent movie={movie} key={movie.id} className=" "/>
+                   
+                ))}
+                </div>
+                                    {/* <div className="grid grid-cols-3 gap-4">
                                         {movies?.map((e) => {
                                             return (
                                                 <NavLink key={e?.id} to={'/'} className="mb-12 rounded-lg !text-white">
@@ -238,7 +245,7 @@ function Filter() {
                                                 </NavLink>
                                             );
                                         })}
-                                    </div>
+                                    </div> */}
                                     <div className="flex items-center justify-center">
                                         {movies?.length > 0 && parseInt(pageValue) > 1 && (
                                             <button

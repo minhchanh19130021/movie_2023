@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import * as typesService from '~/services/typeService';
+import MovieComponent from '~/components/MovieComponent/MovieComponent';
 
 function TypeSearch() {
     const [searchResult, setSearchResult] = useState([]);
@@ -40,7 +41,14 @@ function TypeSearch() {
             <div className="padding-responsive padding-responsive mx-auto max-w-[1200px] ">
                 {searchResult?.length > 0 ? (
                     <>
-                        <div className="grid grid-cols-5 gap-4">
+ <div className="relative flex flex-row flex-wrap  ">
+                        {searchResult?.map((movie) => (
+                    <MovieComponent movie={movie} key={movie.id} className=" "/>
+                   
+                ))}</div>
+
+
+                        {/* <div className="grid grid-cols-5 gap-4">
                             {searchResult?.map((e) => {
                                 return (
                                     <NavLink key={e?.id} to={'/'} className="mb-12 rounded-lg !text-white">
@@ -49,7 +57,7 @@ function TypeSearch() {
                                     </NavLink>
                                 );
                             })}
-                        </div>
+                        </div> */}
                         <div className="flex items-center justify-center">
                             {searchResult?.length > 0 && parseInt(pageValue) > 1 && (
                                 <button
