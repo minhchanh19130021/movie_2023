@@ -10,6 +10,7 @@ function Review(props) {
     const [orderBy, setOrderBy] = useState('insertedDateDESC');
     const [offsetPage, setOffsetPage] = useState(0);
     const [showLoadMoreReviewButton, setShowLoadMoreReviewButton] = useState(true);
+    const [movieId, setMovieId] = useState();
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -18,6 +19,7 @@ function Review(props) {
 
     function loadReviewList(offsetPage, orderBy) {
         if (props?.movieId) {
+            setMovieId(props?.movieId);
             const load = getReviewsByMovieIdAndPaginationNumber(props?.movieId, offsetPage, orderBy);
             load.then((e) => {
                 setReviewList(e?.data);
@@ -86,6 +88,7 @@ function Review(props) {
                     </button>
                     {isShowReviewForm ? (
                         <ReviewForm
+                            movieId={movieId}
                             setIsShowReviewForm={setIsShowReviewForm}
                             reviewList={reviewList}
                             setReviewList={setReviewList}

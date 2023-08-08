@@ -16,11 +16,11 @@ export const getReviewsByMovieIdAndPaginationNumber = async (movieId, pagination
     }
 };
 
-export const saveNewReview = async (rating, reviewText, accessToken) => {
+export const saveNewReview = async (movieId, rating, reviewText, accessToken) => {
     const newReview = {
         rating: rating,
         reviewText: reviewText,
-        movieId: 1,
+        movieId: movieId,
     };
     try {
         const load = await request.post(`/api/${controller}/add`, newReview, {

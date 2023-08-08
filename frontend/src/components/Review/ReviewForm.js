@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 
 const { Rating } = require('../Rating');
 
-const ReviewForm = ({ author, rating, content, reviewList, setReviewList, setIsShowReviewForm }) => {
+const ReviewForm = ({ movieId, author, rating, content, reviewList, setReviewList, setIsShowReviewForm }) => {
     const [ratingValue, setRatingValue] = useState(0);
     const [reviewText, setReviewText] = useState('');
     const navigate = useNavigate();
@@ -32,7 +32,7 @@ const ReviewForm = ({ author, rating, content, reviewList, setReviewList, setIsS
                 if (e?.status === 200) {
                     console.log(e);
                     if (e?.data === 'ok') {
-                        const load = saveNewReview(ratingValue, reviewText, user?.accessToken);
+                        const load = saveNewReview(movieId, ratingValue, reviewText, user?.accessToken);
                         load.then((e) => {
                             if (e.status === 200) {
                                 setReviewList([e?.data, ...reviewList]);

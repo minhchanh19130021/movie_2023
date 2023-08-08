@@ -72,7 +72,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
                .antMatchers("/api/auth/**").permitAll()
                .antMatchers("/api/movies/**").permitAll()
                .antMatchers("/api/review/get").permitAll()
-               .antMatchers("/api/comment/get").permitAll()
+               .antMatchers("/api/comment/**").permitAll()
                .anyRequest().authenticated();
        // All request except 'api/auth/login' must be authenticated
 

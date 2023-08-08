@@ -1,4 +1,5 @@
 import request from '~/utils/requestUtils';
+import axios from 'axios';
 
 const controller = 'comment';
 
@@ -20,10 +21,25 @@ export const addComment = async (newComment, user) => {
     try {
         const response = await request.post(`/api/${controller}/add`, newComment, {
             headers: {
-                Authorization: `Bearer ${user.accessToken}`
+                Authorization: `Bearer ${user.accessToken}`,
             },
         });
         return response.data;
+    } catch (error) {
+        return Promise.reject(error?.response?.data);
+    }
+};
+export const likeComment = async (commentId, accessToken) => {
+    const newLike = {
+        commentId: commentId,
+    };
+    try {
+        const load = await axios.post(`/api/${controller}/likeComment`, newLike, {
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+            },
+        });
+        return load;
     } catch (error) {
         return Promise.reject(error?.response?.data);
     }

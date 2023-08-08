@@ -1,9 +1,9 @@
 import { NavLink } from 'react-router-dom';
 import CommentItem from './CommentItem';
 import { useNavigate } from 'react-router-dom';
-import {addComment, getCommentsByMovieIdAndPaginationNumber} from '~/services/commentServices';
+import { addComment, getCommentsByMovieIdAndPaginationNumber } from '~/services/commentServices';
 import { useEffect, useState } from 'react';
-import {useSelector} from "react-redux";
+import { useSelector } from 'react-redux';
 
 function Comment(props) {
     const [commentList, setCommentList] = useState([]);
@@ -11,11 +11,10 @@ function Comment(props) {
     const [offsetPage, setOffsetPage] = useState(0);
     const [showLoadMoreCommentButton, setShowLoadMoreCommentButton] = useState(true);
     const navigate = useNavigate();
-    const [newCommentText, setNewCommentText] = useState('')
+    const [newCommentText, setNewCommentText] = useState('');
     const user = useSelector((state) => state?.authentication?.login?.currentUser);
     useEffect(() => {
         loadCommentList(offsetPage, orderBy);
-        handleAddComment();
     }, [props?.movieId]);
 
     function loadCommentList(offsetPage, orderBy) {
@@ -72,7 +71,7 @@ function Comment(props) {
                 .catch((error) => {
                     console.log('Error adding comment:', error);
                 });
-        }else{
+        } else {
             navigate('/dang-nhap');
         }
     }
@@ -114,8 +113,9 @@ function Comment(props) {
                     return (
                         <CommentItem
                             key={i}
+                            commentId={e?.id}
                             rating={e?.rating}
-                            userName={`${e?.user?.userName}`}
+                            userName={`${e?.userId}`}
                             time={`${e?.insertedDate} ngày`}
                             commentText={e?.reviewText}
                             likes={e?.likes}
@@ -138,11 +138,11 @@ function Comment(props) {
                         value={newCommentText}
                         onChange={(e) => setNewCommentText(e.target.value)}
                         placeholder="Nhập nội dung bình luận..."
-                        className="border border-gray-300 rounded-md w-full px-4 py-2 mt-2 focus:outline-none focus:border-blue-500"
+                        className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 "
                     />
                     <button
                         onClick={handleAddComment}
-                        className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-md mt-2"
+                        className="mt-2 rounded-md bg-blue-500 px-4 py-2 font-medium text-white hover:bg-blue-600"
                     >
                         Thêm bình luận
                     </button>
