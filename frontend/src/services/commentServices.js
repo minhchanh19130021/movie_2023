@@ -15,3 +15,16 @@ export const getCommentsByMovieIdAndPaginationNumber = async (movieId, paginatio
         return Promise.reject(error?.response?.data);
     }
 };
+
+export const addComment = async (newComment, user) => {
+    try {
+        const response = await request.post(`/api/${controller}/add`, newComment, {
+            headers: {
+                Authorization: `Bearer ${user.accessToken}`
+            },
+        });
+        return response.data;
+    } catch (error) {
+        return Promise.reject(error?.response?.data);
+    }
+};
