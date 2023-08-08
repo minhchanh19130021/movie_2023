@@ -93,20 +93,7 @@ public class CommentService {
         return true;
 
     }
-    public Comment addComment(Integer userId, Integer movieId, String commentText) {
-        Optional<User> userOptional = userRepository.findById(userId);
-        if (!userOptional.isPresent()) {
-            throw new IllegalArgumentException("Invalid userId");
-        }
-
-        Comment comment = new Comment();
-        comment.setUserId(userId);
-        comment.setMovieId(movieId);
-        comment.setReviewText(commentText);
-        comment.setInsertedDate(new Date());
-        comment.setUpdatedDate(new Date());
-        comment.setNumberLike(0);
-
+    public Comment addComment(Comment comment) {
         return commentRepository.save(comment);
     }
 }

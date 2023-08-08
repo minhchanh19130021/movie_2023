@@ -3,11 +3,14 @@ package com.fit.nlu.backend.controller;
 import com.fit.nlu.backend.entity.Comment;
 import com.fit.nlu.backend.exception.CustomException;
 import com.fit.nlu.backend.jwt.JwtTokenProvider;
+import com.fit.nlu.backend.request.CommentRequest;
 import com.fit.nlu.backend.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -29,13 +32,20 @@ public class CommentController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Comment> addComment(@RequestBody Comment comment) {
-
-        if (comment.getReviewText() == null || comment.getReviewText().trim().isEmpty()) {
-            throw new IllegalArgumentException("Review text must not be blank");
+    public ResponseEntity<?> addComment(@RequestHeader("Authorization") String token, @RequestBody CommentRequest commentRequest) {
+        Integer userId = tokenProvider.getUserIdFromJWT(token.substring(7));
+        if (commentRequest.getReviewText() == null || commentRequest.getReviewText().trim().isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Review text must not be blank");
         }
 
-        Comment savedComment = commentService.addComment(comment.getUserId(), comment.getMovieId(), comment.getReviewText());
+        Comment newComment = new Comment();
+        newComment.setUserId(userId);
+        newComment.setMovieId(commentRequest.getMovieId());
+        newComment.setReviewText(commentRequest.getReviewText());
+        newComment.setInsertedDate(new Date());
+        newComment.setUpdatedDate(new Date());
+
+        Comment savedComment = commentService.addComment(newComment);
         return ResponseEntity.ok(savedComment);
     }
 
