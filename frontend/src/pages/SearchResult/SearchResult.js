@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import * as searchService from '~/services/searchService';
 import Search from '../Search/Search';
+import MovieComponent from '~/components/MovieComponent/MovieComponent';
 
 function SearchResult() {
     const [searchValue, setSearchValue] = useState('');
@@ -27,6 +28,7 @@ function SearchResult() {
                 'asc',
             );
             setSearchResult(res?.content);
+            console.log(res?.content);
             setTotalProduct(res?.totalElements);
             const totalPages = Math.ceil(res?.totalElements / pageSize);
             setNumberPage(Array.from({ length: totalPages }, (_, index) => index + 1));
@@ -50,10 +52,14 @@ function SearchResult() {
                 <Search />
                 {searchResult?.length > 0 ? (
                     <>
-                        <div className="grid grid-cols-5 gap-4">
-                            {searchResult?.map((e) => {
-                                return (
-                                    <NavLink to={'/'} className="mb-12 rounded-lg !text-white">
+                        <div className="relative flex flex-row flex-wrap  ">
+                        {searchResult?.map((movie) => (
+                    <MovieComponent movie={movie} key={movie.id} className=" "/>
+                   
+                ))}
+                            {/* {searchResult?.map((e) => {
+                               return (
+                                    <NavLink to={`/xem-video/${e?.slug}`} className="mb-12 rounded-lg !text-white">
                                         <img
                                             src={e?.poster}
                                             alt="result-search-img"
@@ -61,8 +67,9 @@ function SearchResult() {
                                         />
                                         {e?.name}
                                     </NavLink>
-                                );
-                            })}
+                               );
+                              
+                            })} */}
                         </div>
                         <div className="flex items-center justify-center">
                             {searchResult?.length > 0 && parseInt(pageValue) > 1 && (

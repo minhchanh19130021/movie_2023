@@ -32,7 +32,7 @@ function MovieSuggetions(props) {
     return (
         <div>
               <h2 className="mb-4 text-2xl font-medium"> {props.name} </h2>
-            <div className="relative flex flex-row flex-wrap ">
+            <div className="relative flex flex-row flex-wrap  ">
               
                 
                 {movies?.map((movie) => (
