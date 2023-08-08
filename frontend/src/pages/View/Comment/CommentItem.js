@@ -10,7 +10,8 @@ function CommentItem({ commentId, userName, time, commentText, likes }) {
     const [status, setStatus] = useState(false);
 
     function clickLikeIcon() {
-        likeComment(commentId, user?.accessToken)
+        // likeComment(commentId, user?.accessToken)
+        likeComment(commentId, user?.id)
             .then((e) => {
                 console.log(e);
                 if (e.status === 200) {
