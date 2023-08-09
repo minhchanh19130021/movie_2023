@@ -57,16 +57,16 @@ public class CommentController {
         return ResponseEntity.ok(savedComment);
     }
 
-//    @PostMapping("/likeComment")
-//    public ResponseEntity<LikeResponse> likeComment(@RequestBody String commentId) {
-//        CustomUserDetails userDetails =
-//                (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        return ResponseEntity.ok().body(commentService.likeComment(userDetails .getUser().getId(), Integer.parseInt(commentId.substring(commentId.length() - 2, commentId.length() - 1))));
-//    }
-
     @PostMapping("/likeComment")
-    public ResponseEntity<LikeResponse> likeComment(@RequestBody @Valid LikeCommentRequest request) {
-        return ResponseEntity.ok().body(commentService.likeComment(request.getUserId(), request.getCommentId()));
+    public ResponseEntity<LikeResponse> likeComment(@RequestBody String commentId) {
+        CustomUserDetails userDetails =
+                (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return ResponseEntity.ok().body(commentService.likeComment(userDetails .getUser().getId(), Integer.parseInt(commentId.substring(commentId.length() - 2, commentId.length() - 1))));
     }
+
+//    @PostMapping("/likeComment")
+//    public ResponseEntity<LikeResponse> likeComment(@RequestBody @Valid LikeCommentRequest request) {
+//        return ResponseEntity.ok().body(commentService.likeComment(request.getUserId(), request.getCommentId()));
+//    }
 
 }

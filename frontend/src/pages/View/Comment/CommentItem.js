@@ -11,7 +11,11 @@ function CommentItem({ commentId, userName, time, commentText, likes }) {
     const [active, setActive] = useState(false);
 
     function clickLikeIcon() {
-        likeComment(commentId, user?.id)
+        if (!user?.accessToken) {
+            alert('cần đăng nhập để thực thích bình luận');
+            return;
+        }
+        likeComment(commentId, user?.accessToken)
             .then((e) => {
                 console.log(e);
                 if (e.status === 200) {
