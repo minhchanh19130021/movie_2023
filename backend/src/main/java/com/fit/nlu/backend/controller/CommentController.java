@@ -5,6 +5,8 @@ import com.fit.nlu.backend.exception.CustomException;
 import com.fit.nlu.backend.jwt.JwtTokenProvider;
 import com.fit.nlu.backend.request.CommentRequest;
 import com.fit.nlu.backend.model.CustomUserDetails;
+import com.fit.nlu.backend.request.LikeCommentRequest;
+import com.fit.nlu.backend.request.MovieFavoriteRequest;
 import com.fit.nlu.backend.response.LikeResponse;
 import com.fit.nlu.backend.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Date;
 import java.util.List;
 
@@ -54,11 +57,16 @@ public class CommentController {
         return ResponseEntity.ok(savedComment);
     }
 
+//    @PostMapping("/likeComment")
+//    public ResponseEntity<LikeResponse> likeComment(@RequestBody String commentId) {
+//        CustomUserDetails userDetails =
+//                (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        return ResponseEntity.ok().body(commentService.likeComment(userDetails .getUser().getId(), Integer.parseInt(commentId.substring(commentId.length() - 2, commentId.length() - 1))));
+//    }
+
     @PostMapping("/likeComment")
-    public ResponseEntity<LikeResponse> likeComment(@RequestBody String commentId) {
-        CustomUserDetails userDetails =
-                (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return ResponseEntity.ok().body(commentService.likeComment(userDetails .getUser().getId(), Integer.parseInt(commentId.substring(commentId.length() - 2, commentId.length() - 1))));
+    public ResponseEntity<LikeResponse> likeComment(@RequestBody @Valid LikeCommentRequest request) {
+        return ResponseEntity.ok().body(commentService.likeComment(request.getUserId(), request.getCommentId()));
     }
 
 }

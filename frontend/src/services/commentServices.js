@@ -29,17 +29,14 @@ export const addComment = async (newComment, user) => {
         return Promise.reject(error?.response?.data);
     }
 };
-export const likeComment = async (commentId, accessToken) => {
-    const newLike = {
-        commentId: commentId,
-    };
+
+export const likeComment = async (comment_id, user_id) => {
     try {
-        const load = await axios.post(`/api/${controller}/likeComment`, newLike, {
-            headers: {
-                Authorization: `Bearer ${accessToken}`,
-            },
+        const res = await axios.post(`/api/${controller}/likeComment`,{
+            user_id,
+            comment_id,
         });
-        return load;
+        return res;
     } catch (error) {
         return Promise.reject(error?.response?.data);
     }

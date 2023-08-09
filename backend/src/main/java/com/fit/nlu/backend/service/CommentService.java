@@ -75,7 +75,7 @@ public class CommentService {
                 likeRepository.delete(like.get());
                 comment.setNumberLike(comment.getNumberLike() - 1);
                 response.setStatus("unlike");
-                response.setNumber(comment.getNumberLike() - 1);
+                response.setNumber(comment.getNumberLike());
             } else {
                 comment.setNumberLike(comment.getNumberLike() + 1);
                 Like newLike = new Like();
@@ -88,7 +88,7 @@ public class CommentService {
                 comment.setLikes(c);
                 likeRepository.save(newLike);
                 response.setStatus("like");
-                response.setNumber(comment.getNumberLike() + 1);
+                response.setNumber(comment.getNumberLike());
             }
             commentRepository.save(comment);
         } catch (Exception e) {
