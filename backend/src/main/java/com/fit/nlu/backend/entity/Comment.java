@@ -1,5 +1,6 @@
 package com.fit.nlu.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
@@ -40,6 +41,11 @@ public class Comment {
 //    @OneToOne
 //    @JoinColumn(name = "user_id")
 //    private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", insertable = false, updatable = false)
+    @JsonBackReference
+    private User user;
 
     @OneToMany(mappedBy = "comment")
     @JsonManagedReference
