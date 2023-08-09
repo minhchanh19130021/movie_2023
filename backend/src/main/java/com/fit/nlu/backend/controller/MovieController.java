@@ -3,6 +3,7 @@ package com.fit.nlu.backend.controller;
 import com.fit.nlu.backend.entity.Movie;
 import com.fit.nlu.backend.entity.MovieDetail;
 import com.fit.nlu.backend.exception.CustomException;
+import com.fit.nlu.backend.repository.EpisodeRepository;
 import com.fit.nlu.backend.request.MovieFilterRequest;
 import com.fit.nlu.backend.response.MoviePageResponse;
 import org.springframework.data.domain.Page;
