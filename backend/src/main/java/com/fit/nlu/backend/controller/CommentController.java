@@ -1,14 +1,17 @@
 package com.fit.nlu.backend.controller;
 
 import com.fit.nlu.backend.entity.Comment;
+import com.fit.nlu.backend.entity.User;
 import com.fit.nlu.backend.exception.CustomException;
 import com.fit.nlu.backend.jwt.JwtTokenProvider;
+import com.fit.nlu.backend.repository.UserRepository;
 import com.fit.nlu.backend.request.CommentRequest;
 import com.fit.nlu.backend.model.CustomUserDetails;
 import com.fit.nlu.backend.request.LikeCommentRequest;
 import com.fit.nlu.backend.request.MovieFavoriteRequest;
 import com.fit.nlu.backend.response.LikeResponse;
 import com.fit.nlu.backend.service.CommentService;
+import com.fit.nlu.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +33,8 @@ public class CommentController {
 
     @Autowired
     JwtTokenProvider tokenProvider;
+    @Autowired
+    private UserService userService;
 
     @GetMapping("/get")
     public ResponseEntity<List<Comment>> getCommentsList(int movieId, int currentPage, String sortBy) throws CustomException {
@@ -47,7 +52,8 @@ public class CommentController {
         }
 
         Comment newComment = new Comment();
-        newComment.setUserId(userId);
+        User user = userService.findById(userId);
+        newComment.setUser(user);
         newComment.setMovieId(commentRequest.getMovieId());
         newComment.setReviewText(commentRequest.getReviewText());
         newComment.setInsertedDate(new Date());

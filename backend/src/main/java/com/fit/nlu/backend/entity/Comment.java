@@ -15,8 +15,9 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "user_id")
-    private Integer userId;
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @Column(name = "movie_id")
     private Integer movieId;
@@ -38,9 +39,6 @@ public class Comment {
     @Column(name = "number_like")
     private int numberLike;
 
-//    @OneToOne
-//    @JoinColumn(name = "user_id")
-//    private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", insertable = false, updatable = false)
@@ -51,12 +49,12 @@ public class Comment {
     @JsonManagedReference
     private Collection<Like> likes;
 
-    public Integer getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Integer getId() {
